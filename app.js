@@ -1,4 +1,3 @@
-```javascript
 const STORAGE_KEY = "ctl_driver_config";
 
 let selectedService = null;
