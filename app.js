@@ -1,19 +1,11 @@
 ```javascript
-/*
-    COOPERATIVA TAXI LECCE
-    Applicazione locale
-    Nessun server
-    Nessuna API
-*/
-
 const STORAGE_KEY = "ctl_driver_config";
 
 let selectedService = null;
-let currentPage = "home";
 
 
 /* =========================
-   DOM
+   ELEMENTI
 ========================= */
 
 const onboarding = document.getElementById("onboarding");
@@ -67,49 +59,69 @@ const homeDescription =
 const nextItemLabel =
     document.getElementById("nextItemLabel");
 
+const newItemModal =
+    document.getElementById("newItemModal");
+
 const modalEyebrow =
     document.getElementById("modalEyebrow");
 
 const modalTitle =
     document.getElementById("modalTitle");
 
-const newItemModal =
-    document.getElementById("newItemModal");
-
 
 /* =========================
-   INITIALIZATION
+   AVVIO
 ========================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
+
+    setupEvents();
 
     const savedConfig =
         localStorage.getItem(STORAGE_KEY);
 
-    if (savedConfig) {
+    if (!savedConfig) {
 
-        try {
+        showOnboarding();
 
-            const config =
-                JSON.parse(savedConfig);
+        return;
+    }
 
-            loadApplication(config);
 
-        } catch (error) {
+    try {
+
+        const config =
+            JSON.parse(savedConfig);
+
+        if (
+            !config ||
+            !config.service ||
+            !config.name ||
+            !config.phone
+        ) {
 
             localStorage.removeItem(STORAGE_KEY);
 
             showOnboarding();
 
+            return;
         }
 
-    } else {
+
+        loadApplication(config);
+
+    } catch (error) {
+
+        console.error(
+            "Errore nella configurazione salvata:",
+            error
+        );
+
+        localStorage.removeItem(STORAGE_KEY);
 
         showOnboarding();
 
     }
-
-    setupEvents();
 
 });
 
@@ -121,7 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function showOnboarding() {
 
     onboarding.classList.remove("hidden");
+
     driverSetup.classList.add("hidden");
+
     mainApp.classList.add("hidden");
 
 }
@@ -132,45 +146,75 @@ function showDriverSetup(service) {
     selectedService = service;
 
     onboarding.classList.add("hidden");
+
     driverSetup.classList.remove("hidden");
 
-    selectedServiceLabel.textContent =
-        service === "taxi" ? "TAXI" : "NCC";
+    mainApp.classList.add("hidden");
+
+
+    if (service === "taxi") {
+
+        selectedServiceLabel.textContent = "TAXI";
+
+    } else {
+
+        selectedServiceLabel.textContent = "NCC";
+
+    }
 
 }
 
 
-function showOnboardingAgain() {
-
-    onboarding.classList.remove("hidden");
-    driverSetup.classList.add("hidden");
-    mainApp.classList.add("hidden");
+function returnToServiceSelection() {
 
     selectedService = null;
+
+    showOnboarding();
 
 }
 
 
 /* =========================
-   SAVE CONFIG
+   FORM CONFIGURAZIONE
 ========================= */
 
-driverForm.addEventListener("submit", (event) => {
+function saveDriverConfiguration(event) {
 
     event.preventDefault();
 
+
     if (!selectedService) {
+
         return;
+
     }
 
+
+    const nameInput =
+        document.getElementById("driverName");
+
+    const phoneInput =
+        document.getElementById("driverPhone");
+
+    const licenseInput =
+        document.getElementById("driverLicense");
+
+
     const name =
-        document.getElementById("driverName").value.trim();
+        nameInput.value.trim();
 
     const phone =
-        document.getElementById("driverPhone").value.trim();
+        phoneInput.value.trim();
 
     const license =
-        document.getElementById("driverLicense").value.trim();
+        licenseInput.value.trim();
+
+
+    if (!name || !phone) {
+
+        return;
+
+    }
 
 
     const config = {
@@ -181,9 +225,7 @@ driverForm.addEventListener("submit", (event) => {
 
         phone: phone,
 
-        license: license,
-
-        createdAt: new Date().toISOString()
+        license: license
 
     };
 
@@ -196,25 +238,27 @@ driverForm.addEventListener("submit", (event) => {
 
     loadApplication(config);
 
-});
+}
 
 
 /* =========================
-   LOAD APPLICATION
+   CARICAMENTO APP
 ========================= */
 
 function loadApplication(config) {
 
     onboarding.classList.add("hidden");
+
     driverSetup.classList.add("hidden");
+
     mainApp.classList.remove("hidden");
 
 
-    selectedService = config.service;
+    selectedService =
+        config.service;
 
 
     updateInterface(config);
-
 
     navigateTo("home");
 
@@ -222,7 +266,7 @@ function loadApplication(config) {
 
 
 /* =========================
-   UPDATE INTERFACE
+   INTERFACCIA
 ========================= */
 
 function updateInterface(config) {
@@ -254,7 +298,9 @@ function updateInterface(config) {
 
 
     listNavLabel.textContent =
-        isTaxi ? "Corse" : "Servizi";
+        isTaxi
+            ? "Corse"
+            : "Servizi";
 
 
     todayItemsTitle.textContent =
@@ -276,15 +322,15 @@ function updateInterface(config) {
 
 
     profileName.textContent =
-        config.name || "Conducente";
+        config.name;
 
 
     profilePhone.textContent =
-        config.phone || "—";
+        config.phone;
 
 
     profileLicense.textContent =
-        config.license || "—";
+        config.license || "Non inserita";
 
 
     const initial =
@@ -305,7 +351,7 @@ function updateInterface(config) {
 
 
 /* =========================
-   GREETING
+   SALUTO
 ========================= */
 
 function updateGreeting() {
@@ -314,16 +360,22 @@ function updateGreeting() {
         new Date().getHours();
 
 
-    let greeting = "Buongiorno";
+    let greeting =
+        "Buongiorno";
 
 
     if (hour >= 13 && hour < 18) {
 
-        greeting = "Buon pomeriggio";
+        greeting =
+            "Buon pomeriggio";
 
-    } else if (hour >= 18) {
+    }
 
-        greeting = "Buonasera";
+
+    if (hour >= 18) {
+
+        greeting =
+            "Buonasera";
 
     }
 
@@ -335,13 +387,15 @@ function updateGreeting() {
 
 
 /* =========================
-   INITIAL
+   INIZIALE NOME
 ========================= */
 
 function getInitial(name) {
 
     if (!name) {
+
         return "C";
+
     }
 
 
@@ -350,7 +404,9 @@ function getInitial(name) {
 
 
     if (!cleanName) {
+
         return "C";
+
     }
 
 
@@ -362,39 +418,36 @@ function getInitial(name) {
 
 
 /* =========================
-   NAVIGATION
+   NAVIGAZIONE
 ========================= */
 
 function navigateTo(page) {
 
-    currentPage = page;
-
-
     document
         .querySelectorAll(".app-page")
-        .forEach(section => {
+        .forEach(function (section) {
 
             section.classList.remove("active");
 
         });
 
 
-    const targetPage =
+    const target =
         document.getElementById(
-            `${page}Page`
+            page + "Page"
         );
 
 
-    if (targetPage) {
+    if (target) {
 
-        targetPage.classList.add("active");
+        target.classList.add("active");
 
     }
 
 
     document
         .querySelectorAll(".nav-item")
-        .forEach(button => {
+        .forEach(function (button) {
 
             button.classList.remove("active");
 
@@ -403,7 +456,7 @@ function navigateTo(page) {
 
     const activeButton =
         document.querySelector(
-            `.nav-item[data-page="${page}"]`
+            '.nav-item[data-page="' + page + '"]'
         );
 
 
@@ -423,128 +476,7 @@ function navigateTo(page) {
 
 
 /* =========================
-   EVENTS
-========================= */
-
-function setupEvents() {
-
-
-    /* SERVICE SELECTION */
-
-    document
-        .querySelectorAll(".service-card")
-        .forEach(button => {
-
-            button.addEventListener("click", () => {
-
-                const service =
-                    button.dataset.service;
-
-                showDriverSetup(service);
-
-            });
-
-        });
-
-
-    /* BACK */
-
-    document
-        .getElementById("backToService")
-        .addEventListener("click", () => {
-
-            showOnboarding();
-
-        });
-
-
-    /* NAVIGATION */
-
-    document
-        .querySelectorAll(".nav-item")
-        .forEach(button => {
-
-            button.addEventListener("click", () => {
-
-                navigateTo(
-                    button.dataset.page
-                );
-
-            });
-
-        });
-
-
-    /* PROFILE BUTTON */
-
-    document
-        .querySelector(".profile-button")
-        .addEventListener("click", () => {
-
-            navigateTo("profile");
-
-        });
-
-
-    /* ADD BUTTON */
-
-    document
-        .getElementById("addButton")
-        .addEventListener("click", () => {
-
-            openNewItemModal();
-
-        });
-
-
-    /* CLOSE MODAL */
-
-    document
-        .getElementById("closeModal")
-        .addEventListener("click", () => {
-
-            closeNewItemModal();
-
-        });
-
-
-    document
-        .querySelector(".modal-backdrop")
-        .addEventListener("click", () => {
-
-            closeNewItemModal();
-
-        });
-
-
-    /* RESET */
-
-    document
-        .getElementById("resetApp")
-        .addEventListener("click", () => {
-
-            const confirmed =
-                confirm(
-                    "Vuoi davvero reimpostare la configurazione?"
-                );
-
-
-            if (!confirmed) {
-                return;
-            }
-
-
-            localStorage.removeItem(STORAGE_KEY);
-
-            location.reload();
-
-        });
-
-}
-
-
-/* =========================
-   NEW ITEM MODAL
+   MODALE NUOVA CORSA
 ========================= */
 
 function openNewItemModal() {
@@ -553,16 +485,23 @@ function openNewItemModal() {
         selectedService === "taxi";
 
 
-    modalEyebrow.textContent =
-        isTaxi
-            ? "NUOVA CORSA"
-            : "NUOVO SERVIZIO";
+    if (isTaxi) {
 
+        modalEyebrow.textContent =
+            "NUOVA CORSA";
 
-    modalTitle.textContent =
-        isTaxi
-            ? "Come vuoi inserire la corsa?"
-            : "Come vuoi inserire il servizio?";
+        modalTitle.textContent =
+            "Come vuoi inserire la corsa?";
+
+    } else {
+
+        modalEyebrow.textContent =
+            "NUOVO SERVIZIO";
+
+        modalTitle.textContent =
+            "Come vuoi inserire il servizio?";
+
+    }
 
 
     newItemModal.classList.remove("hidden");
@@ -573,6 +512,201 @@ function openNewItemModal() {
 function closeNewItemModal() {
 
     newItemModal.classList.add("hidden");
+
+}
+
+
+/* =========================
+   EVENTI
+========================= */
+
+function setupEvents() {
+
+
+    /* SCELTA TAXI / NCC */
+
+    document
+        .querySelectorAll(".service-card")
+        .forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const service =
+                        button.dataset.service;
+
+                    showDriverSetup(service);
+
+                }
+            );
+
+        });
+
+
+    /* INDIETRO */
+
+    const backButton =
+        document.getElementById("backToService");
+
+
+    if (backButton) {
+
+        backButton.addEventListener(
+            "click",
+            function () {
+
+                returnToServiceSelection();
+
+            }
+        );
+
+    }
+
+
+    /* FORM */
+
+    driverForm.addEventListener(
+        "submit",
+        saveDriverConfiguration
+    );
+
+
+    /* NAVIGAZIONE */
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const page =
+                        button.dataset.page;
+
+                    navigateTo(page);
+
+                }
+            );
+
+        });
+
+
+    /* PROFILO HEADER */
+
+    const profileButton =
+        document.querySelector(".profile-button");
+
+
+    if (profileButton) {
+
+        profileButton.addEventListener(
+            "click",
+            function () {
+
+                navigateTo("profile");
+
+            }
+        );
+
+    }
+
+
+    /* PULSANTE + */
+
+    const addButton =
+        document.getElementById("addButton");
+
+
+    if (addButton) {
+
+        addButton.addEventListener(
+            "click",
+            function () {
+
+                openNewItemModal();
+
+            }
+        );
+
+    }
+
+
+    /* CHIUSURA MODALE */
+
+    const closeModal =
+        document.getElementById("closeModal");
+
+
+    if (closeModal) {
+
+        closeModal.addEventListener(
+            "click",
+            function () {
+
+                closeNewItemModal();
+
+            }
+        );
+
+    }
+
+
+    const modalBackdrop =
+        document.querySelector(".modal-backdrop");
+
+
+    if (modalBackdrop) {
+
+        modalBackdrop.addEventListener(
+            "click",
+            function () {
+
+                closeNewItemModal();
+
+            }
+        );
+
+    }
+
+
+    /* RESET */
+
+    const resetButton =
+        document.getElementById("resetApp");
+
+
+    if (resetButton) {
+
+        resetButton.addEventListener(
+            "click",
+            function () {
+
+                const confirmed =
+                    window.confirm(
+                        "Vuoi davvero cancellare la configurazione dell'app?"
+                    );
+
+
+                if (!confirmed) {
+
+                    return;
+
+                }
+
+
+                localStorage.removeItem(
+                    STORAGE_KEY
+                );
+
+
+                window.location.reload();
+
+            }
+        );
+
+    }
 
 }
 ```
