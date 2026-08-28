@@ -1,0 +1,755 @@
+```html
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cooperativa Taxi Lecce</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="app">
+
+        <!-- =========================
+             ONBOARDING
+        ========================== -->
+
+        <section id="onboarding" class="screen">
+
+            <div class="onboarding-container">
+
+                <div class="brand">
+                    <div class="brand-logo">CTL</div>
+
+                    <div>
+                        <h1>Cooperativa Taxi Lecce</h1>
+                        <p>Veloce. Sicuro. Puntuale.</p>
+                    </div>
+                </div>
+
+                <div class="onboarding-heading">
+
+                    <span class="eyebrow">BENVENUTO</span>
+
+                    <h2>
+                        Configuriamo<br>
+                        la tua app.
+                    </h2>
+
+                    <p>
+                        Seleziona il tipo di servizio che utilizzi.
+                    </p>
+
+                </div>
+
+                <div class="service-selection">
+
+                    <button
+                        class="service-card"
+                        data-service="taxi"
+                    >
+
+                        <div class="service-card-content">
+
+                            <span class="service-label">
+                                TAXI
+                            </span>
+
+                            <span class="service-description">
+                                Gestione delle corse
+                            </span>
+
+                        </div>
+
+                        <span class="service-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="service-card"
+                        data-service="ncc"
+                    >
+
+                        <div class="service-card-content">
+
+                            <span class="service-label">
+                                NCC
+                            </span>
+
+                            <span class="service-description">
+                                Gestione dei servizi
+                            </span>
+
+                        </div>
+
+                        <span class="service-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             DRIVER SETUP
+        ========================== -->
+
+        <section
+            id="driverSetup"
+            class="screen hidden"
+        >
+
+            <div class="setup-container">
+
+                <button
+                    id="backToService"
+                    class="back-button"
+                >
+                    ← Indietro
+                </button>
+
+                <span class="eyebrow">
+                    CONFIGURAZIONE
+                </span>
+
+                <h2>I tuoi dati</h2>
+
+                <p class="setup-description">
+                    Inserisci i dati del conducente per configurare
+                    l'app.
+                </p>
+
+
+                <form id="driverForm">
+
+                    <div class="form-group">
+
+                        <label for="driverName">
+                            NOME E COGNOME
+                        </label>
+
+                        <input
+                            id="driverName"
+                            type="text"
+                            placeholder="Nome e cognome"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="driverPhone">
+                            NUMERO DI TELEFONO
+                        </label>
+
+                        <input
+                            id="driverPhone"
+                            type="tel"
+                            placeholder="Numero di telefono"
+                            autocomplete="tel"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="driverLicense">
+                            LICENZA / AUTORIZZAZIONE
+                        </label>
+
+                        <input
+                            id="driverLicense"
+                            type="text"
+                            placeholder="Numero licenza o autorizzazione"
+                        >
+
+                    </div>
+
+
+                    <div class="selected-service">
+
+                        <span>TIPO DI SERVIZIO</span>
+
+                        <strong id="selectedServiceLabel">
+                            TAXI
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Continua
+
+                        <span>→</span>
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             MAIN APP
+        ========================== -->
+
+        <section
+            id="mainApp"
+            class="app-shell hidden"
+        >
+
+            <!-- HEADER -->
+
+            <header class="app-header">
+
+                <div>
+
+                    <span
+                        id="headerService"
+                        class="header-service"
+                    >
+                        TAXI
+                    </span>
+
+                    <h1 id="headerGreeting">
+                        Buongiorno
+                    </h1>
+
+                </div>
+
+
+                <button
+                    class="profile-button"
+                    data-page="profile"
+                >
+
+                    <span id="profileInitial">
+                        F
+                    </span>
+
+                </button>
+
+            </header>
+
+
+            <!-- PAGES -->
+
+            <main id="pageContainer">
+
+
+                <!-- =========================
+                     HOME TAXI / NCC
+                ========================== -->
+
+                <section
+                    id="homePage"
+                    class="app-page active"
+                >
+
+                    <div class="page-introduction">
+
+                        <span
+                            id="homeEyebrow"
+                            class="eyebrow"
+                        >
+                            OGGI
+                        </span>
+
+                        <h2 id="homeTitle">
+                            La tua giornata
+                        </h2>
+
+                        <p id="homeDescription">
+                            Ecco il riepilogo delle tue corse.
+                        </p>
+
+                    </div>
+
+
+                    <div class="next-item-card">
+
+                        <div class="next-item-header">
+
+                            <span id="nextItemLabel">
+                                PROSSIMA CORSA
+                            </span>
+
+                            <span id="nextItemTime">
+                                —
+                            </span>
+
+                        </div>
+
+
+                        <div class="next-item-content">
+
+                            <span class="next-item-empty">
+                                Nessuna corsa programmata
+                            </span>
+
+                            <p>
+                                Le prossime corse appariranno
+                                automaticamente qui.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <span class="eyebrow">
+                                OGGI
+                            </span>
+
+                            <h3 id="todayItemsTitle">
+                                Le tue corse
+                            </h3>
+
+                        </div>
+
+                        <span
+                            id="todayItemsCount"
+                            class="count"
+                        >
+                            0
+                        </span>
+
+                    </div>
+
+
+                    <div class="empty-state">
+
+                        <h3>
+                            Nessuna corsa
+                        </h3>
+
+                        <p>
+                            Non hai ancora aggiunto elementi
+                            per oggi.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =========================
+                     LIST
+                ========================== -->
+
+                <section
+                    id="listPage"
+                    class="app-page"
+                >
+
+                    <div class="page-title">
+
+                        <span
+                            id="listEyebrow"
+                            class="eyebrow"
+                        >
+                            CORSE
+                        </span>
+
+                        <h2 id="listTitle">
+                            Le tue corse
+                        </h2>
+
+                    </div>
+
+
+                    <div class="filter-row">
+
+                        <button class="filter active">
+                            Oggi
+                        </button>
+
+                        <button class="filter">
+                            Domani
+                        </button>
+
+                        <button class="filter">
+                            Future
+                        </button>
+
+                    </div>
+
+
+                    <div class="empty-state large">
+
+                        <h3>
+                            Nessuna corsa
+                        </h3>
+
+                        <p>
+                            Le corse che aggiungerai appariranno
+                            qui.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =========================
+                     AGENDA
+                ========================== -->
+
+                <section
+                    id="agendaPage"
+                    class="app-page"
+                >
+
+                    <div class="page-title">
+
+                        <span class="eyebrow">
+                            PROGRAMMA
+                        </span>
+
+                        <h2>
+                            Agenda
+                        </h2>
+
+                    </div>
+
+
+                    <div class="agenda-empty">
+
+                        <div class="calendar-symbol">
+                            31
+                        </div>
+
+                        <h3>
+                            La tua agenda
+                        </h3>
+
+                        <p>
+                            Qui verranno organizzate le corse
+                            e i servizi per giorno e settimana.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =========================
+                     PROFILE
+                ========================== -->
+
+                <section
+                    id="profilePage"
+                    class="app-page"
+                >
+
+                    <div class="page-title">
+
+                        <span class="eyebrow">
+                            ACCOUNT
+                        </span>
+
+                        <h2>
+                            Profilo
+                        </h2>
+
+                    </div>
+
+
+                    <div class="profile-card">
+
+                        <div
+                            id="profileAvatar"
+                            class="profile-avatar"
+                        >
+                            F
+                        </div>
+
+
+                        <div class="profile-information">
+
+                            <h3 id="profileName">
+                                Conducente
+                            </h3>
+
+                            <p id="profileService">
+                                TAXI
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-details">
+
+                        <div class="detail-row">
+
+                            <span>
+                                Telefono
+                            </span>
+
+                            <strong id="profilePhone">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <span>
+                                Licenza / autorizzazione
+                            </span>
+
+                            <strong id="profileLicense">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        id="resetApp"
+                        class="danger-button"
+                    >
+                        Reimposta configurazione
+                    </button>
+
+                </section>
+
+            </main>
+
+
+            <!-- =========================
+                 BOTTOM NAV
+            ========================== -->
+
+            <nav class="bottom-nav">
+
+                <button
+                    class="nav-item active"
+                    data-page="home"
+                >
+
+                    <span class="nav-icon">
+                        Home
+                    </span>
+
+                    <span class="nav-label">
+                        Home
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="list"
+                >
+
+                    <span class="nav-icon">
+                        Corse
+                    </span>
+
+                    <span
+                        id="listNavLabel"
+                        class="nav-label"
+                    >
+                        Corse
+                    </span>
+
+                </button>
+
+
+                <button
+                    id="addButton"
+                    class="add-nav-button"
+                >
+                    +
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="agenda"
+                >
+
+                    <span class="nav-icon">
+                        Agenda
+                    </span>
+
+                    <span class="nav-label">
+                        Agenda
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    data-page="profile"
+                >
+
+                    <span class="nav-icon">
+                        Profilo
+                    </span>
+
+                    <span class="nav-label">
+                        Profilo
+                    </span>
+
+                </button>
+
+            </nav>
+
+        </section>
+
+
+        <!-- =========================
+             NEW ITEM MODAL
+        ========================== -->
+
+        <div
+            id="newItemModal"
+            class="modal hidden"
+        >
+
+            <div class="modal-backdrop"></div>
+
+
+            <div class="modal-sheet">
+
+                <button
+                    id="closeModal"
+                    class="modal-close"
+                >
+                    ×
+                </button>
+
+
+                <span
+                    id="modalEyebrow"
+                    class="eyebrow"
+                >
+                    NUOVA CORSA
+                </span>
+
+
+                <h2 id="modalTitle">
+                    Come vuoi inserirla?
+                </h2>
+
+
+                <p class="modal-description">
+                    Scegli il metodo con cui vuoi aggiungere
+                    una nuova corsa.
+                </p>
+
+
+                <div class="input-methods">
+
+
+                    <button class="method-card">
+
+                        <div class="method-content">
+
+                            <strong>
+                                Inserimento manuale
+                            </strong>
+
+                            <span>
+                                Compila i dati della corsa
+                            </span>
+
+                        </div>
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button class="method-card">
+
+                        <div class="method-content">
+
+                            <strong>
+                                Importa messaggio
+                            </strong>
+
+                            <span>
+                                Incolla qualsiasi testo
+                            </span>
+
+                        </div>
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button class="method-card">
+
+                        <div class="method-content">
+
+                            <strong>
+                                Inserimento vocale
+                            </strong>
+
+                            <span>
+                                Parla liberamente
+                            </span>
+
+                        </div>
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="app.js"></script>
+
+</body>
+</html>
+```
