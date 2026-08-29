@@ -1207,3 +1207,540 @@ input:focus-visible {
     }
 
 }
+
+/* ========================================
+   NUOVA CORSA
+======================================== */
+
+.new-ride-content {
+    margin-top: 34px;
+    padding-bottom: 40px;
+}
+
+
+/* ========================================
+   LINK INDIETRO
+======================================== */
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+
+    margin-right: 12px;
+
+    background: var(--white);
+
+    border: 1px solid var(--gray-200);
+
+    border-radius: 12px;
+
+    color: var(--black);
+
+    font-size: 20px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.back-link:hover {
+    background: var(--gray-100);
+
+    transform: translateX(-2px);
+}
+
+
+/* ========================================
+   SMART ENTRY
+======================================== */
+
+.smart-entry,
+.voice-entry,
+.manual-entry {
+    margin-top: 25px;
+}
+
+.smart-entry {
+    padding: 22px;
+
+    background: var(--black);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.10);
+}
+
+.smart-entry .section-eyebrow {
+    color: var(--orange-soft);
+}
+
+.smart-entry h2 {
+    margin-top: 7px;
+
+    color: var(--white);
+
+    font-size: 22px;
+    font-weight: 800;
+
+    letter-spacing: -0.04em;
+}
+
+.smart-entry p {
+    max-width: 570px;
+
+    margin-top: 8px;
+
+    color: #aaa59d;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   TEXTAREA INTELLIGENTE
+======================================== */
+
+.ride-text-input {
+    width: 100%;
+    min-height: 145px;
+
+    margin-top: 18px;
+    padding: 15px;
+
+    resize: vertical;
+
+    background: rgba(255, 255, 255, 0.07);
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 15px;
+
+    outline: none;
+
+    color: var(--white);
+
+    font-family: inherit;
+    font-size: 13px;
+
+    line-height: 1.55;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.ride-text-input::placeholder {
+    color: #77736d;
+}
+
+.ride-text-input:focus {
+    background: rgba(255, 255, 255, 0.09);
+
+    border-color:
+        rgba(228, 160, 92, 0.55);
+}
+
+
+/* ========================================
+   AZIONE PRINCIPALE
+======================================== */
+
+.primary-action {
+    width: 100%;
+
+    min-height: 52px;
+
+    margin-top: 11px;
+
+    padding: 0 18px;
+
+    background: var(--orange-soft);
+
+    border: 0;
+
+    border-radius: 14px;
+
+    color: var(--black);
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.primary-action:hover {
+    transform: translateY(-1px);
+
+    opacity: 0.92;
+}
+
+.primary-action:active {
+    transform: translateY(0);
+}
+
+
+/* ========================================
+   INSERIMENTO VOCALE
+======================================== */
+
+.voice-entry {
+    padding-top: 7px;
+}
+
+.voice-button {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 17px;
+
+    background: var(--white);
+
+    border: 1px solid var(--gray-200);
+
+    border-radius: 18px;
+
+    color: var(--black);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.035);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.voice-button:hover {
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(228, 160, 92, 0.45);
+}
+
+.voice-button:active {
+    transform: translateY(0);
+}
+
+.voice-button-icon {
+    flex: 0 0 auto;
+
+    width: 43px;
+    height: 43px;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--gray-100);
+
+    border-radius: 13px;
+
+    color: var(--black);
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: 0.05em;
+}
+
+.voice-button strong {
+    display: block;
+
+    color: var(--black);
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.voice-button small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--gray-400);
+
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.voice-status {
+    min-height: 18px;
+
+    margin-top: 8px;
+    padding-left: 3px;
+
+    color: var(--gray-400);
+
+    font-size: 10px;
+}
+
+
+/* ========================================
+   MODULO MANUALE
+======================================== */
+
+.manual-entry {
+    padding: 22px;
+
+    background: var(--white);
+
+    border: 1px solid var(--gray-200);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.035);
+}
+
+.manual-entry .section-heading {
+    margin-bottom: 20px;
+}
+
+
+/* ========================================
+   FORM
+======================================== */
+
+.ride-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.form-field label {
+    color: var(--gray-600);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.03em;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 0 13px;
+
+    background: var(--gray-100);
+
+    border: 1px solid transparent;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    color: var(--black);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.form-field textarea {
+    min-height: 90px;
+
+    padding: 13px;
+
+    resize: vertical;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: #aaa59d;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+    background: var(--white);
+
+    border-color:
+        rgba(228, 160, 92, 0.50);
+}
+
+
+/* ========================================
+   DUE CAMPI
+======================================== */
+
+.form-row {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 11px;
+}
+
+
+/* ========================================
+   SALVA CORSA
+======================================== */
+
+.save-ride-button {
+    width: 100%;
+
+    min-height: 55px;
+
+    margin-top: 5px;
+
+    background: var(--black);
+
+    border: 0;
+
+    border-radius: 15px;
+
+    color: var(--white);
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.10);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.save-ride-button:hover {
+    background: var(--black-soft);
+
+    transform: translateY(-1px);
+}
+
+.save-ride-button:active {
+    transform: translateY(0);
+}
+
+
+/* ========================================
+   STATO ASCOLTO
+======================================== */
+
+.voice-listening {
+    border-color:
+        rgba(228, 160, 92, 0.70);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(228, 160, 92, 0.10);
+}
+
+.voice-listening .voice-button-icon {
+    background: var(--orange-soft);
+}
+
+
+/* ========================================
+   RISULTATO ANALISI
+======================================== */
+
+.smart-result {
+    margin-top: 12px;
+
+    padding: 13px 14px;
+
+    background: rgba(228, 160, 92, 0.10);
+
+    border: 1px solid rgba(228, 160, 92, 0.20);
+
+    border-radius: 13px;
+
+    color: var(--orange);
+
+    font-size: 11px;
+    font-weight: 650;
+
+    line-height: 1.5;
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+
+    .new-ride-content {
+        margin-top: 28px;
+    }
+
+    .smart-entry,
+    .manual-entry {
+        padding: 18px;
+    }
+
+    .smart-entry h2 {
+        font-size: 20px;
+    }
+
+    .ride-text-input {
+        min-height: 135px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .voice-button {
+        padding: 15px;
+    }
+
+}
+
+
+/* ========================================
+   ACCESSIBILITÀ
+======================================== */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--orange);
+
+    outline-offset: 2px;
+}
