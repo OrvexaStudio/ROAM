@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
+
+    <title>Nuova corsa | TaxiPilot</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+</head>
+
+
+<body class="app-body">
+
+    <main class="app-container">
+
+
+        <!-- HEADER -->
+
+        <header class="app-header">
+
+            <div class="app-header-left">
+
+                <a
+                    href="home.html"
+                    class="back-link"
+                >
+                    ←
+                </a>
+
+                <div>
+
+                    <span class="header-greeting">
+                        TAXI
+                    </span>
+
+                    <h1>
+                        Nuova corsa
+                    </h1>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENUTO -->
+
+        <section class="new-ride-content">
+
+
+            <!-- INSERIMENTO INTELLIGENTE -->
+
+            <section class="smart-entry">
+
+                <span class="section-eyebrow">
+                    INSERIMENTO INTELLIGENTE
+                </span>
+
+                <h2>
+                    Hai già il messaggio?
+                </h2>
+
+                <p>
+                    Incolla qualsiasi testo ricevuto.
+                    TaxiPilot proverà a riconoscere
+                    automaticamente tutti i dati della corsa.
+                </p>
+
+
+                <textarea
+                    id="rideTextInput"
+                    class="ride-text-input"
+                    placeholder="Esempio:
+
+Domani alle 08:30,
+Mario Rossi, 3 persone.
+Partenza Lecce stazione,
+destinazione Aeroporto di Brindisi."
+                ></textarea>
+
+
+                <button
+                    type="button"
+                    id="analyzeTextButton"
+                    class="primary-action"
+                >
+
+                    Analizza messaggio
+
+                </button>
+
+            </section>
+
+
+            <!-- VOCE -->
+
+            <section class="voice-entry">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            INSERIMENTO VOCALE
+                        </span>
+
+                        <h2>
+                            Parla e basta
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="voiceButton"
+                    class="voice-button"
+                >
+
+                    <span class="voice-button-icon">
+                        MIC
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Inserisci con la voce
+                        </strong>
+
+                        <small>
+                            Puoi dire le informazioni
+                            in qualsiasi ordine
+                        </small>
+
+                    </span>
+
+                </button>
+
+
+                <p
+                    id="voiceStatus"
+                    class="voice-status"
+                ></p>
+
+            </section>
+
+
+            <!-- MODULO MANUALE -->
+
+            <section class="manual-entry">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            INSERIMENTO MANUALE
+                        </span>
+
+                        <h2>
+                            Dati della corsa
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    id="rideForm"
+                    class="ride-form"
+                >
+
+
+                    <!-- PASSEGGERO -->
+
+                    <div class="form-field">
+
+                        <label for="passenger">
+                            Passeggero
+                        </label>
+
+                        <input
+                            id="passenger"
+                            name="passenger"
+                            type="text"
+                            autocomplete="name"
+                            placeholder="Nome e cognome"
+                        >
+
+                    </div>
+
+
+                    <!-- TELEFONO -->
+
+                    <div class="form-field">
+
+                        <label for="passengerPhone">
+                            Telefono
+                        </label>
+
+                        <input
+                            id="passengerPhone"
+                            name="passengerPhone"
+                            type="tel"
+                            autocomplete="tel"
+                            placeholder="Numero di telefono"
+                        >
+
+                    </div>
+
+
+                    <!-- DATA E ORA -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-field">
+
+                            <label for="rideDate">
+                                Data
+                            </label>
+
+                            <input
+                                id="rideDate"
+                                name="date"
+                                type="date"
+                            >
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="rideTime">
+                                Ora
+                            </label>
+
+                            <input
+                                id="rideTime"
+                                name="time"
+                                type="time"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- PARTENZA -->
+
+                    <div class="form-field">
+
+                        <label for="pickup">
+                            Partenza
+                        </label>
+
+                        <input
+                            id="pickup"
+                            name="pickup"
+                            type="text"
+                            placeholder="Indirizzo di partenza"
+                        >
+
+                    </div>
+
+
+                    <!-- DESTINAZIONE -->
+
+                    <div class="form-field">
+
+                        <label for="destination">
+                            Destinazione
+                        </label>
+
+                        <input
+                            id="destination"
+                            name="destination"
+                            type="text"
+                            placeholder="Destinazione"
+                        >
+
+                    </div>
+
+
+                    <!-- PASSEGGERI -->
+
+                    <div class="form-field">
+
+                        <label for="passengers">
+                            Passeggeri
+                        </label>
+
+                        <input
+                            id="passengers"
+                            name="passengers"
+                            type="number"
+                            min="1"
+                            max="8"
+                            value="1"
+                        >
+
+                    </div>
+
+
+                    <!-- NOTE -->
+
+                    <div class="form-field">
+
+                        <label for="rideNotes">
+                            Note
+                        </label>
+
+                        <textarea
+                            id="rideNotes"
+                            name="notes"
+                            placeholder="Informazioni aggiuntive"
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- SALVA -->
+
+                    <button
+                        type="submit"
+                        class="save-ride-button"
+                    >
+
+                        Salva corsa
+
+                    </button>
+
+
+                </form>
+
+            </section>
+
+
+        </section>
+
+
+    </main>
+
+
+    <script src="../taxi.js"></script>
+
+</body>
+
+</html>
