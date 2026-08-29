@@ -6,6 +6,25 @@ let selectedService = null;
 
 
 /* ========================================
+   AUTORIZZAZIONI
+======================================== */
+
+const AUTHORIZED_DRIVERS = {
+
+    cristian: {
+        service: "taxi",
+        password: "Taxilecce18!"
+    },
+
+    manuela: {
+        service: "ncc",
+        password: "NCClecce18!"
+    }
+
+};
+
+
+/* ========================================
    AVVIO
 ======================================== */
 
@@ -17,23 +36,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const driverStep =
         document.getElementById("driverStep");
 
+    const passwordStep =
+        document.getElementById("passwordStep");
+
     const serviceButtons =
         document.querySelectorAll(".service-option");
 
     const backButton =
         document.getElementById("backButton");
 
+    const passwordBackButton =
+        document.getElementById("passwordBackButton");
+
     const driverForm =
         document.getElementById("driverForm");
 
-    const selectedService =
-        document.getElementById("selectedService");
+    const passwordForm =
+        document.getElementById("passwordForm");
 
 
-    /*
-     * Se il conducente è già stato configurato,
-     * entra direttamente nella dashboard.
-     */
+    /* ========================================
+       CONDUCENTE GIÀ CONFIGURATO
+    ======================================== */
 
     const savedDriver =
         getSavedDriver();
@@ -41,8 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (savedDriver) {
 
-        redirectToDashboard(
-            savedDriver.service
+        showPasswordStep(
+            savedDriver.service,
+            savedDriver.name
         );
 
         return;
@@ -50,9 +75,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /*
-     * Scelta TAXI / NCC
-     */
+    /* ========================================
+       SCELTA SERVIZIO
+    ======================================== */
 
     serviceButtons.forEach(function (button) {
 
@@ -79,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 selectedServiceValue(service);
+
 
                 serviceStep.classList.add(
                     "is-hidden"
@@ -114,9 +140,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    /*
-     * Torna alla scelta TAXI / NCC
-     */
+    /* ========================================
+       INDIETRO
+    ======================================== */
 
     if (backButton) {
 
@@ -140,9 +166,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /*
-     * Salvataggio dati conducente
-     */
+    /* ========================================
+       DATI CONDUCENTE
+    ======================================== */
 
     if (driverForm) {
 
@@ -155,16 +181,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const service =
                     window.selectedTaxiPilotService;
-
-
-                if (
-                    service !== "taxi" &&
-                    service !== "ncc"
-                ) {
-
-                    return;
-
-                }
 
 
                 const nameInput =
@@ -201,12 +217,85 @@ document.addEventListener("DOMContentLoaded", function () {
                         : "";
 
 
+                const errorElement =
+                    document.getElementById(
+                        "loginError"
+                    );
+
+
+                if (errorElement) {
+                    errorElement.textContent = "";
+                }
+
+
                 if (!name || !phone) {
+
+                    if (errorElement) {
+
+                        errorElement.textContent =
+                            "Inserisci tutti i dati richiesti.";
+
+                    }
 
                     return;
 
                 }
 
+
+                const normalizedName =
+                    name
+                        .trim()
+                        .toLowerCase();
+
+
+                const authorizedDriver =
+                    AUTHORIZED_DRIVERS[
+                        normalizedName
+                    ];
+
+
+                /* ========================================
+                   NOME NON AUTORIZZATO
+                ======================================== */
+
+                if (!authorizedDriver) {
+
+                    if (errorElement) {
+
+                        errorElement.textContent =
+                            "Accesso non autorizzato. Il nominativo inserito non risulta associato alla Cooperativa Taxi Lecce.";
+
+                    }
+
+                    return;
+
+                }
+
+
+                /* ========================================
+                   SERVIZIO NON AUTORIZZATO
+                ======================================== */
+
+                if (
+                    authorizedDriver.service !==
+                    service
+                ) {
+
+                    if (errorElement) {
+
+                        errorElement.textContent =
+                            "Accesso negato. Non disponi dell'autorizzazione per accedere a questo servizio.";
+
+                    }
+
+                    return;
+
+                }
+
+
+                /* ========================================
+                   PASSA ALLA PASSWORD
+                ======================================== */
 
                 const driver = {
 
@@ -223,6 +312,160 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 };
 
+
+                window.pendingTaxiPilotDriver =
+                    driver;
+
+
+                showPasswordStep(
+                    service,
+                    name
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ========================================
+       TORNA AI DATI
+    ======================================== */
+
+    if (passwordBackButton) {
+
+        passwordBackButton.addEventListener(
+            "click",
+            function () {
+
+                const passwordStep =
+                    document.getElementById(
+                        "passwordStep"
+                    );
+
+
+                if (passwordStep) {
+
+                    passwordStep.classList.add(
+                        "is-hidden"
+                    );
+
+                }
+
+
+                if (driverStep) {
+
+                    driverStep.classList.remove(
+                        "is-hidden"
+                    );
+
+                }
+
+
+                const passwordInput =
+                    document.getElementById(
+                        "driverPassword"
+                    );
+
+
+                if (passwordInput) {
+
+                    passwordInput.value = "";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ========================================
+       PASSWORD
+    ======================================== */
+
+    if (passwordForm) {
+
+        passwordForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const passwordInput =
+                    document.getElementById(
+                        "driverPassword"
+                    );
+
+
+                const errorElement =
+                    document.getElementById(
+                        "passwordError"
+                    );
+
+
+                const password =
+                    passwordInput
+                        ? passwordInput.value
+                        : "";
+
+
+                if (errorElement) {
+                    errorElement.textContent = "";
+                }
+
+
+                const driver =
+                    window.pendingTaxiPilotDriver;
+
+
+                if (!driver) {
+
+                    return;
+
+                }
+
+
+                const normalizedName =
+                    driver.name
+                        .trim()
+                        .toLowerCase();
+
+
+                const authorizedDriver =
+                    AUTHORIZED_DRIVERS[
+                        normalizedName
+                    ];
+
+
+                if (!authorizedDriver) {
+
+                    return;
+
+                }
+
+
+                if (
+                    password !==
+                    authorizedDriver.password
+                ) {
+
+                    if (errorElement) {
+
+                        errorElement.textContent =
+                            "Password non valida. La password inserita non è corretta.";
+
+                    }
+
+                    return;
+
+                }
+
+
+                /* ========================================
+                   ACCESSO RIUSCITO
+                ======================================== */
 
                 try {
 
@@ -244,7 +487,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 redirectToDashboard(
-                    service
+                    driver.service
                 );
 
             }
@@ -253,6 +496,96 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+
+/* ========================================
+   MOSTRA PASSWORD
+======================================== */
+
+function showPasswordStep(
+    service,
+    name
+) {
+
+    const serviceStep =
+        document.getElementById(
+            "serviceStep"
+        );
+
+    const driverStep =
+        document.getElementById(
+            "driverStep"
+        );
+
+    const passwordStep =
+        document.getElementById(
+            "passwordStep"
+        );
+
+
+    if (serviceStep) {
+
+        serviceStep.classList.add(
+            "is-hidden"
+        );
+
+    }
+
+
+    if (driverStep) {
+
+        driverStep.classList.add(
+            "is-hidden"
+        );
+
+    }
+
+
+    if (passwordStep) {
+
+        passwordStep.classList.remove(
+            "is-hidden"
+        );
+
+    }
+
+
+    const serviceLabel =
+        document.getElementById(
+            "passwordService"
+        );
+
+
+    if (serviceLabel) {
+
+        serviceLabel.textContent =
+            service === "taxi"
+                ? "TAXI"
+                : "NCC";
+
+    }
+
+
+    const passwordInput =
+        document.getElementById(
+            "driverPassword"
+        );
+
+
+    if (passwordInput) {
+
+        setTimeout(
+            function () {
+
+                passwordInput.focus();
+
+            },
+            100
+        );
+
+    }
+
+}
 
 
 /* ========================================
@@ -272,15 +605,14 @@ function selectedServiceValue(service) {
 
 
     if (!label) {
-
         return;
-
     }
 
 
     if (service === "taxi") {
 
-        label.textContent = "TAXI";
+        label.textContent =
+            "TAXI";
 
         return;
 
@@ -289,14 +621,16 @@ function selectedServiceValue(service) {
 
     if (service === "ncc") {
 
-        label.textContent = "NCC";
+        label.textContent =
+            "NCC";
 
         return;
 
     }
 
 
-    label.textContent = "TAXI";
+    label.textContent =
+        "TAXI";
 
 }
 
