@@ -2861,8 +2861,14 @@ function initializeCalendar() {
     const nextButton =
         document.getElementById("calendarNext");
 
+    const panel =
+        document.getElementById("calendarPanel");
 
-    if (!openButton) {
+
+    if (
+        !openButton ||
+        !panel
+    ) {
         return;
     }
 
@@ -2871,36 +2877,11 @@ function initializeCalendar() {
         "click",
         function () {
 
-            const panel =
-                document.getElementById("calendarPanel");
+            panel.classList.toggle("hidden");
 
-
-            if (!panel) {
-                return;
-            }
-
-
-            const isHidden =
-                panel.classList.contains("hidden");
-
-
-            if (isHidden) {
-
-                panel.classList.remove("hidden");
-
-                /*
-                 * Ogni volta che apriamo il calendario
-                 * lo aggiorniamo immediatamente.
-                 */
-
-                calendarDate =
-                    new Date();
+            if (!panel.classList.contains("hidden")) {
 
                 renderCalendar();
-
-            } else {
-
-                panel.classList.add("hidden");
 
             }
 
@@ -2944,7 +2925,6 @@ function initializeCalendar() {
     }
 
 }
-
 /* ========================================
    RENDER CALENDARIO
 ======================================== */
