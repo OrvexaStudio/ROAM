@@ -46,9 +46,16 @@ function initializePage(driver) {
         initializeHomePage();
 
     }
-if (document.getElementById("agendaRides")) {
-    initializeAgendaPage();
-}
+
+
+    if (document.getElementById("agendaRides")) {
+
+        initializeAgendaPage();
+
+        initializeCalendar();
+
+    }
+
 
     if (document.getElementById("ridesList")) {
 
@@ -2833,5 +2840,483 @@ function isAgendaToday() {
         formatAgendaDate(agendaSelectedDate) ===
         getTodayString()
     );
+
+}
+
+/* ========================================
+   AGENDA — CALENDARIO
+======================================== */
+
+let calendarDate = new Date();
+
+
+function initializeCalendar() {
+
+    const openButton =
+        document.getElementById("openCalendar");
+
+    const closeButton =
+        document.getElementById("closeCalendar");
+
+    const previousButton =
+        document.getElementById("calendarPrevious");
+
+    const nextButton =
+        document.getElementById("calendarNext");
+
+
+    if (!openButton) {
+        return;
+    }
+
+
+    openButton.addEventListener(
+        "click",
+        function () {
+
+            const panel =
+                document.getElementById("calendarPanel");
+
+            if (!panel) {
+                return;
+            }
+
+            panel.classList.remove("hidden");
+
+            calendarDate = new Date();
+
+            renderCalendar();
+
+        }
+    );
+
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            function () {
+
+                const panel =
+                    document.getElementById("calendarPanel");
+
+                if (!panel) {
+                    return;
+                }
+
+                panel.classList.add("hidden");
+
+            }
+        );
+
+    }
+
+
+    if (previousButton) {
+
+        previousButton.addEventListener(
+            "click",
+            function () {
+
+                calendarDate.setMonth(
+                    calendarDate.getMonth() - 1
+                );
+
+                renderCalendar();
+
+            }
+        );
+
+    }
+
+
+    if (nextButton) {
+
+        nextButton.addEventListener(
+            "click",
+            function () {
+
+                calendarDate.setMonth(
+                    calendarDate.getMonth() + 1
+                );
+
+                renderCalendar();
+
+            }
+        );
+
+    }
+
+}
+
+
+/* ========================================
+   RENDER CALENDARIO
+======================================== */
+
+function renderCalendar() {
+
+    const grid =
+        document.getElementById("calendarGrid");
+
+    const monthLabel =
+        document.getElementById("calendarMonth");
+
+
+    if (!grid || !monthLabel) {
+        return;
+    }
+
+
+    const year =
+        calendarDate.getFullYear();
+
+    const month =
+        calendarDate.getMonth();
+
+
+    const monthName =
+        calendarDate.toLocaleDateString(
+            "it-IT",
+            {
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+
+    monthLabel.textContent =
+        capitalize(monthName);
+
+
+    const firstDay =
+        new Date(
+            year,
+            month,
+            1
+        );
+
+
+    const daysInMonth =
+        new Date(
+            year,
+            month + 1,
+            0
+        ).getDate();
+
+
+    /*
+     * JavaScript:
+     * domenica = 0
+     *
+     * Il nostro calendario:
+     * lunedì = 0
+     */
+
+    let startDay =
+        firstDay.getDay() - 1;
+
+
+    if (startDay < 0) {
+        startDay = 6;
+    }
+
+
+    const rides =
+        getRides();
+
+
+    const today =
+        getTodayString();
+
+
+    grid.innerHTML = "";
+
+
+    /* CELLE VUOTE */
+
+    for (
+        let i = 0;
+        i < startDay;
+        i++
+    ) {
+
+        const empty =
+            document.createElement("div");
+
+        empty.className =
+            "calendar-day calendar-day-empty";
+
+        grid.appendChild(empty);
+
+    }
+
+
+    /* GIORNI */
+
+    for (
+        let day = 1;
+        day <= daysInMonth;
+        day++
+    ) {
+
+        const dateString =
+            year +
+            "-" +
+            pad(month + 1) +
+            "-" +
+            pad(day);
+
+
+        const dayRides =
+            rides.filter(function (ride) {
+
+                return ride.date === dateString;
+
+            });
+
+
+        const dayButton =
+            document.createElement("button");
+
+
+        dayButton.type =
+            "button";
+
+
+        dayButton.className =
+            "calendar-day";
+
+
+        if (dateString === today) {
+
+            dayButton.classList.add(
+                "calendar-day-today"
+            );
+
+        }
+
+
+        dayButton.innerHTML = `
+
+            <span class="calendar-day-number">
+                ${day}
+            </span>
+
+            ${
+                dayRides.length > 0
+                    ? `
+                        <span class="calendar-day-rides">
+                            ${dayRides.length}
+                        </span>
+                    `
+                    : ""
+            }
+
+        `;
+
+
+        dayButton.addEventListener(
+            "click",
+            function () {
+
+                selectCalendarDay(
+                    dateString
+                );
+
+            }
+        );
+
+
+        grid.appendChild(
+            dayButton
+        );
+
+    }
+
+}
+
+
+/* ========================================
+   SELEZIONE GIORNO
+======================================== */
+
+function selectCalendarDay(dateString) {
+
+    const panel =
+        document.getElementById(
+            "calendarPanel"
+        );
+
+
+    if (panel) {
+
+        panel.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    updateAgendaDate(
+        dateString
+    );
+
+}
+
+
+/* ========================================
+   AGGIORNA AGENDA
+======================================== */
+
+function updateAgendaDate(dateString) {
+
+    const dateParts =
+        dateString.split("-");
+
+
+    if (dateParts.length !== 3) {
+        return;
+    }
+
+
+    const date =
+        new Date(
+            Number(dateParts[0]),
+            Number(dateParts[1]) - 1,
+            Number(dateParts[2])
+        );
+
+
+    const label =
+        document.getElementById(
+            "agendaDayLabel"
+        );
+
+
+    const dateElement =
+        document.getElementById(
+            "agendaDate"
+        );
+
+
+    if (label) {
+
+        if (
+            dateString ===
+            getTodayString()
+        ) {
+
+            label.textContent =
+                "OGGI";
+
+        } else {
+
+            label.textContent =
+                date.toLocaleDateString(
+                    "it-IT",
+                    {
+                        weekday: "long"
+                    }
+                ).toUpperCase();
+
+        }
+
+    }
+
+
+    if (dateElement) {
+
+        dateElement.textContent =
+            date.toLocaleDateString(
+                "it-IT",
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+
+    }
+
+
+    renderAgendaRides(
+        dateString
+    );
+
+}
+
+
+/* ========================================
+   CORSE AGENDA
+======================================== */
+
+function renderAgendaRides(dateString) {
+
+    const container =
+        document.getElementById(
+            "agendaRides"
+        );
+
+
+    const countElement =
+        document.getElementById(
+            "agendaRideCount"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const rides =
+        getRides()
+            .filter(function (ride) {
+
+                return ride.date === dateString;
+
+            })
+            .sort(compareRides);
+
+
+    if (countElement) {
+
+        countElement.textContent =
+            rides.length;
+
+    }
+
+
+    if (rides.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-list">
+
+                <span>
+                    Nessuna corsa programmata
+                </span>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        rides
+            .map(function (ride) {
+
+                return createRideCard(
+                    ride,
+                    false
+                );
+
+            })
+            .join("");
 
 }
