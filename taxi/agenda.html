@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
+
+    <title>Agenda | TaxiPilot</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+</head>
+
+
+<body class="app-body">
+
+    <main class="app-container">
+
+
+        <!-- HEADER -->
+
+        <header class="app-header">
+
+            <div class="app-header-left">
+
+                <div>
+
+                    <span
+                        id="headerGreeting"
+                        class="header-greeting"
+                    >
+                        Buongiorno
+                    </span>
+
+                    <h1>
+                        Agenda
+                    </h1>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="profilo.html"
+                class="profile-button"
+                aria-label="Apri profilo"
+            >
+
+                <span id="profileInitial">
+                    C
+                </span>
+
+            </a>
+
+        </header>
+
+
+        <!-- CONTENUTO -->
+
+        <section class="agenda-content">
+
+
+            <!-- SELETTORE DATA -->
+
+            <section class="agenda-date-selector">
+
+                <button
+                    type="button"
+                    id="previousDay"
+                    class="agenda-day-button"
+                    aria-label="Giorno precedente"
+                >
+                    ←
+                </button>
+
+
+                <div class="agenda-current-date">
+
+                    <span
+                        id="agendaDayLabel"
+                        class="section-eyebrow"
+                    >
+                        OGGI
+                    </span>
+
+                    <strong id="agendaDate">
+                        Oggi
+                    </strong>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="nextDay"
+                    class="agenda-day-button"
+                    aria-label="Giorno successivo"
+                >
+                    →
+                </button>
+
+            </section>
+
+
+            <!-- CORSE DEL GIORNO -->
+
+            <section class="agenda-day-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            PROGRAMMATE
+                        </span>
+
+                        <h2>
+                            Corse del giorno
+                        </h2>
+
+                    </div>
+
+
+                    <span
+                        id="agendaRideCount"
+                        class="ride-count"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="agendaRides"
+                    class="agenda-rides-list"
+                >
+
+                    <div class="empty-list">
+
+                        <span>
+                            Nessuna corsa programmata
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- AZIONE -->
+
+            <a
+                href="nuova-corsa.html"
+                class="new-ride-page-button"
+            >
+                Nuova corsa
+            </a>
+
+
+        </section>
+
+
+        <!-- NAVIGAZIONE -->
+
+        <nav class="bottom-nav">
+
+            <a
+                href="home.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    □
+                </span>
+
+                <span>
+                    Home
+                </span>
+
+            </a>
+
+
+            <a
+                href="corse.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    ≡
+                </span>
+
+                <span>
+                    Corse
+                </span>
+
+            </a>
+
+
+            <a
+                href="agenda.html"
+                class="nav-item active"
+            >
+
+                <span class="nav-icon">
+                    □
+                </span>
+
+                <span>
+                    Agenda
+                </span>
+
+            </a>
+
+
+            <a
+                href="profilo.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    ○
+                </span>
+
+                <span>
+                    Profilo
+                </span>
+
+            </a>
+
+        </nav>
+
+
+    </main>
+
+
+    <script src="../taxi.js"></script>
+
+</body>
+
+</html>
