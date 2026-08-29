@@ -197,7 +197,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById(
                         "driverCode"
                     );
-
+const passwordInput =
+    document.getElementById(
+        "driverPassword"
+    );
 
                 const name =
                     nameInput
@@ -215,7 +218,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     codeInput
                         ? codeInput.value.trim()
                         : "";
-
+const password =
+    passwordInput
+        ? passwordInput.value
+        : "";
 
                 const errorElement =
                     document.getElementById(
