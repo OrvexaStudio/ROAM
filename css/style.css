@@ -2550,3 +2550,216 @@ select:focus-visible {
     font-size: 14px;
     color: #88817a;
 }
+
+/* ========================================
+   SPAZIATURA GENERALE APP
+======================================== */
+
+.app-body {
+    line-height: 1.5;
+}
+
+/* Contenuto principale di tutte le pagine */
+
+.home-content,
+.new-ride-content,
+.agenda-content,
+.rides-page-content,
+.profile-content {
+    padding-top: 18px;
+    padding-bottom: 130px;
+}
+
+/* Distanza tra header e contenuto */
+
+.app-header + .home-content,
+.app-header + .new-ride-content,
+.app-header + .agenda-content,
+.app-header + .rides-page-content,
+.app-header + .profile-content {
+    margin-top: 12px;
+}
+
+/* Titoli delle sezioni */
+
+.section-heading {
+    margin-bottom: 24px;
+}
+
+.section-heading h2 {
+    margin-top: 7px;
+}
+
+/* Etichette sopra i titoli */
+
+.section-eyebrow {
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* Sezioni principali */
+
+.home-content > section,
+.new-ride-content > section,
+.agenda-content > section,
+.rides-page-content > section,
+.profile-content > section {
+    margin-bottom: 36px;
+}
+
+/* Data / elementi introduttivi */
+
+.date-row {
+    margin-bottom: 38px;
+}
+
+/* Card */
+
+.next-ride-section {
+    margin-bottom: 34px;
+}
+
+.next-ride-card {
+    margin-top: 20px;
+}
+
+/* Lista corse */
+
+.today-section {
+    margin-top: 38px;
+}
+
+.rides-list {
+    margin-top: 20px;
+}
+
+/* Agenda */
+
+.agenda-date-selector {
+    margin-top: 24px;
+    margin-bottom: 48px;
+}
+
+.agenda-current-date {
+    gap: 7px;
+}
+
+.agenda-day-section {
+    margin-bottom: 36px;
+}
+
+.agenda-day-section .section-heading {
+    margin-bottom: 22px;
+}
+
+.agenda-rides-list {
+    margin-top: 20px;
+}
+
+/* Pagina Corse */
+
+.rides-page-list {
+    margin-top: 28px;
+}
+
+.rides-empty {
+    margin-top: 28px;
+}
+
+/* Nuova corsa */
+
+.smart-entry,
+.voice-entry,
+.manual-entry {
+    margin-bottom: 42px;
+}
+
+.smart-entry h2,
+.voice-entry h2,
+.manual-entry h2 {
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+.smart-entry p {
+    margin-bottom: 22px;
+}
+
+.ride-text-input {
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.voice-button {
+    margin-top: 18px;
+}
+
+.ride-form {
+    margin-top: 24px;
+}
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    gap: 18px;
+}
+
+/* Pulsanti principali */
+
+.primary-action,
+.new-ride-page-button,
+.save-ride-button {
+    margin-top: 12px;
+}
+
+/* Pulsante flottante */
+
+.floating-add-button {
+    margin-bottom: 8px;
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 700px) {
+
+    .home-content,
+    .new-ride-content,
+    .agenda-content,
+    .rides-page-content,
+    .profile-content {
+        padding-top: 12px;
+        padding-bottom: 120px;
+    }
+
+    .section-heading {
+        margin-bottom: 20px;
+    }
+
+    .date-row {
+        margin-bottom: 30px;
+    }
+
+    .agenda-date-selector {
+        margin-top: 18px;
+        margin-bottom: 38px;
+    }
+
+    .agenda-day-section {
+        margin-bottom: 30px;
+    }
+
+    .smart-entry,
+    .voice-entry,
+    .manual-entry {
+        margin-bottom: 34px;
+    }
+
+    .form-field {
+        margin-bottom: 17px;
+    }
+
+}
