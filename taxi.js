@@ -620,37 +620,105 @@ function parseRideText(text) {
         .trim();
 
 
-    /* ========================================
-       TELEFONO
-    ======================================== */
+/* ========================================
+   TELEFONO
+======================================== */
 
-    const phonePatterns = [
+const phonePatterns = [
 
-        /(?:\+39[\s.-]?)?3\d{2}[\s.-]?\d{3}[\s.-]?\d{4}/,
+    /(?:\+39[\s.-]?)?3\d{2}[\s.-]?\d{3}[\s.-]?\d{4}/,
 
-        /\b\d{10}\b/,
+    /\b3\d{2}[\s.-]?\d{3}[\s.-]?\d{4}\b/,
 
-        /\b\d{3}[\s.-]\d{3}[\s.-]\d{4}\b/
+    /\b\d{10}\b/
 
-    ];
+];
 
 
-    for (const pattern of phonePatterns) {
+for (const pattern of phonePatterns) {
 
-        const match =
-            normalized.match(pattern);
+    const match = normalized.match(pattern);
 
-        if (match) {
+    if (!match) {
+        continue;
+    }
 
-            result.passengerPhone =
-                match[0].trim();
+    const digits =
+        match[0].replace(/\D/g, "");
 
-            break;
+    if (digits.length === 10) {
+
+        result.passengerPhone = digits;
+
+        break;
+
+    }
+
+}
+
+
+/* ========================================
+   TELEFONO DETTATO A VOCE
+======================================== */
+
+if (!result.passengerPhone) {
+
+    const numberWords = {
+
+        zero: "0",
+        uno: "1",
+        due: "2",
+        tre: "3",
+        quattro: "4",
+        cinque: "5",
+        sei: "6",
+        sette: "7",
+        otto: "8",
+        nove: "9"
+
+    };
+
+
+    const words =
+        normalized
+            .toLowerCase()
+            .replace(/[,.!?]/g, " ")
+            .split(/\s+/);
+
+
+    let spokenNumber = "";
+
+
+    for (const word of words) {
+
+        if (
+            numberWords[word] !== undefined
+        ) {
+
+            spokenNumber +=
+                numberWords[word];
 
         }
 
     }
 
+
+    /*
+     * Un numero di cellulare italiano
+     * normalmente inizia con 3.
+     */
+
+    if (
+        spokenNumber.length === 10 &&
+        spokenNumber.startsWith("3")
+    ) {
+
+        result.passengerPhone =
+            spokenNumber;
+
+    }
+
+}
 
     /* ========================================
        PASSEGGERI
