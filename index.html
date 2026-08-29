@@ -1,18 +1,31 @@
-
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>TaxiPilot | Cooperativa Taxi Lecce</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
 </head>
+
 
 <body class="login-page">
 
     <main class="login-container">
+
+
+        <!-- BRAND -->
 
         <header class="login-brand">
 
@@ -21,16 +34,28 @@
             </div>
 
             <div class="brand-text">
-                <strong>Cooperativa Taxi Lecce</strong>
-                <span>TaxiPilot</span>
+
+                <strong>
+                    Cooperativa Taxi Lecce
+                </strong>
+
+                <span>
+                    TaxiPilot
+                </span>
+
             </div>
 
         </header>
 
 
-        <!-- SCELTA SERVIZIO -->
+        <!-- =========================
+             SCELTA SERVIZIO
+        ========================== -->
 
-        <section id="serviceStep" class="login-step">
+        <section
+            id="serviceStep"
+            class="login-step"
+        >
 
             <div class="login-heading">
 
@@ -105,7 +130,9 @@
         </section>
 
 
-        <!-- DATI CONDUCENTE -->
+        <!-- =========================
+             DATI CONDUCENTE
+        ========================== -->
 
         <section
             id="driverStep"
@@ -135,14 +162,16 @@
                 </h1>
 
                 <p>
-                    Inseriscili una sola volta.
-                    TaxiPilot li ricorderà sul dispositivo.
+                    Inserisci il tuo nominativo per continuare.
                 </p>
 
             </div>
 
 
-            <form id="driverForm" class="driver-form">
+            <form
+                id="driverForm"
+                class="driver-form"
+            >
 
                 <div class="input-group">
 
@@ -154,7 +183,7 @@
                         type="text"
                         id="driverName"
                         name="driverName"
-                        placeholder="Es. Mario Rossi"
+                        placeholder="Es. Cristian"
                         autocomplete="name"
                         required
                     >
@@ -202,7 +231,7 @@
                 >
 
                     <span>
-                        Entra in TaxiPilot
+                        Continua
                     </span>
 
                     <span>
@@ -211,10 +240,107 @@
 
                 </button>
 
+
+                <p
+                    id="loginError"
+                    class="login-error"
+                    role="alert"
+                ></p>
+
             </form>
 
         </section>
 
+
+        <!-- =========================
+             PASSWORD
+        ========================== -->
+
+        <section
+            id="passwordStep"
+            class="login-step is-hidden"
+        >
+
+            <button
+                type="button"
+                id="passwordBackButton"
+                class="login-back"
+            >
+                ← Indietro
+            </button>
+
+
+            <div class="login-heading">
+
+                <span
+                    id="passwordService"
+                    class="eyebrow"
+                >
+                    TAXI
+                </span>
+
+                <h1>
+                    Verifica accesso.
+                </h1>
+
+                <p>
+                    Inserisci la password per accedere a TaxiPilot.
+                </p>
+
+            </div>
+
+
+            <form
+                id="passwordForm"
+                class="driver-form"
+            >
+
+                <div class="input-group">
+
+                    <label for="driverPassword">
+                        PASSWORD
+                    </label>
+
+                    <input
+                        type="password"
+                        id="driverPassword"
+                        name="password"
+                        placeholder="Inserisci la password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+
+                    <span>
+                        Accedi a TaxiPilot
+                    </span>
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+
+                <p
+                    id="passwordError"
+                    class="login-error"
+                    role="alert"
+                ></p>
+
+            </form>
+
+        </section>
+
+
+        <!-- FOOTER -->
 
         <footer class="login-footer">
 
@@ -228,11 +354,12 @@
 
         </footer>
 
+
     </main>
 
 
     <script src="js/app.js"></script>
 
 </body>
-</html>
 
+</html>
