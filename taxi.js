@@ -2847,6 +2847,10 @@ function isAgendaToday() {
    AGENDA — CALENDARIO
 ======================================== */
 
+/* ========================================
+   CALENDARIO
+======================================== */
+
 let calendarDate = new Date();
 
 
@@ -2865,23 +2869,37 @@ function initializeCalendar() {
         document.getElementById("calendarPanel");
 
 
-    if (
-        !openButton ||
-        !panel
-    ) {
+    if (!openButton || !panel) {
         return;
     }
 
+
+    /* APERTURA / CHIUSURA */
 
     openButton.addEventListener(
         "click",
         function () {
 
-            panel.classList.toggle("hidden");
+            const isHidden =
+                panel.classList.contains("hidden");
 
-            if (!panel.classList.contains("hidden")) {
+
+            if (isHidden) {
+
+                /*
+                 * Quando apro il calendario,
+                 * parto sempre dal mese attuale.
+                 */
+
+                calendarDate = new Date();
+
+                panel.classList.remove("hidden");
 
                 renderCalendar();
+
+            } else {
+
+                panel.classList.add("hidden");
 
             }
 
@@ -2889,15 +2907,23 @@ function initializeCalendar() {
     );
 
 
+    /* MESE PRECEDENTE */
+
     if (previousButton) {
 
         previousButton.addEventListener(
             "click",
-            function () {
+            function (event) {
 
-                calendarDate.setMonth(
-                    calendarDate.getMonth() - 1
-                );
+                event.preventDefault();
+                event.stopPropagation();
+
+                calendarDate =
+                    new Date(
+                        calendarDate.getFullYear(),
+                        calendarDate.getMonth() - 1,
+                        1
+                    );
 
                 renderCalendar();
 
@@ -2906,16 +2932,24 @@ function initializeCalendar() {
 
     }
 
+
+    /* MESE SUCCESSIVO */
 
     if (nextButton) {
 
         nextButton.addEventListener(
             "click",
-            function () {
+            function (event) {
 
-                calendarDate.setMonth(
-                    calendarDate.getMonth() + 1
-                );
+                event.preventDefault();
+                event.stopPropagation();
+
+                calendarDate =
+                    new Date(
+                        calendarDate.getFullYear(),
+                        calendarDate.getMonth() + 1,
+                        1
+                    );
 
                 renderCalendar();
 
@@ -2924,7 +2958,18 @@ function initializeCalendar() {
 
     }
 
+
+    /*
+     * Render iniziale.
+     * Così la griglia viene preparata
+     * anche prima di cambiare mese.
+     */
+
+    renderCalendar();
+
 }
+
+
 /* ========================================
    RENDER CALENDARIO
 ======================================== */
@@ -2950,18 +2995,16 @@ function renderCalendar() {
         calendarDate.getMonth();
 
 
-    const monthName =
-        calendarDate.toLocaleDateString(
-            "it-IT",
-            {
-                month: "long",
-                year: "numeric"
-            }
-        );
-
-
     monthLabel.textContent =
-        capitalize(monthName);
+        capitalize(
+            calendarDate.toLocaleDateString(
+                "it-IT",
+                {
+                    month: "long",
+                    year: "numeric"
+                }
+            )
+        );
 
 
     const firstDay =
@@ -2984,7 +3027,7 @@ function renderCalendar() {
      * JavaScript:
      * domenica = 0
      *
-     * Il nostro calendario:
+     * Calendario:
      * lunedì = 0
      */
 
@@ -2999,7 +3042,6 @@ function renderCalendar() {
 
     const rides =
         getRides();
-
 
     const today =
         getTodayString();
@@ -3027,7 +3069,7 @@ function renderCalendar() {
     }
 
 
-    /* GIORNI */
+    /* GIORNI DEL MESE */
 
     for (
         let day = 1;
@@ -3044,11 +3086,13 @@ function renderCalendar() {
 
 
         const dayRides =
-            rides.filter(function (ride) {
+            rides.filter(
+                function (ride) {
 
-                return ride.date === dateString;
+                    return ride.date === dateString;
 
-            });
+                }
+            );
 
 
         const dayButton =
@@ -3063,6 +3107,8 @@ function renderCalendar() {
             "calendar-day";
 
 
+        /* OGGI */
+
         if (dateString === today) {
 
             dayButton.classList.add(
@@ -3071,6 +3117,8 @@ function renderCalendar() {
 
         }
 
+
+        /* CONTENUTO */
 
         dayButton.innerHTML = `
 
@@ -3090,6 +3138,8 @@ function renderCalendar() {
 
         `;
 
+
+        /* CLICK SUL GIORNO */
 
         dayButton.addEventListener(
             "click",
@@ -3141,7 +3191,7 @@ function selectCalendarDay(dateString) {
 
 
 /* ========================================
-   AGGIORNA AGENDA
+   AGGIORNA DATA AGENDA
 ======================================== */
 
 function updateAgendaDate(dateString) {
@@ -3188,12 +3238,14 @@ function updateAgendaDate(dateString) {
         } else {
 
             label.textContent =
-                date.toLocaleDateString(
-                    "it-IT",
-                    {
-                        weekday: "long"
-                    }
-                ).toUpperCase();
+                date
+                    .toLocaleDateString(
+                        "it-IT",
+                        {
+                            weekday: "long"
+                        }
+                    )
+                    .toUpperCase();
 
         }
 
@@ -3233,7 +3285,6 @@ function renderAgendaRides(dateString) {
             "agendaRides"
         );
 
-
     const countElement =
         document.getElementById(
             "agendaRideCount"
@@ -3247,11 +3298,13 @@ function renderAgendaRides(dateString) {
 
     const rides =
         getRides()
-            .filter(function (ride) {
+            .filter(
+                function (ride) {
 
-                return ride.date === dateString;
+                    return ride.date === dateString;
 
-            })
+                }
+            )
             .sort(compareRides);
 
 
@@ -3284,14 +3337,16 @@ function renderAgendaRides(dateString) {
 
     container.innerHTML =
         rides
-            .map(function (ride) {
+            .map(
+                function (ride) {
 
-                return createRideCard(
-                    ride,
-                    false
-                );
+                    return createRideCard(
+                        ride,
+                        false
+                    );
 
-            })
+                }
+            )
             .join("");
 
 }
