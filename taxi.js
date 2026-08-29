@@ -2855,9 +2855,6 @@ function initializeCalendar() {
     const openButton =
         document.getElementById("openCalendar");
 
-    const closeButton =
-        document.getElementById("closeCalendar");
-
     const previousButton =
         document.getElementById("calendarPrevious");
 
@@ -2891,25 +2888,6 @@ function initializeCalendar() {
     );
 
 
-    if (closeButton) {
-
-        closeButton.addEventListener(
-            "click",
-            function () {
-
-                const panel =
-                    document.getElementById("calendarPanel");
-
-                if (!panel) {
-                    return;
-                }
-
-                panel.classList.add("hidden");
-
-            }
-        );
-
-    }
 
 
     if (previousButton) {
