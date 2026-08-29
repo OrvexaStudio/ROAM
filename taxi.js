@@ -1267,41 +1267,47 @@ function initializeVoiceRecognition() {
         };
 
 
-    recognition.onresult =
-        function (event) {
+recognition.onresult =
+    function (event) {
 
-            const transcript =
-                event.results[0][0].transcript;
-
-
-            const textInput =
-                document.getElementById(
-                    "rideTextInput"
-                );
+        const transcript =
+            event.results[0][0].transcript.trim();
 
 
-            if (textInput) {
-
-                textInput.value =
-                    transcript;
-
-            }
-
-
-            const result =
-                parseRideText(
-                    transcript
-                );
-
-
-            fillRideForm(result);
-
+        if (!transcript) {
 
             setVoiceStatus(
-                getAnalysisMessage(result)
+                "Non ho ricevuto nessun testo."
             );
 
-        };
+            return;
+
+        }
+
+
+        // Il testo della voce NON viene
+        // inserito nella textarea.
+        // Viene direttamente analizzato.
+
+        const result =
+            parseRideText(transcript);
+
+
+        // Riempie direttamente
+        // i campi della corsa.
+
+        fillRideForm(result);
+
+
+        const message =
+            getAnalysisMessage(result);
+
+
+        setVoiceStatus(
+            message
+        );
+
+    };
 
 
     recognition.onerror =
