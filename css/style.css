@@ -2303,3 +2303,36 @@ select:focus-visible {
     }
 
 }
+
+.new-ride-page-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 56px;
+
+    box-sizing: border-box;
+
+    background: #f1c38d;
+    color: #111111;
+
+    border-radius: 16px;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    transition: transform 0.18s ease,
+                background 0.18s ease;
+}
+
+.new-ride-page-button:hover {
+    text-decoration: none;
+    background: #edba7d;
+}
+
+.new-ride-page-button:active {
+    transform: scale(0.98);
+}
