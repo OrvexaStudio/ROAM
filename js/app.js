@@ -1,40 +1,8 @@
-
 "use strict";
-
-/*
- * TaxiPilot
- * Cooperativa Taxi Lecce
- *
- * Primo accesso:
- * 1. scelta TAXI / NCC
- * 2. dati conducente
- * 3. salvataggio locale
- * 4. apertura dashboard corretta
- */
 
 const STORAGE_KEY = "taxipilot_driver";
 
 let selectedService = null;
-
-
-/* ========================================
-   ELEMENTI DOM
-======================================== */
-
-const serviceStep = document.getElementById("serviceStep");
-const driverStep = document.getElementById("driverStep");
-
-const serviceButtons =
-    document.querySelectorAll(".service-option");
-
-const backButton =
-    document.getElementById("backButton");
-
-const driverForm =
-    document.getElementById("driverForm");
-
-const selectedServiceLabel =
-    document.getElementById("selectedService");
 
 
 /* ========================================
@@ -43,15 +11,33 @@ const selectedServiceLabel =
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    initializeLogin();
+    const serviceStep =
+        document.getElementById("serviceStep");
 
-});
+    const driverStep =
+        document.getElementById("driverStep");
+
+    const serviceButtons =
+        document.querySelectorAll(".service-option");
+
+    const backButton =
+        document.getElementById("backButton");
+
+    const driverForm =
+        document.getElementById("driverForm");
+
+    const selectedService =
+        document.getElementById("selectedService");
 
 
-function initializeLogin() {
+    /*
+     * Se il conducente è già stato configurato,
+     * entra direttamente nella dashboard.
+     */
 
     const savedDriver =
         getSavedDriver();
+
 
     if (savedDriver) {
 
@@ -60,22 +46,13 @@ function initializeLogin() {
         );
 
         return;
+
     }
 
 
-    showServiceStep();
-
-    setupEvents();
-
-}
-
-
-/* ========================================
-   EVENTI
-======================================== */
-
-function setupEvents() {
-
+    /*
+     * Scelta TAXI / NCC
+     */
 
     serviceButtons.forEach(function (button) {
 
@@ -86,7 +63,50 @@ function setupEvents() {
                 const service =
                     button.dataset.service;
 
-                selectService(service);
+
+                if (
+                    service !== "taxi" &&
+                    service !== "ncc"
+                ) {
+
+                    return;
+
+                }
+
+
+                window.selectedTaxiPilotService =
+                    service;
+
+
+                selectedServiceValue(service);
+
+                serviceStep.classList.add(
+                    "is-hidden"
+                );
+
+                driverStep.classList.remove(
+                    "is-hidden"
+                );
+
+
+                const nameInput =
+                    document.getElementById(
+                        "driverName"
+                    );
+
+
+                if (nameInput) {
+
+                    setTimeout(
+                        function () {
+
+                            nameInput.focus();
+
+                        },
+                        100
+                    );
+
+                }
 
             }
         );
@@ -94,13 +114,25 @@ function setupEvents() {
     });
 
 
+    /*
+     * Torna alla scelta TAXI / NCC
+     */
+
     if (backButton) {
 
         backButton.addEventListener(
             "click",
             function () {
 
-                showServiceStep();
+                selectedServiceValue(null);
+
+                driverStep.classList.add(
+                    "is-hidden"
+                );
+
+                serviceStep.classList.remove(
+                    "is-hidden"
+                );
 
             }
         );
@@ -108,206 +140,163 @@ function setupEvents() {
     }
 
 
+    /*
+     * Salvataggio dati conducente
+     */
+
     if (driverForm) {
 
         driverForm.addEventListener(
             "submit",
-            handleDriverSubmit
+            function (event) {
+
+                event.preventDefault();
+
+
+                const service =
+                    window.selectedTaxiPilotService;
+
+
+                if (
+                    service !== "taxi" &&
+                    service !== "ncc"
+                ) {
+
+                    return;
+
+                }
+
+
+                const nameInput =
+                    document.getElementById(
+                        "driverName"
+                    );
+
+                const phoneInput =
+                    document.getElementById(
+                        "driverPhone"
+                    );
+
+                const codeInput =
+                    document.getElementById(
+                        "driverCode"
+                    );
+
+
+                const name =
+                    nameInput
+                        ? nameInput.value.trim()
+                        : "";
+
+
+                const phone =
+                    phoneInput
+                        ? phoneInput.value.trim()
+                        : "";
+
+
+                const code =
+                    codeInput
+                        ? codeInput.value.trim()
+                        : "";
+
+
+                if (!name || !phone) {
+
+                    return;
+
+                }
+
+
+                const driver = {
+
+                    service: service,
+
+                    name: name,
+
+                    phone: phone,
+
+                    code: code,
+
+                    createdAt:
+                        new Date().toISOString()
+
+                };
+
+
+                try {
+
+                    localStorage.setItem(
+                        STORAGE_KEY,
+                        JSON.stringify(driver)
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "Errore nel salvataggio:",
+                        error
+                    );
+
+                    return;
+
+                }
+
+
+                redirectToDashboard(
+                    service
+                );
+
+            }
         );
 
     }
 
-}
+});
 
 
 /* ========================================
-   SCELTA TAXI / NCC
+   SERVIZIO SELEZIONATO
 ======================================== */
 
-function selectService(service) {
+function selectedServiceValue(service) {
 
-    if (
-        service !== "taxi" &&
-        service !== "ncc"
-    ) {
+    selectedService =
+        service;
+
+
+    const label =
+        document.getElementById(
+            "selectedService"
+        );
+
+
+    if (!label) {
 
         return;
 
     }
 
 
-    selectedService = service;
+    if (service === "taxi") {
 
-
-    if (selectedServiceLabel) {
-
-        selectedServiceLabel.textContent =
-            service === "taxi"
-                ? "TAXI"
-                : "NCC";
-
-    }
-
-
-    showDriverStep();
-
-}
-
-
-function showServiceStep() {
-
-    selectedService = null;
-
-
-    if (serviceStep) {
-
-        serviceStep.classList.remove(
-            "is-hidden"
-        );
-
-    }
-
-
-    if (driverStep) {
-
-        driverStep.classList.add(
-            "is-hidden"
-        );
-
-    }
-
-}
-
-
-function showDriverStep() {
-
-    if (serviceStep) {
-
-        serviceStep.classList.add(
-            "is-hidden"
-        );
-
-    }
-
-
-    if (driverStep) {
-
-        driverStep.classList.remove(
-            "is-hidden"
-        );
-
-    }
-
-
-    const nameInput =
-        document.getElementById("driverName");
-
-
-    if (nameInput) {
-
-        setTimeout(function () {
-
-            nameInput.focus();
-
-        }, 100);
-
-    }
-
-}
-
-
-/* ========================================
-   SALVATAGGIO CONDUCENTE
-======================================== */
-
-function handleDriverSubmit(event) {
-
-    event.preventDefault();
-
-
-    if (!selectedService) {
+        label.textContent = "TAXI";
 
         return;
 
     }
 
 
-    const nameInput =
-        document.getElementById("driverName");
+    if (service === "ncc") {
 
-    const phoneInput =
-        document.getElementById("driverPhone");
-
-    const codeInput =
-        document.getElementById("driverCode");
-
-
-    if (
-        !nameInput ||
-        !phoneInput ||
-        !codeInput
-    ) {
+        label.textContent = "NCC";
 
         return;
 
     }
 
 
-    const name =
-        nameInput.value.trim();
-
-    const phone =
-        phoneInput.value.trim();
-
-    const code =
-        codeInput.value.trim();
-
-
-    if (!name || !phone) {
-
-        return;
-
-    }
-
-
-    const driver = {
-
-        service: selectedService,
-
-        name: name,
-
-        phone: phone,
-
-        code: code,
-
-        createdAt:
-            new Date().toISOString()
-
-    };
-
-
-    try {
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(driver)
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Impossibile salvare i dati:",
-            error
-        );
-
-        return;
-
-    }
-
-
-    redirectToDashboard(
-        selectedService
-    );
+    label.textContent = "TAXI";
 
 }
 
@@ -318,11 +307,13 @@ function handleDriverSubmit(event) {
 
 function getSavedDriver() {
 
-    const raw =
-        localStorage.getItem(STORAGE_KEY);
+    const saved =
+        localStorage.getItem(
+            STORAGE_KEY
+        );
 
 
-    if (!raw) {
+    if (!saved) {
 
         return null;
 
@@ -332,12 +323,11 @@ function getSavedDriver() {
     try {
 
         const driver =
-            JSON.parse(raw);
+            JSON.parse(saved);
 
 
         if (
             !driver ||
-            !driver.service ||
             !driver.name ||
             !driver.phone
         ) {
@@ -374,9 +364,11 @@ function getSavedDriver() {
             error
         );
 
+
         localStorage.removeItem(
             STORAGE_KEY
         );
+
 
         return null;
 
@@ -386,7 +378,7 @@ function getSavedDriver() {
 
 
 /* ========================================
-   REDIRECT DASHBOARD
+   DASHBOARD
 ======================================== */
 
 function redirectToDashboard(service) {
@@ -412,7 +404,7 @@ function redirectToDashboard(service) {
 
 
 /* ========================================
-   FUNZIONE UTILE
+   RESET
 ======================================== */
 
 function resetTaxiPilot() {
@@ -421,8 +413,8 @@ function resetTaxiPilot() {
         STORAGE_KEY
     );
 
+
     window.location.href =
         "index.html";
 
 }
-```
