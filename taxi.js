@@ -1,51 +1,45 @@
 "use strict";
 
-/*
- * TaxiPilot
- * Area TAXI
- *
- * Gestione:
- * - conducente
- * - saluto
- * - data
- * - corse salvate
- * - prossima corsa
- * - corse della giornata
- */
-
 const DRIVER_STORAGE_KEY = "taxipilot_driver";
 const RIDES_STORAGE_KEY = "taxipilot_taxi_rides";
 
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    initializeTaxiHome();
-
-});
+let recognition = null;
+let isListening = false;
 
 
 /* ========================================
    AVVIO
 ======================================== */
 
-function initializeTaxiHome() {
+document.addEventListener("DOMContentLoaded", function () {
 
     const driver = getDriver();
 
     if (!driver) {
-
         window.location.href = "../index.html";
-
         return;
-
     }
 
+    initializePage(driver);
+
+});
+
+
+/* ========================================
+   PAGINA
+======================================== */
+
+function initializePage(driver) {
 
     updateDriverInterface(driver);
 
-    updateDate();
+    if (document.getElementById("rideForm")) {
+        initializeNewRidePage();
+    }
 
-    renderTaxiHome();
+    if (document.getElementById("todayRides")) {
+        initializeHomePage();
+    }
 
 }
 
@@ -59,19 +53,13 @@ function getDriver() {
     const saved =
         localStorage.getItem(DRIVER_STORAGE_KEY);
 
-
     if (!saved) {
-
         return null;
-
     }
-
 
     try {
 
-        const driver =
-            JSON.parse(saved);
-
+        const driver = JSON.parse(saved);
 
         if (
             !driver ||
@@ -79,23 +67,19 @@ function getDriver() {
             !driver.phone ||
             driver.service !== "taxi"
         ) {
-
             return null;
-
         }
-
 
         return driver;
 
     } catch (error) {
 
         console.error(
-            "Errore nella lettura del conducente:",
+            "Errore configurazione conducente:",
             error
         );
 
         return null;
-
     }
 
 }
@@ -110,10 +94,8 @@ function updateDriverInterface(driver) {
     const nameElement =
         document.getElementById("driverName");
 
-
     const initialElement =
         document.getElementById("profileInitial");
-
 
     if (nameElement) {
 
@@ -122,7 +104,6 @@ function updateDriverInterface(driver) {
 
     }
 
-
     if (initialElement) {
 
         initialElement.textContent =
@@ -130,68 +111,7 @@ function updateDriverInterface(driver) {
 
     }
 
-
     updateGreeting();
-
-}
-
-
-/* ========================================
-   NOME
-======================================== */
-
-function getFirstName(name) {
-
-    if (!name) {
-
-        return "Conducente";
-
-    }
-
-
-    const cleanName =
-        name.trim();
-
-
-    if (!cleanName) {
-
-        return "Conducente";
-
-    }
-
-
-    return cleanName.split(/\s+/)[0];
-
-}
-
-
-/* ========================================
-   INIZIALE
-======================================== */
-
-function getInitial(name) {
-
-    if (!name) {
-
-        return "C";
-
-    }
-
-
-    const cleanName =
-        name.trim();
-
-
-    if (!cleanName) {
-
-        return "C";
-
-    }
-
-
-    return cleanName
-        .charAt(0)
-        .toUpperCase();
 
 }
 
@@ -202,47 +122,46 @@ function getInitial(name) {
 
 function updateGreeting() {
 
-    const greetingElement =
-        document.getElementById(
-            "headerGreeting"
-        );
+    const element =
+        document.getElementById("headerGreeting");
 
-
-    if (!greetingElement) {
-
+    if (!element) {
         return;
-
     }
-
 
     const hour =
         new Date().getHours();
 
-
-    let greeting;
-
-
     if (hour < 5) {
 
-        greeting = "Buonanotte";
+        element.textContent = "Buonanotte";
 
     } else if (hour < 13) {
 
-        greeting = "Buongiorno";
+        element.textContent = "Buongiorno";
 
     } else if (hour < 18) {
 
-        greeting = "Buon pomeriggio";
+        element.textContent = "Buon pomeriggio";
 
     } else {
 
-        greeting = "Buonasera";
+        element.textContent = "Buonasera";
 
     }
 
+}
 
-    greetingElement.textContent =
-        greeting;
+
+/* ========================================
+   HOME
+======================================== */
+
+function initializeHomePage() {
+
+    updateCurrentDate();
+
+    renderTaxiHome();
 
 }
 
@@ -251,27 +170,20 @@ function updateGreeting() {
    DATA
 ======================================== */
 
-function updateDate() {
+function updateCurrentDate() {
 
-    const dateElement =
-        document.getElementById(
-            "currentDate"
-        );
+    const element =
+        document.getElementById("currentDate");
 
-
-    if (!dateElement) {
-
+    if (!element) {
         return;
-
     }
 
-
-    const today =
+    const date =
         new Date();
 
-
-    const formattedDate =
-        today.toLocaleDateString(
+    const text =
+        date.toLocaleDateString(
             "it-IT",
             {
                 weekday: "long",
@@ -280,11 +192,8 @@ function updateDate() {
             }
         );
 
-
-    dateElement.textContent =
-        capitalizeFirstLetter(
-            formattedDate
-        );
+    element.textContent =
+        capitalize(text);
 
 }
 
@@ -296,43 +205,45 @@ function updateDate() {
 function getRides() {
 
     const saved =
-        localStorage.getItem(
-            RIDES_STORAGE_KEY
-        );
-
+        localStorage.getItem(RIDES_STORAGE_KEY);
 
     if (!saved) {
-
         return [];
-
     }
-
 
     try {
 
         const rides =
             JSON.parse(saved);
 
-
-        if (!Array.isArray(rides)) {
-
-            return [];
-
-        }
-
-
-        return rides;
+        return Array.isArray(rides)
+            ? rides
+            : [];
 
     } catch (error) {
 
         console.error(
-            "Errore nella lettura delle corse:",
+            "Errore lettura corse:",
             error
         );
 
         return [];
 
     }
+
+}
+
+
+/* ========================================
+   SALVA CORSE
+======================================== */
+
+function saveRides(rides) {
+
+    localStorage.setItem(
+        RIDES_STORAGE_KEY,
+        JSON.stringify(rides)
+    );
 
 }
 
@@ -346,104 +257,31 @@ function renderTaxiHome() {
     const rides =
         getRides();
 
+    const today =
+        getTodayString();
 
     const todayRides =
-        getTodayRides(rides);
+        rides
+            .filter(function (ride) {
+                return ride.date === today;
+            })
+            .sort(compareRides);
 
 
-    const rideCount =
-        document.getElementById(
-            "rideCount"
-        );
+    const count =
+        document.getElementById("rideCount");
 
+    if (count) {
 
-    if (rideCount) {
-
-        rideCount.textContent =
+        count.textContent =
             todayRides.length;
 
     }
 
 
-    renderTodayRides(todayRides);
-
     renderNextRide(todayRides);
 
-}
-
-
-/* ========================================
-   CORSE DI OGGI
-======================================== */
-
-function getTodayRides(rides) {
-
-    const today =
-        new Date();
-
-
-    const year =
-        today.getFullYear();
-
-    const month =
-        String(
-            today.getMonth() + 1
-        ).padStart(2, "0");
-
-    const day =
-        String(
-            today.getDate()
-        ).padStart(2, "0");
-
-
-    const todayString =
-        `${year}-${month}-${day}`;
-
-
-    return rides
-        .filter(function (ride) {
-
-            return ride.date === todayString;
-
-        })
-        .sort(function (a, b) {
-
-            return getRideTimeValue(a)
-                - getRideTimeValue(b);
-
-        });
-
-}
-
-
-/* ========================================
-   ORDINAMENTO ORARIO
-======================================== */
-
-function getRideTimeValue(ride) {
-
-    if (!ride.time) {
-
-        return 999999;
-
-    }
-
-
-    const parts =
-        ride.time.split(":");
-
-
-    const hours =
-        Number(parts[0]) || 0;
-
-    const minutes =
-        Number(parts[1]) || 0;
-
-
-    return (
-        hours * 60 +
-        minutes
-    );
+    renderTodayRides(todayRides);
 
 }
 
@@ -455,37 +293,30 @@ function getRideTimeValue(ride) {
 function renderNextRide(rides) {
 
     const container =
-        document.getElementById(
-            "nextRide"
-        );
-
+        document.getElementById("nextRide");
 
     if (!container) {
-
         return;
-
     }
-
 
     const now =
         new Date();
-
 
     const currentMinutes =
         now.getHours() * 60 +
         now.getMinutes();
 
 
-    const nextRide =
+    const upcoming =
         rides.find(function (ride) {
 
-            return getRideTimeValue(ride)
+            return getTimeMinutes(ride.time)
                 >= currentMinutes;
 
         });
 
 
-    if (!nextRide) {
+    if (!upcoming) {
 
         container.innerHTML = `
 
@@ -498,11 +329,11 @@ function renderNextRide(rides) {
                 <div>
 
                     <strong>
-                        Nessuna corsa in programma
+                        Nessuna corsa programmata
                     </strong>
 
                     <span>
-                        Puoi aggiungerne una nuova.
+                        Aggiungi una nuova corsa
                     </span>
 
                 </div>
@@ -518,7 +349,7 @@ function renderNextRide(rides) {
 
     container.innerHTML =
         createRideCard(
-            nextRide,
+            upcoming,
             true
         );
 
@@ -526,21 +357,16 @@ function renderNextRide(rides) {
 
 
 /* ========================================
-   LISTA OGGI
+   CORSE DI OGGI
 ======================================== */
 
 function renderTodayRides(rides) {
 
     const container =
-        document.getElementById(
-            "todayRides"
-        );
-
+        document.getElementById("todayRides");
 
     if (!container) {
-
         return;
-
     }
 
 
@@ -582,37 +408,29 @@ function renderTodayRides(rides) {
    CARD CORSA
 ======================================== */
 
-function createRideCard(
-    ride,
-    featured
-) {
+function createRideCard(ride, featured) {
 
     const passenger =
         ride.passenger ||
         "Passeggero";
 
-
     const pickup =
         ride.pickup ||
         "Partenza non indicata";
-
 
     const destination =
         ride.destination ||
         "Destinazione non indicata";
 
-
     const time =
         ride.time ||
         "--:--";
-
 
     const passengers =
         ride.passengers ||
         1;
 
-
-    const featuredClass =
+    const className =
         featured
             ? " ride-card-featured"
             : "";
@@ -620,7 +438,7 @@ function createRideCard(
 
     return `
 
-        <article class="ride-card${featuredClass}">
+        <article class="ride-card${className}">
 
             <div class="ride-card-top">
 
@@ -629,17 +447,16 @@ function createRideCard(
                 </strong>
 
                 <span class="ride-passengers">
-                    ${escapeHTML(String(passengers))}
-                    ${passengers === 1 ? "pax" : "pax"}
+                    ${escapeHTML(
+                        String(passengers)
+                    )} pax
                 </span>
 
             </div>
 
 
             <div class="ride-passenger">
-
                 ${escapeHTML(passenger)}
-
             </div>
 
 
@@ -679,8 +496,1044 @@ function createRideCard(
 
 
 /* ========================================
-   SICUREZZA HTML
+   NUOVA CORSA
 ======================================== */
+
+function initializeNewRidePage() {
+
+    setDefaultDate();
+
+    initializeTextAnalyzer();
+
+    initializeVoiceRecognition();
+
+    initializeRideForm();
+
+}
+
+
+/* ========================================
+   DATA PREDEFINITA
+======================================== */
+
+function setDefaultDate() {
+
+    const input =
+        document.getElementById("rideDate");
+
+    if (!input) {
+        return;
+    }
+
+    input.value =
+        getTodayString();
+
+}
+
+
+/* ========================================
+   ANALISI TESTO
+======================================== */
+
+function initializeTextAnalyzer() {
+
+    const button =
+        document.getElementById(
+            "analyzeTextButton"
+        );
+
+    if (!button) {
+        return;
+    }
+
+
+    button.addEventListener(
+        "click",
+        function () {
+
+            const input =
+                document.getElementById(
+                    "rideTextInput"
+                );
+
+            if (!input) {
+                return;
+            }
+
+
+            const text =
+                input.value.trim();
+
+
+            if (!text) {
+
+                showSmartResult(
+                    "Inserisci prima un messaggio."
+                );
+
+                return;
+
+            }
+
+
+            const result =
+                parseRideText(text);
+
+
+            fillRideForm(result);
+
+
+            showSmartResult(
+                getAnalysisMessage(result)
+            );
+
+        }
+    );
+
+}
+
+
+/* ========================================
+   PARSER INTELLIGENTE
+======================================== */
+
+function parseRideText(text) {
+
+    const result = {
+
+        passenger: "",
+        passengerPhone: "",
+        date: "",
+        time: "",
+        pickup: "",
+        destination: "",
+        passengers: "",
+        notes: ""
+
+    };
+
+
+    const cleanText =
+        normalizeText(text);
+
+
+    /*
+     * TELEFONO
+     */
+
+    const phoneMatch =
+        cleanText.match(
+            /(?:\+39[\s.-]?)?(?:3\d{2}[\s.-]?\d{3}[\s.-]?\d{4}|0\d{1,3}[\s.-]?\d{5,8})/
+        );
+
+
+    if (phoneMatch) {
+
+        result.passengerPhone =
+            phoneMatch[0].trim();
+
+    }
+
+
+    /*
+     * PASSEGGERI
+     */
+
+    const passengerMatch =
+        cleanText.match(
+            /(?:^|\s)(\d{1,2})\s*(?:pax|passegger[io]|persone)(?:\s|$)/i
+        );
+
+
+    if (passengerMatch) {
+
+        result.passengers =
+            passengerMatch[1];
+
+    }
+
+
+    /*
+     * ORARIO
+     */
+
+    const timeMatch =
+        cleanText.match(
+            /(?:alle|ore|h)?\s*(\d{1,2})[:.](\d{2})/i
+        );
+
+
+    if (timeMatch) {
+
+        result.time =
+            pad(timeMatch[1]) +
+            ":" +
+            pad(timeMatch[2]);
+
+    } else {
+
+        const simpleTime =
+            cleanText.match(
+                /(?:alle|ore|h)\s*(\d{1,2})(?:\s|$)/i
+            );
+
+        if (simpleTime) {
+
+            result.time =
+                pad(simpleTime[1]) +
+                ":00";
+
+        }
+
+    }
+
+
+    /*
+     * DATA
+     */
+
+    if (
+        /\bdomani\b/i.test(cleanText)
+    ) {
+
+        result.date =
+            addDays(
+                new Date(),
+                1
+            );
+
+    } else if (
+        /\bdopodomani\b/i.test(cleanText)
+    ) {
+
+        result.date =
+            addDays(
+                new Date(),
+                2
+            );
+
+    } else {
+
+        const dateMatch =
+            cleanText.match(
+                /(\d{1,2})[\/.-](\d{1,2})(?:[\/.-](\d{2,4}))?/
+            );
+
+
+        if (dateMatch) {
+
+            let year =
+                dateMatch[3]
+                    ? Number(dateMatch[3])
+                    : new Date().getFullYear();
+
+
+            if (year < 100) {
+                year += 2000;
+            }
+
+
+            result.date =
+                year +
+                "-" +
+                pad(dateMatch[2]) +
+                "-" +
+                pad(dateMatch[1]);
+
+        }
+
+    }
+
+
+    /*
+     * NOME
+     */
+
+    const namePatterns = [
+
+        /(?:cliente|passeggero|signor|signora|sig\.|sig\.ra)\s+([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+){0,3})/i,
+
+        /(?:per|a nome di)\s+([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+){0,3})/i
+
+    ];
+
+
+    for (
+        let i = 0;
+        i < namePatterns.length;
+        i++
+    ) {
+
+        const match =
+            cleanText.match(
+                namePatterns[i]
+            );
+
+
+        if (match) {
+
+            result.passenger =
+                cleanExtractedName(
+                    match[1]
+                );
+
+            break;
+
+        }
+
+    }
+
+
+    /*
+     * PARTENZA
+     */
+
+    const pickupPatterns = [
+
+        /(?:partenza|ritiro|pickup|prendere|prendiamo|da)\s*[:\-]?\s*(.+?)(?=\s+(?:destinazione|arrivo|a|fino a|per)\s+)/i,
+
+        /(?:da)\s+(.+?)\s+(?:a|fino a|per)\s+/i
+
+    ];
+
+
+    for (
+        let i = 0;
+        i < pickupPatterns.length;
+        i++
+    ) {
+
+        const match =
+            cleanText.match(
+                pickupPatterns[i]
+            );
+
+
+        if (match) {
+
+            result.pickup =
+                cleanLocation(
+                    match[1]
+                );
+
+            break;
+
+        }
+
+    }
+
+
+    /*
+     * DESTINAZIONE
+     */
+
+    const destinationPatterns = [
+
+        /(?:destinazione|arrivo|fino a|a)\s*[:\-]?\s*(.+?)(?=\s+(?:alle|ore|h|\d{1,2}\s*(?:pax|passegger[io]|persone)|telefono|tel|cliente|passeggero|partenza|da)\b|[,.]?$)/i,
+
+        /(?:verso|per)\s+(.+?)(?=\s+(?:alle|ore|h)\b|[,.]?$)/i
+
+    ];
+
+
+    for (
+        let i = 0;
+        i < destinationPatterns.length;
+        i++
+    ) {
+
+        const match =
+            cleanText.match(
+                destinationPatterns[i]
+            );
+
+
+        if (match) {
+
+            result.destination =
+                cleanLocation(
+                    match[1]
+                );
+
+            break;
+
+        }
+
+    }
+
+
+    /*
+     * Se abbiamo "da X a Y"
+     */
+
+    if (
+        !result.pickup ||
+        !result.destination
+    ) {
+
+        const routeMatch =
+            cleanText.match(
+                /(?:da)\s+(.+?)\s+(?:a|verso)\s+(.+?)(?=\s+(?:alle|ore|h)\b|[,.]?$)/i
+            );
+
+
+        if (routeMatch) {
+
+            if (!result.pickup) {
+
+                result.pickup =
+                    cleanLocation(
+                        routeMatch[1]
+                    );
+
+            }
+
+            if (!result.destination) {
+
+                result.destination =
+                    cleanLocation(
+                        routeMatch[2]
+                    );
+
+            }
+
+        }
+
+    }
+
+
+    /*
+     * NOTE
+     */
+
+    const noteMatch =
+        cleanText.match(
+            /(?:note|nota|attenzione)\s*[:\-]?\s*(.+)$/i
+        );
+
+
+    if (noteMatch) {
+
+        result.notes =
+            noteMatch[1].trim();
+
+    }
+
+
+    return result;
+
+}
+
+
+/* ========================================
+   RIEMPI MODULO
+======================================== */
+
+function fillRideForm(result) {
+
+    setInput(
+        "passenger",
+        result.passenger
+    );
+
+    setInput(
+        "passengerPhone",
+        result.passengerPhone
+    );
+
+    setInput(
+        "rideDate",
+        result.date
+    );
+
+    setInput(
+        "rideTime",
+        result.time
+    );
+
+    setInput(
+        "pickup",
+        result.pickup
+    );
+
+    setInput(
+        "destination",
+        result.destination
+    );
+
+    setInput(
+        "passengers",
+        result.passengers
+    );
+
+    setInput(
+        "rideNotes",
+        result.notes
+    );
+
+}
+
+
+/* ========================================
+   MESSAGGIO ANALISI
+======================================== */
+
+function getAnalysisMessage(result) {
+
+    const fields = [
+
+        result.passenger,
+        result.passengerPhone,
+        result.date,
+        result.time,
+        result.pickup,
+        result.destination,
+        result.passengers
+
+    ];
+
+
+    const found =
+        fields.filter(Boolean).length;
+
+
+    if (found === 0) {
+
+        return "Non ho riconosciuto dati sufficienti. Puoi completarli manualmente.";
+
+    }
+
+
+    return (
+        "Ho riconosciuto " +
+        found +
+        " informazioni. Controlla i campi prima di salvare."
+    );
+
+}
+
+
+/* ========================================
+   VOCE
+======================================== */
+
+function initializeVoiceRecognition() {
+
+    const button =
+        document.getElementById(
+            "voiceButton"
+        );
+
+    if (!button) {
+        return;
+    }
+
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                setVoiceStatus(
+                    "Il riconoscimento vocale non è supportato da questo browser."
+                );
+
+            }
+        );
+
+        return;
+
+    }
+
+
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang =
+        "it-IT";
+
+
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.maxAlternatives =
+        1;
+
+
+    recognition.onstart =
+        function () {
+
+            isListening = true;
+
+            button.classList.add(
+                "voice-listening"
+            );
+
+            setVoiceStatus(
+                "Sto ascoltando..."
+            );
+
+        };
+
+
+    recognition.onresult =
+        function (event) {
+
+            const transcript =
+                event.results[0][0].transcript;
+
+
+            const textInput =
+                document.getElementById(
+                    "rideTextInput"
+                );
+
+
+            if (textInput) {
+
+                textInput.value =
+                    transcript;
+
+            }
+
+
+            const result =
+                parseRideText(
+                    transcript
+                );
+
+
+            fillRideForm(result);
+
+
+            setVoiceStatus(
+                getAnalysisMessage(result)
+            );
+
+        };
+
+
+    recognition.onerror =
+        function (event) {
+
+            console.error(
+                "Errore riconoscimento vocale:",
+                event.error
+            );
+
+
+            setVoiceStatus(
+                "Non sono riuscito a riconoscere la voce. Riprova."
+            );
+
+        };
+
+
+    recognition.onend =
+        function () {
+
+            isListening = false;
+
+            button.classList.remove(
+                "voice-listening"
+            );
+
+        };
+
+
+    button.addEventListener(
+        "click",
+        function () {
+
+            if (isListening) {
+
+                recognition.stop();
+
+                return;
+
+            }
+
+
+            try {
+
+                recognition.start();
+
+            } catch (error) {
+
+                console.error(error);
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ========================================
+   STATO VOCE
+======================================== */
+
+function setVoiceStatus(message) {
+
+    const element =
+        document.getElementById(
+            "voiceStatus"
+        );
+
+
+    if (element) {
+
+        element.textContent =
+            message;
+
+    }
+
+}
+
+
+/* ========================================
+   SALVATAGGIO CORSA
+======================================== */
+
+function initializeRideForm() {
+
+    const form =
+        document.getElementById(
+            "rideForm"
+        );
+
+
+    if (!form) {
+        return;
+    }
+
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            const ride =
+                getRideFromForm();
+
+
+            if (!ride.passenger) {
+
+                alert(
+                    "Inserisci il nome del passeggero."
+                );
+
+                return;
+
+            }
+
+
+            if (!ride.date) {
+
+                alert(
+                    "Inserisci la data della corsa."
+                );
+
+                return;
+
+            }
+
+
+            if (!ride.time) {
+
+                alert(
+                    "Inserisci l'orario della corsa."
+                );
+
+                return;
+
+            }
+
+
+            const rides =
+                getRides();
+
+
+            rides.push(ride);
+
+
+            saveRides(rides);
+
+
+            window.location.href =
+                "home.html";
+
+        }
+    );
+
+}
+
+
+/* ========================================
+   DATI DAL MODULO
+======================================== */
+
+function getRideFromForm() {
+
+    return {
+
+        id:
+            Date.now().toString(),
+
+        passenger:
+            getValue("passenger"),
+
+        passengerPhone:
+            getValue("passengerPhone"),
+
+        date:
+            getValue("rideDate"),
+
+        time:
+            getValue("rideTime"),
+
+        pickup:
+            getValue("pickup"),
+
+        destination:
+            getValue("destination"),
+
+        passengers:
+            Number(
+                getValue("passengers")
+            ) || 1,
+
+        notes:
+            getValue("rideNotes"),
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+}
+
+
+/* ========================================
+   UTILITÀ
+======================================== */
+
+function getValue(id) {
+
+    const element =
+        document.getElementById(id);
+
+    return element
+        ? element.value.trim()
+        : "";
+
+}
+
+
+function setInput(id, value) {
+
+    const element =
+        document.getElementById(id);
+
+    if (
+        element &&
+        value !== undefined &&
+        value !== null &&
+        value !== ""
+    ) {
+
+        element.value =
+            value;
+
+    }
+
+}
+
+
+function getTodayString() {
+
+    const date =
+        new Date();
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        pad(date.getMonth() + 1);
+
+    const day =
+        pad(date.getDate());
+
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
+
+}
+
+
+function addDays(date, days) {
+
+    const result =
+        new Date(date);
+
+    result.setDate(
+        result.getDate() + days
+    );
+
+
+    return (
+        result.getFullYear() +
+        "-" +
+        pad(result.getMonth() + 1) +
+        "-" +
+        pad(result.getDate())
+    );
+
+}
+
+
+function getTimeMinutes(time) {
+
+    if (!time) {
+        return 999999;
+    }
+
+
+    const parts =
+        time.split(":");
+
+
+    return (
+        Number(parts[0]) * 60 +
+        Number(parts[1])
+    );
+
+}
+
+
+function compareRides(a, b) {
+
+    return (
+        getTimeMinutes(a.time) -
+        getTimeMinutes(b.time)
+    );
+
+}
+
+
+function pad(value) {
+
+    return String(value)
+        .padStart(2, "0");
+
+}
+
+
+function getFirstName(name) {
+
+    if (!name) {
+        return "Conducente";
+    }
+
+
+    return name
+        .trim()
+        .split(/\s+/)[0];
+
+}
+
+
+function getInitial(name) {
+
+    if (!name) {
+        return "C";
+    }
+
+
+    return name
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+}
+
+
+function capitalize(text) {
+
+    if (!text) {
+        return "";
+    }
+
+
+    return (
+        text.charAt(0).toUpperCase() +
+        text.slice(1)
+    );
+
+}
+
+
+function normalizeText(text) {
+
+    return text
+        .replace(/\s+/g, " ")
+        .replace(/\n+/g, " ")
+        .trim();
+
+}
+
+
+function cleanExtractedName(name) {
+
+    return name
+        .replace(
+            /\b(?:domani|oggi|alle|ore|partenza|destinazione|arrivo)\b.*$/i,
+            ""
+        )
+        .replace(
+            /[,.]+$/,
+            ""
+        )
+        .trim();
+
+}
+
+
+function cleanLocation(location) {
+
+    return location
+        .replace(
+            /^(?:in|presso|da|a)\s+/i,
+            ""
+        )
+        .replace(
+            /[,.]+$/,
+            ""
+        )
+        .trim();
+
+}
+
 
 function escapeHTML(value) {
 
@@ -690,26 +1543,5 @@ function escapeHTML(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-
-}
-
-
-/* ========================================
-   UTILITÀ
-======================================== */
-
-function capitalizeFirstLetter(text) {
-
-    if (!text) {
-
-        return "";
-
-    }
-
-
-    return (
-        text.charAt(0).toUpperCase() +
-        text.slice(1)
-    );
 
 }
