@@ -46,7 +46,9 @@ function initializePage(driver) {
         initializeHomePage();
 
     }
-
+if (document.getElementById("agendaRides")) {
+    initializeAgendaPage();
+}
 
     if (document.getElementById("ridesList")) {
 
