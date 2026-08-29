@@ -48,13 +48,10 @@ function initializePage(driver) {
     }
 
 
-    if (document.getElementById("agendaRides")) {
-
-        initializeAgendaPage();
-
-        ;
-
-    }
+if (document.getElementById("agendaRides")) {
+    initializeAgendaPage();
+    initializeCalendar();
+}
 
 
     if (document.getElementById("ridesList")) {
