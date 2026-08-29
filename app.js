@@ -1,3 +1,4 @@
+
 const STORAGE_KEY = "ctl_driver_config";
 
 let selectedService = null;
@@ -79,11 +80,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const savedConfig =
         localStorage.getItem(STORAGE_KEY);
 
+
     if (!savedConfig) {
 
         showOnboarding();
 
         return;
+
     }
 
 
@@ -91,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const config =
             JSON.parse(savedConfig);
+
 
         if (
             !config ||
@@ -104,15 +108,17 @@ document.addEventListener("DOMContentLoaded", function () {
             showOnboarding();
 
             return;
+
         }
 
 
         loadApplication(config);
 
+
     } catch (error) {
 
         console.error(
-            "Errore nella configurazione salvata:",
+            "Errore configurazione:",
             error
         );
 
@@ -174,7 +180,7 @@ function returnToServiceSelection() {
 
 
 /* =========================
-   FORM CONFIGURAZIONE
+   SALVATAGGIO DATI
 ========================= */
 
 function saveDriverConfiguration(event) {
@@ -265,7 +271,7 @@ function loadApplication(config) {
 
 
 /* =========================
-   INTERFACCIA
+   AGGIORNA INTERFACCIA
 ========================= */
 
 function updateInterface(config) {
@@ -386,7 +392,7 @@ function updateGreeting() {
 
 
 /* =========================
-   INIZIALE NOME
+   INIZIALE
 ========================= */
 
 function getInitial(name) {
@@ -422,19 +428,19 @@ function getInitial(name) {
 
 function navigateTo(page) {
 
-    document
-        .querySelectorAll(".app-page")
-        .forEach(function (section) {
+    const pages =
+        document.querySelectorAll(".app-page");
 
-            section.classList.remove("active");
 
-        });
+    pages.forEach(function (pageElement) {
+
+        pageElement.classList.remove("active");
+
+    });
 
 
     const target =
-        document.getElementById(
-            page + "Page"
-        );
+        document.getElementById(page + "Page");
 
 
     if (target) {
@@ -444,24 +450,26 @@ function navigateTo(page) {
     }
 
 
-    document
-        .querySelectorAll(".nav-item")
-        .forEach(function (button) {
-
-            button.classList.remove("active");
-
-        });
+    const navItems =
+        document.querySelectorAll(".nav-item");
 
 
-    const activeButton =
+    navItems.forEach(function (item) {
+
+        item.classList.remove("active");
+
+    });
+
+
+    const activeItem =
         document.querySelector(
             '.nav-item[data-page="' + page + '"]'
         );
 
 
-    if (activeButton) {
+    if (activeItem) {
 
-        activeButton.classList.add("active");
+        activeItem.classList.add("active");
 
     }
 
@@ -475,7 +483,7 @@ function navigateTo(page) {
 
 
 /* =========================
-   MODALE NUOVA CORSA
+   MODALE
 ========================= */
 
 function openNewItemModal() {
@@ -522,25 +530,26 @@ function closeNewItemModal() {
 function setupEvents() {
 
 
-    /* SCELTA TAXI / NCC */
+    /* TAXI / NCC */
 
-    document
-        .querySelectorAll(".service-card")
-        .forEach(function (button) {
+    const serviceCards =
+        document.querySelectorAll(".service-card");
 
-            button.addEventListener(
-                "click",
-                function () {
 
-                    const service =
-                        button.dataset.service;
+    serviceCards.forEach(function (button) {
 
-                    showDriverSetup(service);
+        button.addEventListener(
+            "click",
+            function () {
 
-                }
-            );
+                showDriverSetup(
+                    button.dataset.service
+                );
 
-        });
+            }
+        );
+
+    });
 
 
     /* INDIETRO */
@@ -565,37 +574,42 @@ function setupEvents() {
 
     /* FORM */
 
-    driverForm.addEventListener(
-        "submit",
-        saveDriverConfiguration
-    );
+    if (driverForm) {
+
+        driverForm.addEventListener(
+            "submit",
+            saveDriverConfiguration
+        );
+
+    }
 
 
     /* NAVIGAZIONE */
 
-    document
-        .querySelectorAll(".nav-item")
-        .forEach(function (button) {
-
-            button.addEventListener(
-                "click",
-                function () {
-
-                    const page =
-                        button.dataset.page;
-
-                    navigateTo(page);
-
-                }
-            );
-
-        });
+    const navItems =
+        document.querySelectorAll(".nav-item");
 
 
-    /* PROFILO HEADER */
+    navItems.forEach(function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                navigateTo(
+                    button.dataset.page
+                );
+
+            }
+        );
+
+    });
+
+
+    /* PROFILO */
 
     const profileButton =
-        document.querySelector(".profile-button");
+        document.getElementById("profileButton");
 
 
     if (profileButton) {
@@ -612,7 +626,7 @@ function setupEvents() {
     }
 
 
-    /* PULSANTE + */
+    /* + */
 
     const addButton =
         document.getElementById("addButton");
@@ -632,7 +646,7 @@ function setupEvents() {
     }
 
 
-    /* CHIUSURA MODALE */
+    /* CHIUDI MODALE */
 
     const closeModal =
         document.getElementById("closeModal");
@@ -684,7 +698,7 @@ function setupEvents() {
 
                 const confirmed =
                     window.confirm(
-                        "Vuoi davvero cancellare la configurazione dell'app?"
+                        "Vuoi davvero reimpostare la configurazione?"
                     );
 
 
@@ -708,4 +722,3 @@ function setupEvents() {
     }
 
 }
-```
