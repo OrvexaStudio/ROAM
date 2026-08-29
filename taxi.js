@@ -614,9 +614,7 @@ function parseRideText(text) {
         return result;
     }
 
-    const original = text.trim();
-
-    const normalized = original
+    const normalized = text
         .replace(/\n/g, " ")
         .replace(/\s+/g, " ")
         .trim();
@@ -626,18 +624,30 @@ function parseRideText(text) {
        TELEFONO
     ======================================== */
 
-    const phoneRegex =
-        /(?:\+39[\s.-]?)?(?:3\d{2}[\s.-]?\d{3}[\s.-]?\d{4}|0\d{1,3}[\s.-]?\d{5,8})/;
+    const phonePatterns = [
 
-    const phoneMatch =
-        normalized.match(phoneRegex);
+        /(?:\+39[\s.-]?)?3\d{2}[\s.-]?\d{3}[\s.-]?\d{4}/,
 
-    if (phoneMatch) {
+        /\b\d{10}\b/,
 
-        result.passengerPhone =
-            phoneMatch[0]
-                .replace(/\s+/g, " ")
-                .trim();
+        /\b\d{3}[\s.-]\d{3}[\s.-]\d{4}\b/
+
+    ];
+
+
+    for (const pattern of phonePatterns) {
+
+        const match =
+            normalized.match(pattern);
+
+        if (match) {
+
+            result.passengerPhone =
+                match[0].trim();
+
+            break;
+
+        }
 
     }
 
@@ -646,20 +656,20 @@ function parseRideText(text) {
        PASSEGGERI
     ======================================== */
 
-    const passengerCountPatterns = [
+    const passengerPatterns = [
 
         /\b(\d{1,2})\s*(?:pax)\b/i,
 
-        /\b(\d{1,2})\s*(?:passegger[oi])\b/i,
-
         /\b(\d{1,2})\s*(?:persone)\b/i,
 
-        /\b(?:per|con)\s*(\d{1,2})\s*(?:persone|passegger[oi]|pax)\b/i
+        /\b(\d{1,2})\s*(?:passeggeri)\b/i,
+
+        /\b(?:per|con)\s+(\d{1,2})\s*(?:persone|passeggeri|pax)\b/i
 
     ];
 
 
-    for (const pattern of passengerCountPatterns) {
+    for (const pattern of passengerPatterns) {
 
         const match =
             normalized.match(pattern);
@@ -680,36 +690,19 @@ function parseRideText(text) {
        ORARIO
     ======================================== */
 
-    const timePatterns = [
-
-        /\b(?:alle|ore|h)\s*(\d{1,2})[:.](\d{2})\b/i,
-
-        /\b(\d{1,2})[:.](\d{2})\b/,
-
-        /\b(?:alle|ore|h)\s*(\d{1,2})\s*(?:e\s*)?(?:mezza|30)\b/i,
-
-        /\b(\d{1,2})\s*e\s*mezza\b/i
-
-    ];
+    let match =
+        normalized.match(
+            /\b(?:alle|ore|h)?\s*(\d{1,2})[:.](\d{2})\b/i
+        );
 
 
-    for (const pattern of timePatterns) {
+    if (match) {
 
-        const match =
-            normalized.match(pattern);
-
-        if (!match) {
-            continue;
-        }
-
-
-        let hour =
+        const hour =
             Number(match[1]);
 
-        let minute =
-            match[2]
-                ? Number(match[2])
-                : 30;
+        const minute =
+            Number(match[2]);
 
 
         if (
@@ -724,78 +717,28 @@ function parseRideText(text) {
                 ":" +
                 pad(minute);
 
-            break;
-
         }
 
     }
 
 
     /* ========================================
-       ORARIO PARLATO
-       "otto e trenta"
+       ORARIO "8 E MEZZA"
     ======================================== */
 
     if (!result.time) {
 
-        const spokenTime =
+        match =
             normalized.match(
-                /\b(?:alle|ore)?\s*(uno|due|tre|quattro|cinque|sei|sette|otto|nove|dieci|undici|dodici|tredici|quattordici|quindici|sedici|diciassette|diciotto|diciannove|venti|ventuno|ventidue|ventitré|ventitre)\s*(?:e\s*(trenta|mezza))?\b/i
+                /\b(?:alle|ore)?\s*(\d{1,2})\s+e\s+mezza\b/i
             );
 
 
-        if (spokenTime) {
+        if (match) {
 
-            const numbers = {
-
-                uno: 1,
-                due: 2,
-                tre: 3,
-                quattro: 4,
-                cinque: 5,
-                sei: 6,
-                sette: 7,
-                otto: 8,
-                nove: 9,
-                dieci: 10,
-                undici: 11,
-                dodici: 12,
-                tredici: 13,
-                quattordici: 14,
-                quindici: 15,
-                sedici: 16,
-                diciassette: 17,
-                diciotto: 18,
-                diciannove: 19,
-                venti: 20,
-                ventuno: 21,
-                ventidue: 22,
-                ventitre: 23,
-                "ventitré": 23
-
-            };
-
-
-            const hour =
-                numbers[
-                    spokenTime[1].toLowerCase()
-                ];
-
-
-            const minute =
-                spokenTime[2]
-                    ? 30
-                    : 0;
-
-
-            if (hour !== undefined) {
-
-                result.time =
-                    pad(hour) +
-                    ":" +
-                    pad(minute);
-
-            }
+            result.time =
+                pad(Number(match[1])) +
+                ":30";
 
         }
 
@@ -829,18 +772,16 @@ function parseRideText(text) {
 
     } else {
 
-        const dateMatch =
+        match =
             normalized.match(
-                /\b(\d{1,2})[\/.-](\d{1,2})(?:[\/.-](\d{2,4}))?\b/
+                /\b(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})\b/
             );
 
 
-        if (dateMatch) {
+        if (match) {
 
             let year =
-                dateMatch[3]
-                    ? Number(dateMatch[3])
-                    : new Date().getFullYear();
+                Number(match[3]);
 
 
             if (year < 100) {
@@ -851,130 +792,9 @@ function parseRideText(text) {
             result.date =
                 year +
                 "-" +
-                pad(dateMatch[2]) +
+                pad(Number(match[2])) +
                 "-" +
-                pad(dateMatch[1]);
-
-        }
-
-    }
-
-
-    /* ========================================
-       PARTENZA
-    ======================================== */
-
-    const pickupPatterns = [
-
-        /(?:partenza|ritiro|pickup)\s*[:\-]?\s*(.+?)(?=\s+(?:destinazione|arrivo|a|verso|per|alle|ore|h)\b|$)/i,
-
-        /(?:prendi|prendere|passa a prendere|ritira|ritirare)\s+(?:il cliente|la persona|il passeggero)?\s*(?:a|in|da)?\s*(.+?)(?=\s+(?:e poi|poi|destinazione|arrivo|a|verso|per|alle|ore|h)\b|$)/i,
-
-        /\bda\s+(.+?)\s+(?=\ba\b|\bverso\b|\bfino a\b|\bper\b)/i
-
-    ];
-
-
-    for (const pattern of pickupPatterns) {
-
-        const match =
-            normalized.match(pattern);
-
-        if (match) {
-
-            const location =
-                cleanLocationAdvanced(
-                    match[1]
-                );
-
-            if (location) {
-
-                result.pickup =
-                    location;
-
-                break;
-
-            }
-
-        }
-
-    }
-
-
-    /* ========================================
-       DESTINAZIONE
-    ======================================== */
-
-    const destinationPatterns = [
-
-        /(?:destinazione|arrivo)\s*[:\-]?\s*(.+?)(?=\s+(?:alle|ore|h|domani|oggi|dopodomani|cliente|passeggero|telefono|tel|note|nota)\b|$)/i,
-
-        /(?:a|verso|fino a|per)\s+(.+?)(?=\s+(?:alle|ore|h|domani|oggi|dopodomani|cliente|passeggero|telefono|tel|note|nota)\b|$)/i
-
-    ];
-
-
-    for (const pattern of destinationPatterns) {
-
-        const match =
-            normalized.match(pattern);
-
-        if (match) {
-
-            const location =
-                cleanLocationAdvanced(
-                    match[1]
-                );
-
-            if (location) {
-
-                result.destination =
-                    location;
-
-                break;
-
-            }
-
-        }
-
-    }
-
-
-    /* ========================================
-       ROUTE "DA X A Y"
-    ======================================== */
-
-    if (
-        !result.pickup ||
-        !result.destination
-    ) {
-
-        const routeMatch =
-            normalized.match(
-                /\bda\s+(.+?)\s+\ba\s+(.+?)(?=\s+(?:alle|ore|h|domani|oggi|dopodomani)\b|$)/i
-            );
-
-
-        if (routeMatch) {
-
-            if (!result.pickup) {
-
-                result.pickup =
-                    cleanLocationAdvanced(
-                        routeMatch[1]
-                    );
-
-            }
-
-
-            if (!result.destination) {
-
-                result.destination =
-                    cleanLocationAdvanced(
-                        routeMatch[2]
-                    );
-
-            }
+                pad(Number(match[1]));
 
         }
 
@@ -987,16 +807,16 @@ function parseRideText(text) {
 
     const namePatterns = [
 
-        /(?:cliente|passeggero|passeggera|signor|signora|sig\.|sig\.ra)\s*[:\-]?\s*([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+){0,3})/i,
+        /(?:cliente|passeggero|passeggera|signor|signora|sig\.|sig\.ra|nome)\s*[:\-]?\s*([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+){0,2})/i,
 
-        /(?:a nome di|nome)\s*[:\-]?\s*([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+){0,3})/i
+        /(?:a nome di)\s+([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+){0,2})/i
 
     ];
 
 
     for (const pattern of namePatterns) {
 
-        const match =
+        match =
             normalized.match(pattern);
 
         if (match) {
@@ -1014,62 +834,52 @@ function parseRideText(text) {
 
 
     /*
-     * Se il nome non ha una parola chiave,
-     * cerchiamo una sequenza di 2-3 parole
-     * che assomigli a nome + cognome.
+     * Cerca "Nome Cognome" solo se non
+     * abbiamo già trovato il passeggero.
      */
 
     if (!result.passenger) {
 
-        const withoutPhone =
-            normalized.replace(
-                phoneRegex,
-                ""
-            );
-
-
-        const possibleName =
-            withoutPhone.match(
+        const nameMatch =
+            normalized.match(
                 /\b([A-ZÀ-Ý][a-zà-ÿ]+)\s+([A-ZÀ-Ý][a-zà-ÿ]+)\b/
             );
 
 
-        if (possibleName) {
+        if (nameMatch) {
 
             const candidate =
-                possibleName[0];
+                nameMatch[1] +
+                " " +
+                nameMatch[2];
 
 
-            const forbiddenWords = [
+            const forbidden = [
 
+                "Lecce",
+                "Brindisi",
+                "Bari",
                 "Aeroporto",
                 "Stazione",
                 "Via",
                 "Viale",
-                "Piazza",
-                "Partenza",
-                "Destinazione",
-                "Domani",
-                "Oggi",
-                "Buongiorno",
-                "Buonasera"
+                "Piazza"
 
             ];
 
 
-            if (
-                !forbiddenWords.some(
-                    function (word) {
-
-                        return candidate
+            const invalid =
+                forbidden.some(
+                    word =>
+                        candidate
                             .toLowerCase()
                             .includes(
                                 word.toLowerCase()
-                            );
+                            )
+                );
 
-                    }
-                )
-            ) {
+
+            if (!invalid) {
 
                 result.passenger =
                     candidate;
@@ -1082,20 +892,114 @@ function parseRideText(text) {
 
 
     /* ========================================
+       PARTENZA + DESTINAZIONE
+    ======================================== */
+
+    /*
+     * Cerchiamo prima strutture esplicite:
+     *
+     * partenza X destinazione Y
+     * da X a Y
+     * da X fino a Y
+     */
+
+    const explicitRoutePatterns = [
+
+        /(?:partenza|ritiro|pickup)\s*[:\-]?\s*(.+?)\s+(?:destinazione|arrivo)\s*[:\-]?\s*(.+?)(?=\s+(?:alle|ore|h|domani|oggi|dopodomani|cliente|passeggero|passeggera|telefono|tel|note|nota)\b|$)/i,
+
+        /\bda\s+(.+?)\s+(?:a|verso|fino a)\s+(.+?)(?=\s+(?:alle|ore|h|domani|oggi|dopodomani|cliente|passeggero|passeggera|telefono|tel|note|nota)\b|$)/i
+
+    ];
+
+
+    for (
+        const pattern of explicitRoutePatterns
+    ) {
+
+        match =
+            normalized.match(pattern);
+
+        if (match) {
+
+            result.pickup =
+                cleanLocationAdvanced(
+                    match[1]
+                );
+
+            result.destination =
+                cleanLocationAdvanced(
+                    match[2]
+                );
+
+            break;
+
+        }
+
+    }
+
+
+    /* ========================================
+       PARTENZA ESPLICITA
+    ======================================== */
+
+    if (!result.pickup) {
+
+        const pickupMatch =
+            normalized.match(
+                /(?:partenza|ritiro|pickup)\s*[:\-]?\s*(.+?)(?=\s+(?:destinazione|arrivo|alle|ore|h|domani|oggi|dopodomani|cliente|passeggero|telefono|tel|note|nota)\b|$)/i
+            );
+
+
+        if (pickupMatch) {
+
+            result.pickup =
+                cleanLocationAdvanced(
+                    pickupMatch[1]
+                );
+
+        }
+
+    }
+
+
+    /* ========================================
+       DESTINAZIONE ESPLICITA
+    ======================================== */
+
+    if (!result.destination) {
+
+        const destinationMatch =
+            normalized.match(
+                /(?:destinazione|arrivo)\s*[:\-]?\s*(.+?)(?=\s+(?:alle|ore|h|domani|oggi|dopodomani|cliente|passeggero|telefono|tel|note|nota)\b|$)/i
+            );
+
+
+        if (destinationMatch) {
+
+            result.destination =
+                cleanLocationAdvanced(
+                    destinationMatch[1]
+                );
+
+        }
+
+    }
+
+
+    /* ========================================
        NOTE
     ======================================== */
 
-    const notesMatch =
+    const noteMatch =
         normalized.match(
             /(?:note|nota|attenzione)\s*[:\-]?\s*(.+)$/i
         );
 
 
-    if (notesMatch) {
+    if (noteMatch) {
 
         result.notes =
-            notesMatch[1]
-                .trim();
+            noteMatch[1].trim();
 
     }
 
@@ -1103,7 +1007,6 @@ function parseRideText(text) {
     return result;
 
 }
-
 /* ========================================
    RIEMPI MODULO
 ======================================== */
