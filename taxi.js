@@ -2545,3 +2545,293 @@ function deleteSelectedRide() {
     renderRidesPage();
 
 }
+
+/* ========================================
+   AGENDA
+======================================== */
+
+let agendaSelectedDate = new Date();
+
+
+function initializeAgendaPage() {
+
+    agendaSelectedDate =
+        new Date();
+
+    renderAgenda();
+
+    const previousButton =
+        document.getElementById("previousDay");
+
+    const nextButton =
+        document.getElementById("nextDay");
+
+
+    if (previousButton) {
+
+        previousButton.addEventListener(
+            "click",
+            function () {
+
+                agendaSelectedDate.setDate(
+                    agendaSelectedDate.getDate() - 1
+                );
+
+                renderAgenda();
+
+            }
+        );
+
+    }
+
+
+    if (nextButton) {
+
+        nextButton.addEventListener(
+            "click",
+            function () {
+
+                agendaSelectedDate.setDate(
+                    agendaSelectedDate.getDate() + 1
+                );
+
+                renderAgenda();
+
+            }
+        );
+
+    }
+
+}
+
+
+function renderAgenda() {
+
+    const dateString =
+        formatAgendaDate(agendaSelectedDate);
+
+    const rides =
+        getRides()
+            .filter(function (ride) {
+
+                return ride.date === dateString;
+
+            })
+            .sort(compareRides);
+
+
+    const dateElement =
+        document.getElementById("agendaDate");
+
+    const labelElement =
+        document.getElementById("agendaDayLabel");
+
+    const countElement =
+        document.getElementById("agendaRideCount");
+
+    const container =
+        document.getElementById("agendaRides");
+
+
+    if (dateElement) {
+
+        dateElement.textContent =
+            agendaSelectedDate.toLocaleDateString(
+                "it-IT",
+                {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long"
+                }
+            );
+
+    }
+
+
+    if (labelElement) {
+
+        labelElement.textContent =
+            isAgendaToday()
+                ? "OGGI"
+                : "PROGRAMMATO";
+
+    }
+
+
+    if (countElement) {
+
+        countElement.textContent =
+            rides.length;
+
+    }
+
+
+    if (!container) {
+        return;
+    }
+
+
+    if (rides.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="agenda-empty">
+
+                <div class="agenda-empty-icon">
+                    +
+                </div>
+
+                <strong>
+                    Nessuna corsa
+                </strong>
+
+                <span>
+                    Non ci sono corse programmate
+                    per questa giornata.
+                </span>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        rides
+            .map(function (ride) {
+
+                return createAgendaRideCard(ride);
+
+            })
+            .join("");
+
+}
+
+
+function createAgendaRideCard(ride) {
+
+    const passenger =
+        ride.passenger ||
+        "Passeggero";
+
+    const pickup =
+        ride.pickup ||
+        "Partenza non indicata";
+
+    const destination =
+        ride.destination ||
+        "Destinazione non indicata";
+
+    const time =
+        ride.time ||
+        "--:--";
+
+    const passengers =
+        ride.passengers ||
+        1;
+
+
+    let notesHTML = "";
+
+
+    if (ride.notes) {
+
+        notesHTML = `
+
+            <div class="agenda-ride-notes">
+                ${escapeHTML(ride.notes)}
+            </div>
+
+        `;
+
+    }
+
+
+    return `
+
+        <article class="agenda-ride-card">
+
+            <div class="agenda-ride-top">
+
+                <strong class="agenda-ride-time">
+                    ${escapeHTML(time)}
+                </strong>
+
+                <span class="ride-passengers">
+                    ${escapeHTML(
+                        String(passengers)
+                    )} pax
+                </span>
+
+            </div>
+
+
+            <div class="agenda-ride-passenger">
+
+                ${escapeHTML(passenger)}
+
+            </div>
+
+
+            <div class="agenda-ride-route">
+
+                <div class="agenda-route-point">
+
+                    <span class="agenda-route-dot"></span>
+
+                    <span>
+                        ${escapeHTML(pickup)}
+                    </span>
+
+                </div>
+
+
+                <div class="agenda-route-line"></div>
+
+
+                <div class="agenda-route-point">
+
+                    <span class="agenda-route-dot agenda-route-dot-end"></span>
+
+                    <span>
+                        ${escapeHTML(destination)}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            ${notesHTML}
+
+        </article>
+
+    `;
+
+}
+
+
+function formatAgendaDate(date) {
+
+    return (
+        date.getFullYear() +
+        "-" +
+        pad(date.getMonth() + 1) +
+        "-" +
+        pad(date.getDate())
+    );
+
+}
+
+
+function isAgendaToday() {
+
+    return (
+        formatAgendaDate(agendaSelectedDate) ===
+        getTodayString()
+    );
+
+}
