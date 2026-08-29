@@ -2336,3 +2336,217 @@ select:focus-visible {
 .new-ride-page-button:active {
     transform: scale(0.98);
 }
+
+/* ========================================
+   AGENDA
+======================================== */
+
+.agenda-content {
+    padding-bottom: 120px;
+}
+
+.agenda-date-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 36px;
+}
+
+.agenda-current-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    flex: 1;
+}
+
+.agenda-current-date strong {
+    margin-top: 5px;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    color: #111111;
+}
+
+.agenda-day-button {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #ded8d0;
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    color: #111111;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
+}
+
+.agenda-day-button:hover {
+    background: #f3eee8;
+}
+
+.agenda-day-button:active {
+    transform: scale(0.95);
+}
+
+.agenda-day-section {
+    margin-bottom: 28px;
+}
+
+.agenda-rides-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.agenda-ride-card {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    padding: 18px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4dfd8;
+    border-radius: 18px;
+
+    box-shadow:
+        0 4px 18px rgba(0, 0, 0, 0.04);
+}
+
+.agenda-ride-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+.agenda-ride-time {
+    font-size: 22px;
+    font-weight: 800;
+
+    color: #111111;
+}
+
+.agenda-ride-passenger {
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #222222;
+}
+
+.agenda-ride-route {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.agenda-route-point {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 14px;
+    color: #55504a;
+}
+
+.agenda-route-dot {
+    width: 8px;
+    height: 8px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #111111;
+}
+
+.agenda-route-dot-end {
+    background: #d89b58;
+}
+
+.agenda-route-line {
+    width: 1px;
+    height: 12px;
+
+    margin-left: 3px;
+
+    background: #d8d2ca;
+}
+
+.agenda-ride-notes {
+    padding-top: 12px;
+
+    border-top: 1px solid #eee9e3;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    color: #77716a;
+}
+
+.agenda-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 48px 20px;
+
+    text-align: center;
+
+    background: #f8f5f1;
+
+    border-radius: 20px;
+}
+
+.agenda-empty-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 14px;
+
+    border-radius: 16px;
+
+    background: #eee9e3;
+
+    font-size: 24px;
+}
+
+.agenda-empty strong {
+    font-size: 16px;
+    color: #222222;
+}
+
+.agenda-empty span {
+    margin-top: 6px;
+
+    font-size: 14px;
+    color: #88817a;
+}
