@@ -1748,3 +1748,17 @@ function cleanPassengerName(name) {
         .trim();
 
 }
+
+function initializePage(driver) {
+
+    updateDriverInterface(driver);
+
+    if (document.getElementById("rideForm")) {
+        initializeNewRidePage();
+    }
+
+    if (document.getElementById("todayRides")) {
+        initializeHomePage();
+    }
+
+}
