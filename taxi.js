@@ -1730,3 +1730,50 @@ function escapeHTML(value) {
         .replace(/'/g, "&#039;");
 
 }
+
+function cleanLocationAdvanced(location) {
+
+    if (!location) {
+        return "";
+    }
+
+    return location
+        .replace(
+            /^(?:in|a|da|presso|verso|fino a|per)\s+/i,
+            ""
+        )
+        .replace(
+            /^(?:il|la|lo|l')\s+/i,
+            ""
+        )
+        .replace(
+            /\s+(?:domani|oggi|dopodomani)$/i,
+            ""
+        )
+        .replace(
+            /[,.]+$/,
+            ""
+        )
+        .trim();
+
+}
+
+
+function cleanPassengerName(name) {
+
+    if (!name) {
+        return "";
+    }
+
+    return name
+        .replace(
+            /\b(?:domani|oggi|dopodomani|alle|ore)\b.*$/i,
+            ""
+        )
+        .replace(
+            /[,.]+$/,
+            ""
+        )
+        .trim();
+
+}
