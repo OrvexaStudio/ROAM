@@ -13,12 +13,20 @@ const AUTHORIZED_DRIVERS = {
 
     cristian: {
         service: "taxi",
-        password: "Taxilecce18!"
+        password: "Taxilecce18!",
+        role: "driver"
     },
 
     manuela: {
         service: "ncc",
-        password: "NCClecce18!"
+        password: "NCClecce18!",
+        role: "driver"
+    },
+
+    francesco: {
+        service: "both",
+        password: "sviluppatore18!",
+        role: "developer"
     }
 
 };
@@ -281,42 +289,43 @@ const password =
                 /* ========================================
                    SERVIZIO NON AUTORIZZATO
                 ======================================== */
+if (
+    authorizedDriver.service !== "both" &&
+    authorizedDriver.service !== service
+) {
 
-                if (
-                    authorizedDriver.service !==
-                    service
-                ) {
+    if (errorElement) {
 
-                    if (errorElement) {
+        errorElement.textContent =
+            "Accesso negato. Non sei autorizzato ad accedere a questo servizio.";
 
-                        errorElement.textContent =
-                            "Accesso negato. Non disponi dell'autorizzazione per accedere a questo servizio.";
+    }
 
-                    }
+    return;
 
-                    return;
-
-                }
+}
 
 
                 /* ========================================
                    PASSA ALLA PASSWORD
                 ======================================== */
 
-                const driver = {
+const driver = {
 
-                    service: service,
+    service: service,
 
-                    name: name,
+    name: name,
 
-                    phone: phone,
+    phone: phone,
 
-                    code: code,
+    code: code,
 
-                    createdAt:
-                        new Date().toISOString()
+    role: authorizedDriver.role,
 
-                };
+    createdAt:
+        new Date().toISOString()
+
+};
 
 
                 window.pendingTaxiPilotDriver =
