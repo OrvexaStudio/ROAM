@@ -1,21 +1,19 @@
-```css
 :root {
     --black: #111111;
-    --black-soft: #1b1b1b;
+    --black-soft: #1d1d1d;
 
-    --orange: #e4a05b;
-    --orange-light: #f1c18d;
+    --orange: #e3a05c;
+    --orange-light: #f1c28e;
 
     --cream: #f7f4ef;
     --white: #ffffff;
 
     --gray-100: #f0eeea;
-    --gray-200: #e1ded8;
-    --gray-300: #c9c5be;
+    --gray-200: #dfdcd6;
     --gray-400: #96928b;
-    --gray-600: #615e59;
+    --gray-600: #625f59;
 
-    --danger: #b34b4b;
+    --danger: #b44d4d;
 
     --radius-small: 12px;
     --radius-medium: 18px;
@@ -25,26 +23,23 @@
 }
 
 
-/* =========================
-   RESET
-========================= */
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+
 html,
 body {
     min-height: 100%;
 }
 
+
 body {
     font-family:
         -apple-system,
         BlinkMacSystemFont,
-        "Inter",
         "Segoe UI",
         Roboto,
         Helvetica,
@@ -57,28 +52,28 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+
 button,
 input {
     font: inherit;
 }
+
 
 button {
     border: none;
     cursor: pointer;
 }
 
+
 .hidden {
     display: none !important;
 }
 
 
-/* =========================
-   GENERAL
-========================= */
-
 .screen {
     min-height: 100vh;
 }
+
 
 .eyebrow {
     display: block;
@@ -92,9 +87,7 @@ button {
 }
 
 
-/* =========================
-   ONBOARDING
-========================= */
+/* LOGIN */
 
 #onboarding {
     display: flex;
@@ -103,13 +96,12 @@ button {
     padding: 45px 22px;
 }
 
+
 .onboarding-container {
     width: 100%;
     max-width: 620px;
 }
 
-
-/* BRAND */
 
 .brand {
     display: flex;
@@ -119,6 +111,7 @@ button {
     margin-bottom: 100px;
 }
 
+
 .brand-logo {
     width: 48px;
     height: 48px;
@@ -126,21 +119,21 @@ button {
     display: grid;
     place-items: center;
 
-    border-radius: 14px;
-
     background: var(--black);
     color: var(--orange-light);
 
+    border-radius: 14px;
+
     font-size: 12px;
     font-weight: 900;
-
-    letter-spacing: 0.08em;
 }
+
 
 .brand h1 {
     font-size: 16px;
     font-weight: 800;
 }
+
 
 .brand p {
     margin-top: 4px;
@@ -151,11 +144,10 @@ button {
 }
 
 
-/* HEADING */
-
 .onboarding-heading {
     margin-bottom: 38px;
 }
+
 
 .onboarding-heading h2 {
     margin-top: 12px;
@@ -166,10 +158,9 @@ button {
     letter-spacing: -0.055em;
 }
 
+
 .onboarding-heading p {
     margin-top: 22px;
-
-    max-width: 430px;
 
     color: var(--gray-600);
 
@@ -178,12 +169,11 @@ button {
 }
 
 
-/* SERVICE CARDS */
-
 .service-selection {
     display: grid;
     gap: 12px;
 }
+
 
 .service-card {
     width: 100%;
@@ -206,6 +196,7 @@ button {
         box-shadow 0.2s ease;
 }
 
+
 .service-card:hover {
     transform: translateY(-2px);
 
@@ -214,9 +205,11 @@ button {
     box-shadow: var(--shadow);
 }
 
+
 .service-card-content {
     flex: 1;
 }
+
 
 .service-label {
     display: block;
@@ -224,6 +217,7 @@ button {
     font-size: 16px;
     font-weight: 800;
 }
+
 
 .service-description {
     display: block;
@@ -235,6 +229,7 @@ button {
     font-size: 13px;
 }
 
+
 .service-arrow {
     color: var(--gray-400);
 
@@ -242,9 +237,7 @@ button {
 }
 
 
-/* =========================
-   DRIVER SETUP
-========================= */
+/* SETUP */
 
 #driverSetup {
     display: flex;
@@ -253,10 +246,12 @@ button {
     padding: 35px 22px;
 }
 
+
 .setup-container {
     width: 100%;
     max-width: 520px;
 }
+
 
 .back-button {
     margin-bottom: 55px;
@@ -268,6 +263,7 @@ button {
     font-size: 14px;
 }
 
+
 .setup-container h2 {
     margin-top: 12px;
 
@@ -275,6 +271,7 @@ button {
 
     letter-spacing: -0.045em;
 }
+
 
 .setup-description {
     margin-top: 12px;
@@ -284,13 +281,16 @@ button {
     line-height: 1.6;
 }
 
+
 #driverForm {
     margin-top: 38px;
 }
 
+
 .form-group {
     margin-bottom: 22px;
 }
+
 
 .form-group label {
     display: block;
@@ -305,6 +305,7 @@ button {
     letter-spacing: 0.12em;
 }
 
+
 .form-group input {
     width: 100%;
 
@@ -318,21 +319,20 @@ button {
     outline: none;
 
     color: var(--black);
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
 }
+
 
 .form-group input:focus {
     border-color: var(--orange);
 
-    box-shadow: 0 0 0 3px rgba(228, 160, 91, 0.15);
+    box-shadow: 0 0 0 3px rgba(227, 160, 92, 0.15);
 }
+
 
 .form-group input::placeholder {
     color: var(--gray-400);
 }
+
 
 .selected-service {
     display: flex;
@@ -348,6 +348,7 @@ button {
     border-radius: var(--radius-small);
 }
 
+
 .selected-service span {
     color: var(--gray-600);
 
@@ -357,16 +358,18 @@ button {
     letter-spacing: 0.1em;
 }
 
+
 .selected-service strong {
     font-size: 13px;
 }
+
 
 .primary-button {
     width: 100%;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
     padding: 17px 18px;
 
@@ -376,31 +379,17 @@ button {
     border-radius: var(--radius-small);
 
     font-weight: 700;
-
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease;
-}
-
-.primary-button:hover {
-    transform: translateY(-1px);
-
-    background: var(--black-soft);
 }
 
 
-/* =========================
-   APP
-========================= */
+/* APP HEADER */
 
 .app-shell {
     min-height: 100vh;
 
-    padding-bottom: 90px;
+    padding-bottom: 95px;
 }
 
-
-/* HEADER */
 
 .app-header {
     display: flex;
@@ -409,6 +398,7 @@ button {
 
     padding: 25px 22px 15px;
 }
+
 
 .header-service {
     display: block;
@@ -423,11 +413,13 @@ button {
     letter-spacing: 0.15em;
 }
 
+
 .app-header h1 {
     font-size: 28px;
 
     letter-spacing: -0.04em;
 }
+
 
 .profile-button {
     width: 44px;
@@ -445,28 +437,29 @@ button {
 }
 
 
-/* MAIN */
+/* PAGES */
 
 #pageContainer {
     padding: 18px 22px 30px;
 }
 
+
 .app-page {
     display: none;
 }
+
 
 .app-page.active {
     display: block;
 }
 
 
-/* =========================
-   HOME
-========================= */
+/* HOME */
 
 .page-introduction {
     margin: 15px 0 24px;
 }
+
 
 .page-introduction h2 {
     margin-top: 7px;
@@ -476,6 +469,7 @@ button {
     letter-spacing: -0.045em;
 }
 
+
 .page-introduction p {
     margin-top: 7px;
 
@@ -484,8 +478,6 @@ button {
     font-size: 14px;
 }
 
-
-/* NEXT ITEM */
 
 .next-item-card {
     overflow: hidden;
@@ -498,6 +490,7 @@ button {
     box-shadow: var(--shadow);
 }
 
+
 .next-item-header {
     display: flex;
     align-items: center;
@@ -506,7 +499,6 @@ button {
     padding: 16px 18px;
 
     background: var(--black);
-
     color: var(--white);
 
     font-size: 10px;
@@ -515,13 +507,16 @@ button {
     letter-spacing: 0.12em;
 }
 
+
 #nextItemTime {
     color: var(--orange-light);
 }
 
+
 .next-item-content {
     padding: 32px 20px;
 }
+
 
 .next-item-empty {
     display: block;
@@ -529,6 +524,7 @@ button {
     font-size: 19px;
     font-weight: 700;
 }
+
 
 .next-item-content p {
     margin-top: 7px;
@@ -539,8 +535,6 @@ button {
 }
 
 
-/* SECTION */
-
 .section-header {
     display: flex;
     align-items: flex-end;
@@ -549,13 +543,13 @@ button {
     margin: 34px 0 14px;
 }
 
+
 .section-header h3 {
     margin-top: 7px;
 
     font-size: 21px;
-
-    letter-spacing: -0.025em;
 }
+
 
 .count {
     min-width: 30px;
@@ -586,9 +580,11 @@ button {
     text-align: center;
 }
 
+
 .empty-state h3 {
     font-size: 16px;
 }
+
 
 .empty-state p {
     margin-top: 7px;
@@ -599,6 +595,7 @@ button {
     line-height: 1.5;
 }
 
+
 .empty-state.large {
     margin-top: 25px;
 
@@ -606,13 +603,12 @@ button {
 }
 
 
-/* =========================
-   PAGE TITLE
-========================= */
+/* TITOLI */
 
 .page-title {
     margin: 15px 0 25px;
 }
+
 
 .page-title h2 {
     margin-top: 8px;
@@ -623,18 +619,15 @@ button {
 }
 
 
-/* =========================
-   FILTER
-========================= */
+/* FILTRI */
 
 .filter-row {
     display: flex;
     gap: 8px;
 
     overflow-x: auto;
-
-    padding-bottom: 4px;
 }
+
 
 .filter {
     padding: 10px 15px;
@@ -651,6 +644,7 @@ button {
     white-space: nowrap;
 }
 
+
 .filter.active {
     background: var(--black);
     color: var(--white);
@@ -659,9 +653,7 @@ button {
 }
 
 
-/* =========================
-   AGENDA
-========================= */
+/* AGENDA */
 
 .agenda-empty {
     padding: 65px 25px;
@@ -673,6 +665,7 @@ button {
 
     text-align: center;
 }
+
 
 .calendar-symbol {
     width: 54px;
@@ -691,9 +684,11 @@ button {
     font-weight: 800;
 }
 
+
 .agenda-empty h3 {
     font-size: 18px;
 }
+
 
 .agenda-empty p {
     max-width: 330px;
@@ -707,9 +702,7 @@ button {
 }
 
 
-/* =========================
-   PROFILE
-========================= */
+/* PROFILO */
 
 .profile-card {
     display: flex;
@@ -723,6 +716,7 @@ button {
     border: 1px solid var(--gray-200);
     border-radius: var(--radius-medium);
 }
+
 
 .profile-avatar {
     width: 55px;
@@ -740,9 +734,11 @@ button {
     font-weight: 800;
 }
 
+
 .profile-information h3 {
     font-size: 17px;
 }
+
 
 .profile-information p {
     margin-top: 4px;
@@ -755,6 +751,7 @@ button {
     letter-spacing: 0.12em;
 }
 
+
 .profile-details {
     margin-top: 14px;
 
@@ -765,6 +762,7 @@ button {
 
     overflow: hidden;
 }
+
 
 .detail-row {
     display: flex;
@@ -778,9 +776,11 @@ button {
     border-bottom: 1px solid var(--gray-200);
 }
 
+
 .detail-row:last-child {
     border-bottom: none;
 }
+
 
 .detail-row span {
     color: var(--gray-400);
@@ -788,11 +788,13 @@ button {
     font-size: 12px;
 }
 
+
 .detail-row strong {
     font-size: 12px;
 
     text-align: right;
 }
+
 
 .danger-button {
     width: 100%;
@@ -803,7 +805,7 @@ button {
 
     background: transparent;
 
-    border: 1px solid rgba(179, 75, 75, 0.3);
+    border: 1px solid rgba(180, 77, 77, 0.3);
     border-radius: var(--radius-small);
 
     color: var(--danger);
@@ -813,9 +815,7 @@ button {
 }
 
 
-/* =========================
-   BOTTOM NAV
-========================= */
+/* NAVIGAZIONE */
 
 .bottom-nav {
     position: fixed;
@@ -834,12 +834,13 @@ button {
 
     padding: 8px 12px;
 
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, 0.97);
 
     border-top: 1px solid var(--gray-200);
 
     backdrop-filter: blur(15px);
 }
+
 
 .nav-item {
     height: 55px;
@@ -856,18 +857,22 @@ button {
     color: var(--gray-400);
 }
 
+
 .nav-item.active {
     color: var(--black);
 }
+
 
 .nav-icon {
     font-size: 10px;
     font-weight: 800;
 }
 
+
 .nav-label {
     font-size: 10px;
 }
+
 
 .add-nav-button {
     width: 56px;
@@ -885,14 +890,10 @@ button {
 
     font-size: 28px;
     font-weight: 300;
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
 }
 
 
-/* =========================
-   MODAL
-========================= */
+/* MODALE */
 
 .modal {
     position: fixed;
@@ -902,6 +903,7 @@ button {
     z-index: 100;
 }
 
+
 .modal-backdrop {
     position: absolute;
 
@@ -909,6 +911,7 @@ button {
 
     background: rgba(0, 0, 0, 0.45);
 }
+
 
 .modal-sheet {
     position: absolute;
@@ -922,9 +925,8 @@ button {
     background: var(--cream);
 
     border-radius: 28px 28px 0 0;
-
-    box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.15);
 }
+
 
 .modal-close {
     position: absolute;
@@ -947,6 +949,7 @@ button {
     font-size: 22px;
 }
 
+
 .modal-sheet h2 {
     margin-top: 10px;
 
@@ -954,6 +957,7 @@ button {
 
     letter-spacing: -0.04em;
 }
+
 
 .modal-description {
     margin-top: 8px;
@@ -964,12 +968,14 @@ button {
     line-height: 1.5;
 }
 
+
 .input-methods {
     display: grid;
     gap: 10px;
 
     margin-top: 25px;
 }
+
 
 .method-card {
     width: 100%;
@@ -988,11 +994,13 @@ button {
     text-align: left;
 }
 
+
 .method-content strong {
     display: block;
 
     font-size: 14px;
 }
+
 
 .method-content span {
     display: block;
@@ -1005,43 +1013,42 @@ button {
 }
 
 
-/* =========================
-   DESKTOP
-========================= */
+/* DESKTOP */
 
 @media (min-width: 800px) {
 
     .app-shell {
         max-width: 1000px;
-
         margin: 0 auto;
     }
+
 
     .app-header {
         padding: 35px 30px 20px;
     }
 
+
     #pageContainer {
         padding: 25px 30px 40px;
     }
 
+
     .bottom-nav {
         left: 50%;
-
         right: auto;
 
         width: min(600px, calc(100% - 40px));
 
         transform: translateX(-50%);
 
-        border: 1px solid var(--gray-200);
-
-        border-radius: 22px;
-
         bottom: 15px;
+
+        border: 1px solid var(--gray-200);
+        border-radius: 22px;
 
         box-shadow: var(--shadow);
     }
+
 
     .modal-sheet {
         left: 50%;
@@ -1054,5 +1061,5 @@ button {
 
         border-radius: 28px;
     }
+
 }
-```
