@@ -1744,3 +1744,562 @@ select:focus-visible {
 
     outline-offset: 2px;
 }
+
+/* ========================================
+   PAGINA CORSE
+======================================== */
+
+.rides-page-content {
+    padding: 24px 20px 110px;
+}
+
+
+/* ========================================
+   RICERCA
+======================================== */
+
+.rides-search {
+    margin-bottom: 14px;
+}
+
+.rides-search input {
+    width: 100%;
+    box-sizing: border-box;
+
+    border: 1px solid #dedbd5;
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    padding: 14px 16px;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    color: #171717;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.rides-search input:focus {
+    border-color: #111111;
+
+    box-shadow:
+        0 0 0 3px rgba(17, 17, 17, 0.06);
+}
+
+.rides-search input::placeholder {
+    color: #9a9893;
+}
+
+
+/* ========================================
+   FILTRI
+======================================== */
+
+.ride-filters {
+    display: flex;
+
+    gap: 8px;
+
+    overflow-x: auto;
+
+    margin-bottom: 28px;
+
+    padding-bottom: 2px;
+
+    scrollbar-width: none;
+}
+
+.ride-filters::-webkit-scrollbar {
+    display: none;
+}
+
+.ride-filter {
+    flex-shrink: 0;
+
+    border: 1px solid #dedbd5;
+
+    background: #ffffff;
+
+    color: #66635d;
+
+    border-radius: 999px;
+
+    padding: 9px 15px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.ride-filter.active {
+    background: #111111;
+
+    color: #ffffff;
+
+    border-color: #111111;
+}
+
+
+/* ========================================
+   GRUPPI DATA
+======================================== */
+
+.ride-date-group {
+    margin-bottom: 28px;
+}
+
+.ride-date-heading {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+    padding: 0 2px;
+}
+
+.ride-date-heading > span:last-child {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 24px;
+    height: 24px;
+
+    padding: 0 7px;
+
+    box-sizing: border-box;
+
+    border-radius: 999px;
+
+    background: #eeeae3;
+
+    color: #5e5b55;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.ride-date-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+
+/* ========================================
+   CARD CORSA
+======================================== */
+
+.ride-list-card {
+    display: grid;
+
+    grid-template-columns: 58px 1fr 34px;
+
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 15px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e1da;
+
+    border-radius: 16px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.ride-list-card:hover {
+    border-color: #cbc6bd;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.05);
+}
+
+.ride-list-card:active {
+    transform: scale(0.985);
+}
+
+.ride-list-time {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+
+    border-radius: 11px;
+
+    background: #f3f0ea;
+}
+
+.ride-list-time strong {
+    font-size: 15px;
+
+    color: #111111;
+}
+
+.ride-list-main {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.ride-list-main strong {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #171717;
+
+    font-size: 15px;
+
+    font-weight: 650;
+}
+
+.ride-list-main span {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color: #77736c;
+
+    font-size: 12px;
+}
+
+.ride-list-passengers {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    background: #f3f0ea;
+
+    color: #55514a;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+/* ========================================
+   VUOTO
+======================================== */
+
+.rides-empty {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 55px 20px 30px;
+}
+
+.rides-empty.hidden {
+    display: none;
+}
+
+.rides-empty-icon {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 58px;
+    height: 58px;
+
+    margin-bottom: 16px;
+
+    border-radius: 18px;
+
+    background: #f0ede7;
+
+    color: #6d6962;
+
+    font-size: 26px;
+}
+
+.rides-empty h2 {
+    margin: 0 0 7px;
+
+    color: #171717;
+
+    font-size: 20px;
+}
+
+.rides-empty p {
+    max-width: 280px;
+
+    margin: 0 0 22px;
+
+    color: #817d75;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* ========================================
+   PULSANTE +
+======================================== */
+
+.floating-add-button {
+    position: fixed;
+
+    right: 20px;
+    bottom: 88px;
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    background: #111111;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 27px;
+
+    line-height: 1;
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.18);
+
+    transition:
+        transform 0.15s ease;
+}
+
+.floating-add-button:active {
+    transform: scale(0.92);
+}
+
+
+/* ========================================
+   MODALE DETTAGLIO
+======================================== */
+
+#rideDetailModal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+}
+
+#rideDetailModal.hidden {
+    display: none;
+}
+
+#rideDetailModal .modal-backdrop {
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.42);
+}
+
+#rideDetailModal .modal-content {
+    position: absolute;
+
+    left: 50%;
+    bottom: 0;
+
+    width: min(100%, 520px);
+
+    box-sizing: border-box;
+
+    transform: translateX(-50%);
+
+    padding: 26px 20px 28px;
+
+    background: #ffffff;
+
+    border-radius: 24px 24px 0 0;
+
+    box-shadow:
+        0 -8px 35px rgba(0, 0, 0, 0.12);
+
+    max-height: 85vh;
+
+    overflow-y: auto;
+}
+
+.modal-close {
+    position: absolute;
+
+    top: 17px;
+    right: 17px;
+
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    background: #f0ede7;
+
+    color: #44413c;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+#rideDetailModal h2 {
+    margin: 7px 45px 22px 0;
+
+    color: #111111;
+
+    font-size: 23px;
+}
+
+.ride-detail-content {
+    display: flex;
+
+    flex-direction: column;
+
+    border-top: 1px solid #ece9e3;
+}
+
+.ride-detail-row {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid #ece9e3;
+}
+
+.ride-detail-row span {
+    color: #858078;
+
+    font-size: 13px;
+}
+
+.ride-detail-row strong {
+    max-width: 65%;
+
+    color: #222222;
+
+    font-size: 14px;
+
+    text-align: right;
+
+    line-height: 1.4;
+}
+
+
+/* ========================================
+   ELIMINA
+======================================== */
+
+.delete-ride-button {
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 14px;
+
+    border: 1px solid #dedbd5;
+
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    color: #55514b;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.delete-ride-button:active {
+    background: #f4f1ec;
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (min-width: 700px) {
+
+    .rides-page-content {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    #rideDetailModal .modal-content {
+        bottom: 20px;
+
+        border-radius: 24px;
+    }
+
+}
