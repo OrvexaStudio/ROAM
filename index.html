@@ -1,558 +1,238 @@
-
+```html
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Cooperativa Taxi Lecce</title>
+    <title>TaxiPilot | Cooperativa Taxi Lecce</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body class="login-page">
 
-<div id="app">
+    <main class="login-container">
 
-    <!-- LOGIN / PRIMO AVVIO -->
+        <header class="login-brand">
 
-    <section id="onboarding" class="screen">
-
-        <div class="onboarding-container">
-
-            <div class="brand">
-                <div class="brand-logo">CTL</div>
-
-                <div>
-                    <h1>Cooperativa Taxi Lecce</h1>
-                    <p>Veloce. Sicuro. Puntuale.</p>
-                </div>
+            <div class="brand-mark">
+                CTL
             </div>
 
-            <div class="onboarding-heading">
-                <span class="eyebrow">BENVENUTO</span>
+            <div class="brand-text">
+                <strong>Cooperativa Taxi Lecce</strong>
+                <span>TaxiPilot</span>
+            </div>
 
-                <h2>
-                    Configuriamo<br>
-                    la tua app.
-                </h2>
+        </header>
+
+
+        <!-- SCELTA SERVIZIO -->
+
+        <section id="serviceStep" class="login-step">
+
+            <div class="login-heading">
+
+                <span class="eyebrow">
+                    TAXIPILOT
+                </span>
+
+                <h1>
+                    Iniziamo.
+                </h1>
 
                 <p>
                     Seleziona il tipo di servizio che utilizzi.
                 </p>
-            </div>
-
-            <div class="service-selection">
-
-                <button class="service-card" data-service="taxi">
-
-                    <div class="service-card-content">
-                        <span class="service-label">TAXI</span>
-                        <span class="service-description">
-                            Gestione delle corse
-                        </span>
-                    </div>
-
-                    <span class="service-arrow">→</span>
-
-                </button>
-
-                <button class="service-card" data-service="ncc">
-
-                    <div class="service-card-content">
-                        <span class="service-label">NCC</span>
-                        <span class="service-description">
-                            Gestione dei servizi
-                        </span>
-                    </div>
-
-                    <span class="service-arrow">→</span>
-
-                </button>
 
             </div>
 
-        </div>
 
-    </section>
+            <div class="service-options">
+
+                <button
+                    type="button"
+                    class="service-option"
+                    data-service="taxi"
+                >
+
+                    <div class="service-option-text">
+
+                        <span class="service-option-label">
+                            TAXI
+                        </span>
+
+                        <span class="service-option-description">
+                            Gestione delle corse taxi
+                        </span>
+
+                    </div>
+
+                    <span class="service-option-arrow">
+                        →
+                    </span>
+
+                </button>
 
 
-    <!-- CONFIGURAZIONE CONDUCENTE -->
+                <button
+                    type="button"
+                    class="service-option"
+                    data-service="ncc"
+                >
 
-    <section id="driverSetup" class="screen hidden">
+                    <div class="service-option-text">
 
-        <div class="setup-container">
+                        <span class="service-option-label">
+                            NCC
+                        </span>
 
-            <button id="backToService" class="back-button">
+                        <span class="service-option-description">
+                            Gestione dei servizi con conducente
+                        </span>
+
+                    </div>
+
+                    <span class="service-option-arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- DATI CONDUCENTE -->
+
+        <section
+            id="driverStep"
+            class="login-step is-hidden"
+        >
+
+            <button
+                type="button"
+                id="backButton"
+                class="login-back"
+            >
                 ← Indietro
             </button>
 
-            <span class="eyebrow">CONFIGURAZIONE</span>
 
-            <h2>I tuoi dati</h2>
+            <div class="login-heading">
 
-            <p class="setup-description">
-                Inserisci i dati del conducente.
-            </p>
+                <span
+                    id="selectedService"
+                    class="eyebrow"
+                >
+                    TAXI
+                </span>
 
-            <form id="driverForm">
+                <h1>
+                    I tuoi dati.
+                </h1>
 
-                <div class="form-group">
+                <p>
+                    Inseriscili una sola volta.
+                    TaxiPilot li ricorderà sul dispositivo.
+                </p>
+
+            </div>
+
+
+            <form id="driverForm" class="driver-form">
+
+                <div class="input-group">
 
                     <label for="driverName">
                         NOME E COGNOME
                     </label>
 
                     <input
-                        id="driverName"
                         type="text"
-                        placeholder="Nome e cognome"
+                        id="driverName"
+                        name="driverName"
+                        placeholder="Es. Mario Rossi"
                         autocomplete="name"
                         required
                     >
 
                 </div>
 
-                <div class="form-group">
+
+                <div class="input-group">
 
                     <label for="driverPhone">
-                        NUMERO DI TELEFONO
+                        TELEFONO
                     </label>
 
                     <input
-                        id="driverPhone"
                         type="tel"
-                        placeholder="Numero di telefono"
+                        id="driverPhone"
+                        name="driverPhone"
+                        placeholder="Es. 333 1234567"
                         autocomplete="tel"
                         required
                     >
 
                 </div>
 
-                <div class="form-group">
 
-                    <label for="driverLicense">
-                        LICENZA / AUTORIZZAZIONE
+                <div class="input-group">
+
+                    <label for="driverCode">
+                        NUMERO LICENZA / AUTORIZZAZIONE
                     </label>
 
                     <input
-                        id="driverLicense"
                         type="text"
-                        placeholder="Numero licenza o autorizzazione"
+                        id="driverCode"
+                        name="driverCode"
+                        placeholder="Inserisci il numero"
                     >
 
                 </div>
 
-                <div class="selected-service">
 
-                    <span>TIPO DI SERVIZIO</span>
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
 
-                    <strong id="selectedServiceLabel">
-                        TAXI
-                    </strong>
+                    <span>
+                        Entra in TaxiPilot
+                    </span>
 
-                </div>
+                    <span>
+                        →
+                    </span>
 
-                <button type="submit" class="primary-button">
-                    Continua
-                    <span>→</span>
                 </button>
 
             </form>
 
-        </div>
+        </section>
 
-    </section>
 
+        <footer class="login-footer">
 
-    <!-- APPLICAZIONE -->
-
-    <section id="mainApp" class="app-shell hidden">
-
-        <header class="app-header">
-
-            <div>
-
-                <span id="headerService" class="header-service">
-                    TAXI
-                </span>
-
-                <h1 id="headerGreeting">
-                    Buongiorno
-                </h1>
-
-            </div>
-
-            <button class="profile-button" id="profileButton">
-                <span id="profileInitial">C</span>
-            </button>
-
-        </header>
-
-
-        <main id="pageContainer">
-
-
-            <!-- HOME -->
-
-            <section id="homePage" class="app-page active">
-
-                <div class="page-introduction">
-
-                    <span class="eyebrow">OGGI</span>
-
-                    <h2 id="homeTitle">
-                        La tua giornata
-                    </h2>
-
-                    <p id="homeDescription">
-                        Ecco il riepilogo delle tue corse.
-                    </p>
-
-                </div>
-
-
-                <div class="next-item-card">
-
-                    <div class="next-item-header">
-
-                        <span id="nextItemLabel">
-                            PROSSIMA CORSA
-                        </span>
-
-                        <span id="nextItemTime">
-                            —
-                        </span>
-
-                    </div>
-
-                    <div class="next-item-content">
-
-                        <span class="next-item-empty">
-                            Nessuna corsa programmata
-                        </span>
-
-                        <p>
-                            Le prossime corse appariranno qui.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="section-header">
-
-                    <div>
-
-                        <span class="eyebrow">OGGI</span>
-
-                        <h3 id="todayItemsTitle">
-                            Le tue corse
-                        </h3>
-
-                    </div>
-
-                    <span id="todayItemsCount" class="count">
-                        0
-                    </span>
-
-                </div>
-
-
-                <div class="empty-state">
-
-                    <h3>Nessuna corsa</h3>
-
-                    <p>
-                        Non hai ancora aggiunto corse per oggi.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- CORSE / SERVIZI -->
-
-            <section id="listPage" class="app-page">
-
-                <div class="page-title">
-
-                    <span id="listEyebrow" class="eyebrow">
-                        CORSE
-                    </span>
-
-                    <h2 id="listTitle">
-                        Le tue corse
-                    </h2>
-
-                </div>
-
-
-                <div class="filter-row">
-
-                    <button class="filter active">
-                        Oggi
-                    </button>
-
-                    <button class="filter">
-                        Domani
-                    </button>
-
-                    <button class="filter">
-                        Future
-                    </button>
-
-                </div>
-
-
-                <div class="empty-state large">
-
-                    <h3>Nessuna corsa</h3>
-
-                    <p>
-                        Le corse che aggiungerai appariranno qui.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- AGENDA -->
-
-            <section id="agendaPage" class="app-page">
-
-                <div class="page-title">
-
-                    <span class="eyebrow">
-                        PROGRAMMA
-                    </span>
-
-                    <h2>Agenda</h2>
-
-                </div>
-
-
-                <div class="agenda-empty">
-
-                    <div class="calendar-symbol">
-                        31
-                    </div>
-
-                    <h3>
-                        La tua agenda
-                    </h3>
-
-                    <p>
-                        Qui verranno organizzate le corse
-                        e i servizi per giorno e settimana.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- PROFILO -->
-
-            <section id="profilePage" class="app-page">
-
-                <div class="page-title">
-
-                    <span class="eyebrow">
-                        ACCOUNT
-                    </span>
-
-                    <h2>Profilo</h2>
-
-                </div>
-
-
-                <div class="profile-card">
-
-                    <div id="profileAvatar" class="profile-avatar">
-                        C
-                    </div>
-
-                    <div class="profile-information">
-
-                        <h3 id="profileName">
-                            Conducente
-                        </h3>
-
-                        <p id="profileService">
-                            TAXI
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="profile-details">
-
-                    <div class="detail-row">
-
-                        <span>Telefono</span>
-
-                        <strong id="profilePhone">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail-row">
-
-                        <span>Licenza / autorizzazione</span>
-
-                        <strong id="profileLicense">
-                            —
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <button id="resetApp" class="danger-button">
-                    Reimposta configurazione
-                </button>
-
-            </section>
-
-        </main>
-
-
-        <!-- NAVIGAZIONE -->
-
-        <nav class="bottom-nav">
-
-            <button class="nav-item active" data-page="home">
-                <span class="nav-icon">Home</span>
-                <span class="nav-label">Home</span>
-            </button>
-
-            <button class="nav-item" data-page="list">
-                <span class="nav-icon">Corse</span>
-                <span id="listNavLabel" class="nav-label">
-                    Corse
-                </span>
-            </button>
-
-            <button id="addButton" class="add-nav-button">
-                +
-            </button>
-
-            <button class="nav-item" data-page="agenda">
-                <span class="nav-icon">Agenda</span>
-                <span class="nav-label">Agenda</span>
-            </button>
-
-            <button class="nav-item" data-page="profile">
-                <span class="nav-icon">Profilo</span>
-                <span class="nav-label">Profilo</span>
-            </button>
-
-        </nav>
-
-    </section>
-
-
-    <!-- MODALE -->
-
-    <div id="newItemModal" class="modal hidden">
-
-        <div class="modal-backdrop"></div>
-
-        <div class="modal-sheet">
-
-            <button id="closeModal" class="modal-close">
-                ×
-            </button>
-
-            <span id="modalEyebrow" class="eyebrow">
-                NUOVA CORSA
+            <span>
+                Cooperativa Taxi Lecce
             </span>
 
-            <h2 id="modalTitle">
-                Come vuoi inserire la corsa?
-            </h2>
+            <span>
+                TaxiPilot
+            </span>
 
-            <p class="modal-description">
-                Scegli il metodo con cui vuoi aggiungere
-                una nuova corsa.
-            </p>
+        </footer>
 
-            <div class="input-methods">
-
-                <button class="method-card" id="manualMethod">
-
-                    <div class="method-content">
-
-                        <strong>
-                            Inserimento manuale
-                        </strong>
-
-                        <span>
-                            Compila i dati della corsa
-                        </span>
-
-                    </div>
-
-                    <span>→</span>
-
-                </button>
+    </main>
 
 
-                <button class="method-card" id="importMethod">
-
-                    <div class="method-content">
-
-                        <strong>
-                            Importa messaggio
-                        </strong>
-
-                        <span>
-                            Incolla qualsiasi testo
-                        </span>
-
-                    </div>
-
-                    <span>→</span>
-
-                </button>
-
-
-                <button class="method-card" id="voiceMethod">
-
-                    <div class="method-content">
-
-                        <strong>
-                            Inserimento vocale
-                        </strong>
-
-                        <span>
-                            Parla liberamente
-                        </span>
-
-                    </div>
-
-                    <span>→</span>
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<script src="app.js"></script>
+    <script src="js/app.js"></script>
 
 </body>
 </html>
+```
