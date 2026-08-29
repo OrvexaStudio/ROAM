@@ -33,12 +33,25 @@ function initializePage(driver) {
 
     updateDriverInterface(driver);
 
+
     if (document.getElementById("rideForm")) {
+
         initializeNewRidePage();
+
     }
 
+
     if (document.getElementById("todayRides")) {
+
         initializeHomePage();
+
+    }
+
+
+    if (document.getElementById("ridesList")) {
+
+        initializeRidesPage();
+
     }
 
 }
@@ -1749,16 +1762,784 @@ function cleanPassengerName(name) {
 
 }
 
-function initializePage(driver) {
+/* ========================================
+   PAGINA CORSE
+======================================== */
 
-    updateDriverInterface(driver);
+let currentRideFilter = "all";
+let selectedRideId = null;
 
-    if (document.getElementById("rideForm")) {
-        initializeNewRidePage();
+
+function initializeRidesPage() {
+
+    initializeRideSearch();
+
+    initializeRideFilters();
+
+    initializeRideDetail();
+
+    renderRidesPage();
+
+}
+
+
+/* ========================================
+   RENDER CORSE
+======================================== */
+
+function renderRidesPage() {
+
+    const container =
+        document.getElementById("ridesList");
+
+    const empty =
+        document.getElementById("ridesEmpty");
+
+
+    if (!container || !empty) {
+        return;
     }
 
-    if (document.getElementById("todayRides")) {
-        initializeHomePage();
+
+    const searchInput =
+        document.getElementById("rideSearch");
+
+
+    const search =
+        searchInput
+            ? searchInput.value
+                .trim()
+                .toLowerCase()
+            : "";
+
+
+    let rides =
+        getRides();
+
+
+    rides =
+        rides.sort(function (a, b) {
+
+            const dateA =
+                new Date(
+                    a.date + "T" + (a.time || "00:00")
+                );
+
+            const dateB =
+                new Date(
+                    b.date + "T" + (b.time || "00:00")
+                );
+
+            return dateA - dateB;
+
+        });
+
+
+    rides =
+        rides.filter(function (ride) {
+
+            if (
+                currentRideFilter === "today"
+            ) {
+
+                return ride.date ===
+                    getTodayString();
+
+            }
+
+
+            if (
+                currentRideFilter === "upcoming"
+            ) {
+
+                return isRideUpcoming(ride);
+
+            }
+
+
+            return true;
+
+        });
+
+
+    if (search) {
+
+        rides =
+            rides.filter(function (ride) {
+
+                const searchable = [
+
+                    ride.passenger,
+                    ride.passengerPhone,
+                    ride.pickup,
+                    ride.destination,
+                    ride.notes,
+                    ride.date,
+                    ride.time
+
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return searchable.includes(
+                    search
+                );
+
+            });
+
     }
+
+
+    if (rides.length === 0) {
+
+        container.innerHTML = "";
+
+        empty.classList.remove("hidden");
+
+        return;
+
+    }
+
+
+    empty.classList.add("hidden");
+
+
+    const groups = {};
+
+
+    rides.forEach(function (ride) {
+
+        if (!groups[ride.date]) {
+
+            groups[ride.date] = [];
+
+        }
+
+        groups[ride.date].push(ride);
+
+    });
+
+
+    container.innerHTML =
+        Object.keys(groups)
+            .map(function (date) {
+
+                return createRideDateGroup(
+                    date,
+                    groups[date]
+                );
+
+            })
+            .join("");
+
+
+    container
+        .querySelectorAll("[data-ride-id]")
+        .forEach(function (element) {
+
+            element.addEventListener(
+                "click",
+                function () {
+
+                    openRideDetail(
+                        element.dataset.rideId
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+/* ========================================
+   GRUPPO DATA
+======================================== */
+
+function createRideDateGroup(date, rides) {
+
+    const title =
+        getRideDateLabel(date);
+
+
+    return `
+
+        <section class="ride-date-group">
+
+            <div class="ride-date-heading">
+
+                <span class="section-eyebrow">
+                    ${escapeHTML(title)}
+                </span>
+
+                <span>
+                    ${rides.length}
+                </span>
+
+            </div>
+
+
+            <div class="ride-date-list">
+
+                ${rides
+                    .map(function (ride) {
+
+                        return createListRideCard(
+                            ride
+                        );
+
+                    })
+                    .join("")}
+
+            </div>
+
+        </section>
+
+    `;
+
+}
+
+
+/* ========================================
+   CARD LISTA
+======================================== */
+
+function createListRideCard(ride) {
+
+    return `
+
+        <article
+            class="ride-list-card"
+            data-ride-id="${escapeHTML(
+                String(ride.id)
+            )}"
+        >
+
+            <div class="ride-list-time">
+
+                <strong>
+                    ${escapeHTML(
+                        ride.time || "--:--"
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="ride-list-main">
+
+                <strong>
+                    ${escapeHTML(
+                        ride.passenger ||
+                        "Passeggero"
+                    )}
+                </strong>
+
+
+                <span>
+
+                    ${escapeHTML(
+                        ride.pickup ||
+                        "Partenza non indicata"
+                    )}
+
+                    →
+
+                    ${escapeHTML(
+                        ride.destination ||
+                        "Destinazione non indicata"
+                    )}
+
+                </span>
+
+            </div>
+
+
+            <div class="ride-list-passengers">
+
+                ${escapeHTML(
+                    String(
+                        ride.passengers || 1
+                    )
+                )}
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* ========================================
+   LABEL DATA
+======================================== */
+
+function getRideDateLabel(date) {
+
+    const today =
+        getTodayString();
+
+
+    const tomorrow =
+        addDays(
+            new Date(),
+            1
+        );
+
+
+    if (date === today) {
+
+        return "Oggi";
+
+    }
+
+
+    if (date === tomorrow) {
+
+        return "Domani";
+
+    }
+
+
+    const parsed =
+        new Date(
+            date + "T00:00:00"
+        );
+
+
+    if (Number.isNaN(parsed.getTime())) {
+
+        return date;
+
+    }
+
+
+    return capitalize(
+        parsed.toLocaleDateString(
+            "it-IT",
+            {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
+        )
+    );
+
+}
+
+
+/* ========================================
+   CORSA FUTURA
+======================================== */
+
+function isRideUpcoming(ride) {
+
+    if (!ride.date) {
+        return false;
+    }
+
+
+    const now =
+        new Date();
+
+
+    const rideDate =
+        new Date(
+            ride.date +
+            "T" +
+            (ride.time || "23:59")
+        );
+
+
+    return rideDate >= now;
+
+}
+
+
+/* ========================================
+   RICERCA
+======================================== */
+
+function initializeRideSearch() {
+
+    const input =
+        document.getElementById(
+            "rideSearch"
+        );
+
+
+    if (!input) {
+        return;
+    }
+
+
+    input.addEventListener(
+        "input",
+        function () {
+
+            renderRidesPage();
+
+        }
+    );
+
+}
+
+
+/* ========================================
+   FILTRI
+======================================== */
+
+function initializeRideFilters() {
+
+    document
+        .querySelectorAll(".ride-filter")
+        .forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    document
+                        .querySelectorAll(
+                            ".ride-filter"
+                        )
+                        .forEach(function (item) {
+
+                            item.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    currentRideFilter =
+                        button.dataset.filter;
+
+
+                    renderRidesPage();
+
+                }
+            );
+
+        });
+
+}
+
+
+/* ========================================
+   DETTAGLIO CORSA
+======================================== */
+
+function initializeRideDetail() {
+
+    const closeButton =
+        document.getElementById(
+            "closeRideDetail"
+        );
+
+
+    const backdrop =
+        document.querySelector(
+            "#rideDetailModal .modal-backdrop"
+        );
+
+
+    const deleteButton =
+        document.getElementById(
+            "deleteRideButton"
+        );
+
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            closeRideDetail
+        );
+
+    }
+
+
+    if (backdrop) {
+
+        backdrop.addEventListener(
+            "click",
+            closeRideDetail
+        );
+
+    }
+
+
+    if (deleteButton) {
+
+        deleteButton.addEventListener(
+            "click",
+            deleteSelectedRide
+        );
+
+    }
+
+}
+
+
+/* ========================================
+   APRI DETTAGLIO
+======================================== */
+
+function openRideDetail(id) {
+
+    const rides =
+        getRides();
+
+
+    const ride =
+        rides.find(function (item) {
+
+            return String(item.id) ===
+                String(id);
+
+        });
+
+
+    if (!ride) {
+        return;
+    }
+
+
+    selectedRideId =
+        ride.id;
+
+
+    const modal =
+        document.getElementById(
+            "rideDetailModal"
+        );
+
+
+    const passenger =
+        document.getElementById(
+            "detailPassenger"
+        );
+
+
+    const content =
+        document.getElementById(
+            "rideDetailContent"
+        );
+
+
+    if (!modal || !passenger || !content) {
+        return;
+    }
+
+
+    passenger.textContent =
+        ride.passenger ||
+        "Passeggero";
+
+
+    content.innerHTML = `
+
+        <div class="ride-detail-row">
+
+            <span>
+                Data
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    getRideDateLabel(
+                        ride.date
+                    )
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="ride-detail-row">
+
+            <span>
+                Ora
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    ride.time || "--:--"
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="ride-detail-row">
+
+            <span>
+                Partenza
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    ride.pickup ||
+                    "Non indicata"
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="ride-detail-row">
+
+            <span>
+                Destinazione
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    ride.destination ||
+                    "Non indicata"
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="ride-detail-row">
+
+            <span>
+                Passeggeri
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    String(
+                        ride.passengers || 1
+                    )
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="ride-detail-row">
+
+            <span>
+                Telefono
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    ride.passengerPhone ||
+                    "Non disponibile"
+                )}
+            </strong>
+
+        </div>
+
+
+        <div class="ride-detail-row">
+
+            <span>
+                Note
+            </span>
+
+            <strong>
+                ${escapeHTML(
+                    ride.notes ||
+                    "Nessuna"
+                )}
+            </strong>
+
+        </div>
+
+    `;
+
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+/* ========================================
+   CHIUDI DETTAGLIO
+======================================== */
+
+function closeRideDetail() {
+
+    const modal =
+        document.getElementById(
+            "rideDetailModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    selectedRideId =
+        null;
+
+}
+
+
+/* ========================================
+   ELIMINA CORSA
+======================================== */
+
+function deleteSelectedRide() {
+
+    if (!selectedRideId) {
+        return;
+    }
+
+
+    const confirmed =
+        window.confirm(
+            "Vuoi davvero eliminare questa corsa?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const rides =
+        getRides();
+
+
+    const updated =
+        rides.filter(function (ride) {
+
+            return String(ride.id) !==
+                String(selectedRideId);
+
+        });
+
+
+    saveRides(updated);
+
+
+    closeRideDetail();
+
+    renderRidesPage();
 
 }
