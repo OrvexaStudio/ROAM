@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
+
+    <title>Home | TaxiPilot</title>
+
+    <link
+        rel="stylesheet"
+        href="../style.css"
+    >
+
+</head>
+
+
+<body class="app-body">
+
+
+    <main class="app-container">
+
+
+        <!-- HEADER -->
+
+        <header class="app-header">
+
+            <div class="app-header-left">
+
+                <span
+                    id="headerGreeting"
+                    class="header-greeting"
+                >
+                    Buongiorno
+                </span>
+
+                <h1 id="driverName">
+                    Conducente
+                </h1>
+
+            </div>
+
+
+            <a
+                href="profilo.html"
+                class="profile-button"
+                aria-label="Apri profilo"
+            >
+
+                <span id="profileInitial">
+                    C
+                </span>
+
+            </a>
+
+        </header>
+
+
+        <!-- CONTENUTO -->
+
+        <section class="home-content">
+
+
+            <!-- DATA -->
+
+            <div class="date-row">
+
+                <span id="currentDate">
+                    Oggi
+                </span>
+
+                <span class="service-badge">
+                    TAXI
+                </span>
+
+            </div>
+
+
+            <!-- PROSSIMA CORSA -->
+
+            <section class="next-ride-section">
+
+                <div class="section-heading">
+
+                    <span class="section-eyebrow">
+                        PROSSIMA CORSA
+                    </span>
+
+                    <a href="corse.html">
+                        Vedi tutte
+                    </a>
+
+                </div>
+
+
+                <div
+                    id="nextRide"
+                    class="next-ride-card"
+                >
+
+                    <div class="empty-ride">
+
+                        <div class="empty-ride-icon">
+                            +
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Nessuna corsa programmata
+                            </strong>
+
+                            <span>
+                                Aggiungi una nuova corsa
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- AZIONE PRINCIPALE -->
+
+            <a
+                href="nuova-corsa.html"
+                class="add-ride-button"
+            >
+
+                <span class="add-ride-plus">
+                    +
+                </span>
+
+                <span>
+                    Nuova corsa
+                </span>
+
+                <span class="add-ride-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- OGGI -->
+
+            <section class="today-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            OGGI
+                        </span>
+
+                        <h2>
+                            Le tue corse
+                        </h2>
+
+                    </div>
+
+
+                    <span
+                        id="rideCount"
+                        class="ride-count"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="todayRides"
+                    class="rides-list"
+                >
+
+                    <div class="empty-list">
+
+                        <span>
+                            Nessuna corsa per oggi
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+
+        <!-- NAVIGAZIONE -->
+
+        <nav class="bottom-nav">
+
+            <a
+                href="home.html"
+                class="nav-item active"
+            >
+
+                <span class="nav-icon">
+                    □
+                </span>
+
+                <span>
+                    Home
+                </span>
+
+            </a>
+
+
+            <a
+                href="corse.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    ≡
+                </span>
+
+                <span>
+                    Corse
+                </span>
+
+            </a>
+
+
+            <a
+                href="agenda.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    □
+                </span>
+
+                <span>
+                    Agenda
+                </span>
+
+            </a>
+
+
+            <a
+                href="profilo.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    ○
+                </span>
+
+                <span>
+                    Profilo
+                </span>
+
+            </a>
+
+        </nav>
+
+
+    </main>
+
+
+    <script src="../taxi.js"></script>
+
+</body>
+
+</html>
