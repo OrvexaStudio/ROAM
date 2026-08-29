@@ -52,7 +52,7 @@ function initializePage(driver) {
 
         initializeAgendaPage();
 
-        initializeCalendar();
+        ;
 
     }
 
@@ -2874,20 +2874,38 @@ function initializeCalendar() {
             const panel =
                 document.getElementById("calendarPanel");
 
+
             if (!panel) {
                 return;
             }
 
-            panel.classList.remove("hidden");
 
-            calendarDate = new Date();
+            const isHidden =
+                panel.classList.contains("hidden");
 
-            renderCalendar();
+
+            if (isHidden) {
+
+                panel.classList.remove("hidden");
+
+                /*
+                 * Ogni volta che apriamo il calendario
+                 * lo aggiorniamo immediatamente.
+                 */
+
+                calendarDate =
+                    new Date();
+
+                renderCalendar();
+
+            } else {
+
+                panel.classList.add("hidden");
+
+            }
 
         }
     );
-
-
 
 
     if (previousButton) {
@@ -2926,7 +2944,6 @@ function initializeCalendar() {
     }
 
 }
-
 
 /* ========================================
    RENDER CALENDARIO
