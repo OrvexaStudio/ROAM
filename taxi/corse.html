@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
+
+    <title>Corse | TaxiPilot</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+</head>
+
+
+<body class="app-body">
+
+<main class="app-container">
+
+
+    <!-- HEADER -->
+
+    <header class="app-header">
+
+        <div class="app-header-left">
+
+            <div>
+
+                <span
+                    id="headerGreeting"
+                    class="header-greeting"
+                >
+                    TAXI
+                </span>
+
+                <h1>
+                    Le tue corse
+                </h1>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="profilo.html"
+            class="profile-button"
+            aria-label="Apri profilo"
+        >
+
+            <span id="profileInitial">
+                C
+            </span>
+
+        </a>
+
+    </header>
+
+
+    <!-- CONTENUTO -->
+
+    <section class="rides-page-content">
+
+
+        <!-- RICERCA -->
+
+        <div class="rides-search">
+
+            <input
+                type="search"
+                id="rideSearch"
+                placeholder="Cerca una corsa..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <!-- FILTRI -->
+
+        <div class="ride-filters">
+
+            <button
+                type="button"
+                class="ride-filter active"
+                data-filter="all"
+            >
+                Tutte
+            </button>
+
+            <button
+                type="button"
+                class="ride-filter"
+                data-filter="today"
+            >
+                Oggi
+            </button>
+
+            <button
+                type="button"
+                class="ride-filter"
+                data-filter="upcoming"
+            >
+                Future
+            </button>
+
+        </div>
+
+
+        <!-- LISTA -->
+
+        <section
+            id="ridesList"
+            class="rides-page-list"
+        ></section>
+
+
+        <!-- VUOTO -->
+
+        <section
+            id="ridesEmpty"
+            class="rides-empty hidden"
+        >
+
+            <div class="rides-empty-icon">
+                +
+            </div>
+
+            <h2>
+                Nessuna corsa
+            </h2>
+
+            <p>
+                Le corse che aggiungerai
+                appariranno qui.
+            </p>
+
+            <a
+                href="nuova-corsa.html"
+                class="primary-action"
+            >
+                Nuova corsa
+            </a>
+
+        </section>
+
+
+    </section>
+
+
+    <!-- PULSANTE NUOVA CORSA -->
+
+    <a
+        href="nuova-corsa.html"
+        class="floating-add-button"
+        aria-label="Nuova corsa"
+    >
+        +
+    </a>
+
+
+    <!-- NAVIGAZIONE -->
+
+    <nav class="bottom-nav">
+
+        <a
+            href="home.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                □
+            </span>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+        <a
+            href="corse.html"
+            class="nav-item active"
+        >
+
+            <span class="nav-icon">
+                ≡
+            </span>
+
+            <span>
+                Corse
+            </span>
+
+        </a>
+
+
+        <a
+            href="agenda.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                □
+            </span>
+
+            <span>
+                Agenda
+            </span>
+
+        </a>
+
+
+        <a
+            href="profilo.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ○
+            </span>
+
+            <span>
+                Profilo
+            </span>
+
+        </a>
+
+    </nav>
+
+
+</main>
+
+
+<!-- DETTAGLIO CORSA -->
+
+<div
+    id="rideDetailModal"
+    class="modal hidden"
+>
+
+    <div class="modal-backdrop"></div>
+
+
+    <div class="modal-content">
+
+        <button
+            type="button"
+            id="closeRideDetail"
+            class="modal-close"
+        >
+            ×
+        </button>
+
+
+        <span class="section-eyebrow">
+            DETTAGLIO CORSA
+        </span>
+
+
+        <h2 id="detailPassenger">
+            Passeggero
+        </h2>
+
+
+        <div
+            id="rideDetailContent"
+            class="ride-detail-content"
+        ></div>
+
+
+        <button
+            type="button"
+            id="deleteRideButton"
+            class="delete-ride-button"
+        >
+            Elimina corsa
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="../taxi.js"></script>
+
+</body>
+
+</html>
