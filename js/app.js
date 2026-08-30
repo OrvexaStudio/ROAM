@@ -61,6 +61,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const passwordForm =
         document.getElementById("passwordForm");
+   const developerStep =
+    document.getElementById("developerStep");
+
+const developerTaxiButton =
+    document.getElementById("developerTaxiButton");
+
+const developerNccButton =
+    document.getElementById("developerNccButton");
 
 
     /* ========================================
@@ -481,7 +489,16 @@ const driver = {
                 /* ========================================
                    ACCESSO RIUSCITO
                 ======================================== */
+if (authorizedDriver.role === "developer") {
 
+    window.pendingTaxiPilotDeveloper =
+        driver;
+
+    showDeveloperStep();
+
+    return;
+
+}
                 try {
 
                     localStorage.setItem(
@@ -509,6 +526,36 @@ const driver = {
         );
 
     }
+   /* ========================================
+   AREA SVILUPPATORE
+======================================== */
+
+if (developerTaxiButton) {
+
+    developerTaxiButton.addEventListener(
+        "click",
+        function () {
+
+            enterDeveloperService("taxi");
+
+        }
+    );
+
+}
+
+
+if (developerNccButton) {
+
+    developerNccButton.addEventListener(
+        "click",
+        function () {
+
+            enterDeveloperService("ncc");
+
+        }
+    );
+
+}
 
 });
 
@@ -601,7 +648,121 @@ function showPasswordStep(
     }
 
 }
+/* ========================================
+   MOSTRA AREA SVILUPPATORE
+======================================== */
 
+function showDeveloperStep() {
+
+    const serviceStep =
+        document.getElementById("serviceStep");
+
+    const driverStep =
+        document.getElementById("driverStep");
+
+    const passwordStep =
+        document.getElementById("passwordStep");
+
+    const developerStep =
+        document.getElementById("developerStep");
+
+
+    if (serviceStep) {
+
+        serviceStep.classList.add(
+            "is-hidden"
+        );
+
+    }
+
+
+    if (driverStep) {
+
+        driverStep.classList.add(
+            "is-hidden"
+        );
+
+    }
+
+
+    if (passwordStep) {
+
+        passwordStep.classList.add(
+            "is-hidden"
+        );
+
+    }
+
+
+    if (developerStep) {
+
+        developerStep.classList.remove(
+            "is-hidden"
+        );
+
+    }
+
+}
+
+
+/* ========================================
+   ACCESSO SVILUPPATORE
+======================================== */
+
+function enterDeveloperService(service) {
+
+    const driver =
+        window.pendingTaxiPilotDeveloper;
+
+
+    if (!driver) {
+        return;
+    }
+
+
+    if (
+        service !== "taxi" &&
+        service !== "ncc"
+    ) {
+
+        return;
+
+    }
+
+
+    const developerDriver = {
+
+        ...driver,
+
+        service: service
+
+    };
+
+
+    try {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(developerDriver)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Errore nel salvataggio:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    redirectToDashboard(
+        service
+    );
+
+}
 
 /* ========================================
    SERVIZIO SELEZIONATO
