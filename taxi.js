@@ -1,5 +1,5 @@
 "use strict";
-
+const STORAGE_KEY = "taxipilot_driver";
 const DRIVER_STORAGE_KEY = "taxipilot_driver";
 const RIDES_STORAGE_KEY = "taxipilot_taxi_rides";
 
