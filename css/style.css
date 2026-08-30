@@ -3420,3 +3420,36 @@ select:focus-visible {
     }
 
 }
+
+/* ========================================
+   IMPORT / EXPORT DATI
+======================================== */
+
+.profile-data-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 18px 18px;
+}
+
+
+.profile-data-actions .profile-action-button {
+    width: 100%;
+}
+
+
+.profile-import-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+
+@media (min-width: 600px) {
+
+    .profile-data-actions {
+        flex-direction: row;
+    }
+
+}
