@@ -79,16 +79,19 @@ const developerNccButton =
         getSavedDriver();
 
 
-    if (savedDriver) {
+if (savedDriver) {
 
-        showPasswordStep(
-            savedDriver.service,
-            savedDriver.name
-        );
+    window.pendingTaxiPilotDriver =
+        savedDriver;
 
-        return;
+    showPasswordStep(
+        savedDriver.service,
+        savedDriver.name
+    );
 
-    }
+    return;
+
+}
 
 
     /* ========================================
