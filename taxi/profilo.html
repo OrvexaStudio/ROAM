@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
+
+    <title>Profilo | TaxiPilot</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+</head>
+
+
+<body class="app-body">
+
+    <main class="app-container">
+
+
+        <!-- HEADER -->
+
+        <header class="app-header">
+
+            <div class="app-header-left">
+
+                <div>
+
+                    <span
+                        id="headerGreeting"
+                        class="header-greeting"
+                    >
+                        Buongiorno
+                    </span>
+
+                    <h1>
+                        Profilo
+                    </h1>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="profilo.html"
+                class="profile-button"
+                aria-label="Profilo"
+            >
+
+                <span id="profileInitial">
+                    C
+                </span>
+
+            </a>
+
+        </header>
+
+
+        <!-- CONTENUTO -->
+
+        <section class="profile-content">
+
+
+            <!-- PROFILO CONDUCENTE -->
+
+            <section class="profile-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            CONDUCENTE
+                        </span>
+
+                        <h2>
+                            I tuoi dati
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-card">
+
+                    <div class="profile-row">
+
+                        <span>
+                            Nome
+                        </span>
+
+                        <strong id="profileName">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            Telefono
+                        </span>
+
+                        <strong id="profilePhone">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            Patente / Licenza
+                        </span>
+
+                        <strong id="profileCode">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            Servizio
+                        </span>
+
+                        <strong id="profileService">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MODIFICA PROFILO -->
+
+            <section class="profile-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            DATI PERSONALI
+                        </span>
+
+                        <h2>
+                            Modifica profilo
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="editProfileButton"
+                    class="profile-action-button"
+                >
+                    Modifica dati
+                </button>
+
+
+                <form
+                    id="editProfileForm"
+                    class="profile-edit-form hidden"
+                >
+
+                    <div class="input-group">
+
+                        <label for="editName">
+                            NOME E COGNOME
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="editPhone">
+                            TELEFONO
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="editPhone"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="editCode">
+                            PATENTE / LICENZA
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editCode"
+                        >
+
+                    </div>
+
+
+                    <div class="profile-edit-actions">
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            Salva modifiche
+                        </button>
+
+                        <button
+                            type="button"
+                            id="cancelEditButton"
+                            class="secondary-button"
+                        >
+                            Annulla
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- STATISTICHE -->
+
+            <section class="profile-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            STATISTICHE
+                        </span>
+
+                        <h2>
+                            Attività
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-stats">
+
+                    <div class="profile-stat-card">
+
+                        <span>
+                            Corse totali
+                        </span>
+
+                        <strong id="totalRides">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-stat-card">
+
+                        <span>
+                            Corse di oggi
+                        </span>
+
+                        <strong id="todayRidesCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-stat-card">
+
+                        <span>
+                            Corse del mese
+                        </span>
+
+                        <strong id="monthRidesCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CAMBIA SERVIZIO -->
+
+            <section
+                id="developerServiceSection"
+                class="profile-section hidden"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            SVILUPPATORE
+                        </span>
+
+                        <h2>
+                            Cambia servizio
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <p class="profile-description">
+                    Cambia ambiente operativo senza effettuare nuovamente il login.
+                </p>
+
+
+                <div class="service-options">
+
+                    <button
+                        type="button"
+                        id="switchTaxiButton"
+                        class="service-option"
+                    >
+
+                        <div class="service-option-text">
+
+                            <span class="service-option-label">
+                                TAXI
+                            </span>
+
+                            <span class="service-option-description">
+                                Passa all'ambiente Taxi
+                            </span>
+
+                        </div>
+
+                        <span class="service-option-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="switchNccButton"
+                        class="service-option"
+                    >
+
+                        <div class="service-option-text">
+
+                            <span class="service-option-label">
+                                NCC
+                            </span>
+
+                            <span class="service-option-description">
+                                Passa all'ambiente NCC
+                            </span>
+
+                        </div>
+
+                        <span class="service-option-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- IMPOSTAZIONI -->
+
+            <section class="profile-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            IMPOSTAZIONI
+                        </span>
+
+                        <h2>
+                            Preferenze
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-card">
+
+                    <div class="profile-setting-row">
+
+                        <div>
+
+                            <strong>
+                                Zona pericolosa
+                            </strong>
+
+                            <span>
+                                Azioni irreversibili e gestione dei dati.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="deleteAllDataButton"
+                        class="danger-button"
+                    >
+                        Cancella tutti i dati
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- LOGOUT -->
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="secondary-button profile-logout"
+            >
+                Esci da TaxiPilot
+            </button>
+
+
+        </section>
+
+
+        <!-- NAVIGAZIONE -->
+
+        <nav class="bottom-nav">
+
+            <a
+                href="home.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    □
+                </span>
+
+                <span>
+                    Home
+                </span>
+
+            </a>
+
+
+            <a
+                href="corse.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    ≡
+                </span>
+
+                <span>
+                    Corse
+                </span>
+
+            </a>
+
+
+            <a
+                href="agenda.html"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    □
+                </span>
+
+                <span>
+                    Agenda
+                </span>
+
+            </a>
+
+
+            <a
+                href="profilo.html"
+                class="nav-item active"
+            >
+
+                <span class="nav-icon">
+                    ○
+                </span>
+
+                <span>
+                    Profilo
+                </span>
+
+            </a>
+
+        </nav>
+
+
+    </main>
+
+
+    <script src="../taxi.js"></script>
+
+</body>
+
+</html>
