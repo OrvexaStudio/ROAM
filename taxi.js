@@ -3347,3 +3347,431 @@ function renderAgendaRides(dateString) {
             .join("");
 
 }
+
+/* ========================================
+   PROFILO CONDUCENTE
+======================================== */
+
+function initializeProfilePage() {
+
+    const driver = getSavedDriver();
+
+    if (!driver) {
+        window.location.href = "../index.html";
+        return;
+    }
+
+
+    /* DATI CONDUCENTE */
+
+    const nameElement =
+        document.getElementById("profileName");
+
+    const phoneElement =
+        document.getElementById("profilePhone");
+
+    const codeElement =
+        document.getElementById("profileCode");
+
+    const serviceElement =
+        document.getElementById("profileService");
+
+
+    if (nameElement) {
+        nameElement.textContent =
+            driver.name || "—";
+    }
+
+    if (phoneElement) {
+        phoneElement.textContent =
+            driver.phone || "—";
+    }
+
+    if (codeElement) {
+        codeElement.textContent =
+            driver.code || "—";
+    }
+
+    if (serviceElement) {
+        serviceElement.textContent =
+            driver.service === "taxi"
+                ? "TAXI"
+                : "NCC";
+    }
+
+
+    /* INIZIALE PROFILO */
+
+    const initial =
+        document.getElementById("profileInitial");
+
+    if (initial && driver.name) {
+
+        initial.textContent =
+            driver.name
+                .trim()
+                .charAt(0)
+                .toUpperCase();
+
+    }
+
+
+    /* MODIFICA PROFILO */
+
+    const editButton =
+        document.getElementById(
+            "editProfileButton"
+        );
+
+    const editForm =
+        document.getElementById(
+            "editProfileForm"
+        );
+
+    const cancelButton =
+        document.getElementById(
+            "cancelEditButton"
+        );
+
+
+    if (editButton && editForm) {
+
+        editButton.addEventListener(
+            "click",
+            function () {
+
+                document.getElementById(
+                    "editName"
+                ).value = driver.name || "";
+
+                document.getElementById(
+                    "editPhone"
+                ).value = driver.phone || "";
+
+                document.getElementById(
+                    "editCode"
+                ).value = driver.code || "";
+
+
+                editForm.classList.remove(
+                    "hidden"
+                );
+
+                editButton.classList.add(
+                    "hidden"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* SALVA MODIFICHE */
+
+    if (editForm) {
+
+        editForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const newName =
+                    document.getElementById(
+                        "editName"
+                    ).value.trim();
+
+                const newPhone =
+                    document.getElementById(
+                        "editPhone"
+                    ).value.trim();
+
+                const newCode =
+                    document.getElementById(
+                        "editCode"
+                    ).value.trim();
+
+
+                if (!newName || !newPhone) {
+                    return;
+                }
+
+
+                driver.name =
+                    newName;
+
+                driver.phone =
+                    newPhone;
+
+                driver.code =
+                    newCode;
+
+
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    JSON.stringify(driver)
+                );
+
+
+                initializeProfilePage();
+
+            }
+        );
+
+    }
+
+
+    /* ANNULLA */
+
+    if (cancelButton && editForm) {
+
+        cancelButton.addEventListener(
+            "click",
+            function () {
+
+                editForm.classList.add(
+                    "hidden"
+                );
+
+                if (editButton) {
+
+                    editButton.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ========================================
+       STATISTICHE
+    ======================================== */
+
+    const rides =
+        typeof getRides === "function"
+            ? getRides()
+            : [];
+
+
+    const today =
+        typeof getTodayString === "function"
+            ? getTodayString()
+            : "";
+
+
+    const now =
+        new Date();
+
+    const currentYear =
+        now.getFullYear();
+
+    const currentMonth =
+        now.getMonth();
+
+
+    const todayRides =
+        rides.filter(function (ride) {
+
+            return ride.date === today;
+
+        });
+
+
+    const monthRides =
+        rides.filter(function (ride) {
+
+            if (!ride.date) {
+                return false;
+            }
+
+            const parts =
+                ride.date.split("-");
+
+            return (
+                Number(parts[0]) === currentYear &&
+                Number(parts[1]) === currentMonth + 1
+            );
+
+        });
+
+
+    const totalElement =
+        document.getElementById(
+            "totalRides"
+        );
+
+    const todayElement =
+        document.getElementById(
+            "todayRidesCount"
+        );
+
+    const monthElement =
+        document.getElementById(
+            "monthRidesCount"
+        );
+
+
+    if (totalElement) {
+        totalElement.textContent =
+            rides.length;
+    }
+
+    if (todayElement) {
+        todayElement.textContent =
+            todayRides.length;
+    }
+
+    if (monthElement) {
+        monthElement.textContent =
+            monthRides.length;
+    }
+
+
+    /* ========================================
+       AREA SVILUPPATORE
+    ======================================== */
+
+    const developerSection =
+        document.getElementById(
+            "developerServiceSection"
+        );
+
+
+    if (
+        developerSection &&
+        driver.role === "developer"
+    ) {
+
+        developerSection.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    const switchTaxiButton =
+        document.getElementById(
+            "switchTaxiButton"
+        );
+
+    const switchNccButton =
+        document.getElementById(
+            "switchNccButton"
+        );
+
+
+    if (switchTaxiButton) {
+
+        switchTaxiButton.addEventListener(
+            "click",
+            function () {
+
+                switchDeveloperService(
+                    "taxi"
+                );
+
+            }
+        );
+
+    }
+
+
+    if (switchNccButton) {
+
+        switchNccButton.addEventListener(
+            "click",
+            function () {
+
+                switchDeveloperService(
+                    "ncc"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ========================================
+       LOGOUT
+    ======================================== */
+
+    const logoutButton =
+        document.getElementById(
+            "logoutButton"
+        );
+
+
+    if (logoutButton) {
+
+        logoutButton.addEventListener(
+            "click",
+            function () {
+
+                localStorage.removeItem(
+                    STORAGE_KEY
+                );
+
+                window.location.href =
+                    "../index.html";
+
+            }
+        );
+
+    }
+
+}
+
+
+/* ========================================
+   CAMBIO SERVIZIO SVILUPPATORE
+======================================== */
+
+function switchDeveloperService(service) {
+
+    const driver =
+        getSavedDriver();
+
+
+    if (
+        !driver ||
+        driver.role !== "developer"
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        service !== "taxi" &&
+        service !== "ncc"
+    ) {
+
+        return;
+
+    }
+
+
+    driver.service =
+        service;
+
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(driver)
+    );
+
+
+    window.location.href =
+        service === "taxi"
+            ? "home.html"
+            : "../ncc/home.html";
+
+}
