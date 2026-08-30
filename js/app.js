@@ -213,10 +213,7 @@ const developerNccButton =
                     document.getElementById(
                         "driverCode"
                     );
-const passwordInput =
-    document.getElementById(
-        "driverPassword"
-    );
+
 
                 const name =
                     nameInput
@@ -234,10 +231,7 @@ const passwordInput =
                     codeInput
                         ? codeInput.value.trim()
                         : "";
-const password =
-    passwordInput
-        ? passwordInput.value
-        : "";
+
 
                 const errorElement =
                     document.getElementById(
