@@ -59,6 +59,9 @@ if (document.getElementById("agendaRides")) {
         initializeRidesPage();
 
     }
+   if (document.getElementById("profileName")) {
+    initializeProfilePage();
+}
 
 }
 
