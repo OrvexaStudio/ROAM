@@ -3129,3 +3129,294 @@ select:focus-visible {
     }
 
 }
+
+/* ========================================
+   PROFILO
+======================================== */
+
+.profile-content {
+    padding: 24px 0 110px;
+}
+
+
+.profile-section {
+    margin-bottom: 32px;
+}
+
+
+.profile-section .section-heading {
+    margin-bottom: 14px;
+}
+
+
+/* ========================================
+   CARD DATI
+======================================== */
+
+.profile-card {
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+
+.profile-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 17px 18px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.profile-row:last-child {
+    border-bottom: none;
+}
+
+
+.profile-row span {
+    color: #777777;
+    font-size: 14px;
+}
+
+
+.profile-row strong {
+    color: #111111;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+}
+
+
+/* ========================================
+   PULSANTI PROFILO
+======================================== */
+
+.profile-action-button,
+.secondary-button,
+.danger-button {
+    width: 100%;
+    min-height: 52px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease,
+        background 0.15s ease;
+}
+
+
+.profile-action-button {
+    border: 1px solid #dddddd;
+    background: #ffffff;
+    color: #111111;
+}
+
+
+.profile-action-button:active,
+.secondary-button:active,
+.danger-button:active {
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   FORM MODIFICA
+======================================== */
+
+.profile-edit-form {
+    margin-top: 16px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 18px;
+}
+
+
+.profile-edit-form .input-group {
+    margin-bottom: 18px;
+}
+
+
+.profile-edit-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.profile-edit-actions .primary-button {
+    width: 100%;
+    min-height: 52px;
+}
+
+
+/* ========================================
+   PULSANTE SECONDARIO
+======================================== */
+
+.secondary-button {
+    border: 1px solid #dddddd;
+    background: #f7f7f7;
+    color: #111111;
+}
+
+
+/* ========================================
+   STATISTICHE
+======================================== */
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+
+.profile-stat-card {
+    min-width: 0;
+    padding: 18px 12px;
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 18px;
+}
+
+
+.profile-stat-card span {
+    display: block;
+    margin-bottom: 9px;
+    color: #777777;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+
+.profile-stat-card strong {
+    display: block;
+    color: #111111;
+    font-size: 27px;
+    line-height: 1;
+    font-weight: 700;
+}
+
+
+/* ========================================
+   IMPOSTAZIONI
+======================================== */
+
+.profile-setting-row {
+    padding: 18px;
+}
+
+
+.profile-setting-row strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #111111;
+    font-size: 15px;
+}
+
+
+.profile-setting-row span {
+    display: block;
+    color: #777777;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+
+.profile-description {
+    margin: -4px 0 16px;
+    color: #777777;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* ========================================
+   ZONA PERICOLOSA
+======================================== */
+
+.danger-button {
+    margin: 0 18px 18px;
+    width: calc(100% - 36px);
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    color: #b42318;
+}
+
+
+.danger-button:hover {
+    background: #fafafa;
+}
+
+
+/* ========================================
+   LOGOUT
+======================================== */
+
+.profile-logout {
+    margin-top: 8px;
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .profile-content {
+        padding-top: 20px;
+    }
+
+
+    .profile-row {
+        padding: 16px;
+        gap: 12px;
+    }
+
+
+    .profile-row span {
+        font-size: 13px;
+    }
+
+
+    .profile-row strong {
+        max-width: 58%;
+        font-size: 14px;
+    }
+
+
+    .profile-stats {
+        gap: 8px;
+    }
+
+
+    .profile-stat-card {
+        padding: 16px 10px;
+        border-radius: 16px;
+    }
+
+
+    .profile-stat-card span {
+        font-size: 11px;
+    }
+
+
+    .profile-stat-card strong {
+        font-size: 24px;
+    }
+
+
+    .profile-edit-form {
+        padding: 16px;
+    }
+
+}
