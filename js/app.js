@@ -466,21 +466,23 @@ const driver = {
                 }
 
 
-                if (
-                    password !==
-                    authorizedDriver.password
-                ) {
+const enteredPassword =
+    passwordInput
+        ? passwordInput.value
+        : "";
 
-                    if (errorElement) {
+if (enteredPassword !== authorizedDriver.password) {
 
-                        errorElement.textContent =
-                            "Password non valida. La password inserita non è corretta.";
+    if (errorElement) {
 
-                    }
+        errorElement.textContent =
+            "Password non valida. La password inserita non è corretta.";
 
-                    return;
+    }
 
-                }
+    return;
+
+}
 
 
                 /* ========================================
