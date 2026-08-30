@@ -3746,7 +3746,324 @@ function initializeProfilePage() {
 
     }
 
+/* ========================================
+   ESPORTA DATI
+======================================== */
 
+const exportDataButton =
+    document.getElementById(
+        "exportDataButton"
+    );
+
+
+if (exportDataButton) {
+
+    exportDataButton.addEventListener(
+        "click",
+        function () {
+
+            const backup = {};
+
+            for (
+                let i = 0;
+                i < localStorage.length;
+                i++
+            ) {
+
+                const key =
+                    localStorage.key(i);
+
+                backup[key] =
+                    localStorage.getItem(key);
+
+            }
+
+
+            const json =
+                JSON.stringify(
+                    backup,
+                    null,
+                    2
+                );
+
+
+            const blob =
+                new Blob(
+                    [json],
+                    {
+                        type: "application/json"
+                    }
+                );
+
+
+            const url =
+                URL.createObjectURL(blob);
+
+
+            const link =
+                document.createElement("a");
+
+
+            const date =
+                new Date()
+                    .toISOString()
+                    .slice(0, 10);
+
+
+            link.href = url;
+
+            link.download =
+                "taxipilot-backup-" +
+                date +
+                ".json";
+
+
+            document.body.appendChild(
+                link
+            );
+
+            link.click();
+
+            link.remove();
+
+            URL.revokeObjectURL(url);
+
+        }
+    );
+
+}
+
+
+/* ========================================
+   IMPORTA DATI
+======================================== */
+
+const importDataInput =
+    document.getElementById(
+        "importDataInput"
+    );
+
+
+if (importDataInput) {
+
+    importDataInput.addEventListener(
+        "change",
+        function (event) {
+
+            const file =
+                event.target.files[0];
+
+
+            if (!file) {
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function () {
+
+                    try {
+
+                        const importedData =
+                            JSON.parse(
+                                reader.result
+                            );
+
+
+                        if (
+                            !importedData ||
+                            typeof importedData !== "object" ||
+                            Array.isArray(importedData)
+                        ) {
+
+                            throw new Error(
+                                "Formato non valido"
+                            );
+
+                        }
+
+
+                        const confirmed =
+                            confirm(
+                                "Importando questo backup verranno sostituiti i dati attualmente presenti su questo dispositivo. Continuare?"
+                            );
+
+
+                        if (!confirmed) {
+
+                            importDataInput.value =
+                                "";
+
+                            return;
+
+                        }
+
+
+                        localStorage.clear();
+
+
+                        Object.keys(
+                            importedData
+                        ).forEach(
+                            function (key) {
+
+                                localStorage.setItem(
+                                    key,
+                                    importedData[key]
+                                );
+
+                            }
+                        );
+
+
+                        alert(
+                            "Dati importati correttamente. TaxiPilot verrà riavviato."
+                        );
+
+
+                        window.location.href =
+                            "../index.html";
+
+                    } catch (error) {
+
+                        console.error(
+                            "Errore importazione:",
+                            error
+                        );
+
+
+                        alert(
+                            "Impossibile importare il file. Il backup non è valido."
+                        );
+
+                    }
+
+
+                    importDataInput.value =
+                        "";
+
+                };
+
+
+            reader.readAsText(file);
+
+        }
+    );
+
+}
+
+
+/* ========================================
+   CANCELLA TUTTI I DATI
+======================================== */
+
+const deleteAllDataButton =
+    document.getElementById(
+        "deleteAllDataButton"
+    );
+
+
+if (deleteAllDataButton) {
+
+    deleteAllDataButton.addEventListener(
+        "click",
+        function () {
+
+            const driver =
+                getSavedDriver();
+
+
+            if (!driver) {
+                return;
+            }
+
+
+            const password =
+                prompt(
+                    "Inserisci la password per confermare la cancellazione dei dati."
+                );
+
+
+            if (password === null) {
+                return;
+            }
+
+
+            let correctPassword =
+                null;
+
+
+            if (
+                driver.role ===
+                "developer"
+            ) {
+
+                correctPassword =
+                    "sviluppatore18!";
+
+            } else if (
+                driver.service ===
+                "taxi"
+            ) {
+
+                correctPassword =
+                    "Taxilecce18!";
+
+            } else if (
+                driver.service ===
+                "ncc"
+            ) {
+
+                correctPassword =
+                    "NCClecce18!";
+
+            }
+
+
+            if (
+                password !==
+                correctPassword
+            ) {
+
+                alert(
+                    "Operazione non autorizzata. La password inserita non è corretta."
+                );
+
+                return;
+
+            }
+
+
+            const confirmed =
+                confirm(
+                    "Attenzione: questa operazione eliminerà definitivamente tutti i dati di TaxiPilot presenti su questo dispositivo. Continuare?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            localStorage.clear();
+
+
+            alert(
+                "Tutti i dati sono stati eliminati."
+            );
+
+
+            window.location.href =
+                "../index.html";
+
+        }
+    );
+
+}
     /* ========================================
        LOGOUT
     ======================================== */
