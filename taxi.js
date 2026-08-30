@@ -3350,7 +3350,53 @@ function renderAgendaRides(dateString) {
             .join("");
 
 }
+/* ========================================
+   DATI CONDUCENTE SALVATI
+======================================== */
 
+function getSavedDriver() {
+
+    const saved =
+        localStorage.getItem(STORAGE_KEY);
+
+
+    if (!saved) {
+        return null;
+    }
+
+
+    try {
+
+        const driver =
+            JSON.parse(saved);
+
+
+        if (
+            !driver ||
+            !driver.name ||
+            !driver.phone ||
+            !driver.service
+        ) {
+
+            return null;
+
+        }
+
+
+        return driver;
+
+    } catch (error) {
+
+        console.error(
+            "Errore lettura conducente:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
 /* ========================================
    PROFILO CONDUCENTE
 ======================================== */
