@@ -3920,13 +3920,12 @@ if (importDataInput) {
                         );
 
 
-                        alert(
-                            "Dati importati correttamente. TaxiPilot verrà riavviato."
-                        );
+alert(
+    "Dati importati correttamente. È necessario verificare l'identità del conducente per continuare."
+);
 
-
-                        window.location.href =
-                            "../index.html";
+window.location.href =
+    "../index.html?imported=true";
 
                     } catch (error) {
 
