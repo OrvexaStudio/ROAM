@@ -3903,29 +3903,41 @@ if (importDataInput) {
                         }
 
 
-                        localStorage.clear();
+localStorage.clear();
 
 
-                        Object.keys(
-                            importedData
-                        ).forEach(
-                            function (key) {
+Object.keys(
+    importedData
+).forEach(
+    function (key) {
 
-                                localStorage.setItem(
-                                    key,
-                                    importedData[key]
-                                );
+        localStorage.setItem(
+            key,
+            importedData[key]
+        );
 
-                            }
-                        );
+    }
+);
+
+
+/*
+ * Segnala che il prossimo accesso
+ * proviene da un backup importato.
+ */
+
+sessionStorage.setItem(
+    "taxipilot_imported_backup",
+    "true"
+);
 
 
 alert(
-    "Dati importati correttamente. È necessario verificare l'identità del conducente per continuare."
+    "Dati importati correttamente. È necessario verificare l'accesso per continuare."
 );
 
+
 window.location.href =
-    "../index.html?imported=true";
+    "../index.html";
 
                     } catch (error) {
 
