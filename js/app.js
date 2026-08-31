@@ -75,8 +75,14 @@ const developerNccButton =
        CONDUCENTE GIÀ CONFIGURATO
     ======================================== */
 
-    const savedDriver =
-        getSavedDriver();
+const savedDriver =
+    getSavedDriver();
+
+
+const importedBackup =
+    sessionStorage.getItem(
+        "taxipilot_imported_backup"
+    );
 
 
 if (savedDriver) {
