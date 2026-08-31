@@ -504,6 +504,9 @@ if (authorizedDriver.role === "developer") {
     return;
 
 }
+               sessionStorage.removeItem(
+    "taxipilot_imported_backup"
+);
                 try {
 
                     localStorage.setItem(
